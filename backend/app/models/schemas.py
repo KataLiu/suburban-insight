@@ -23,15 +23,20 @@ class CulturalBackgroundEntry(BaseModel):
 
 
 class AccessToServices(BaseModel):
-    primary_school_min: Optional[float] = None
-    hospital_min: Optional[float] = None
-    gp_clinic_min: Optional[float] = None
-    childcare_min: Optional[float] = None
+    """Drive-time fields are display-ready range strings (e.g. "2–4 min"),
+    not exact minutes — the public ABS source only publishes category
+    ranges, not precise figures. See data_pipeline/access_to_services.py."""
+
+    primary_school_drive_time: Optional[str] = None
+    hospital_drive_time: Optional[str] = None
+    gp_clinic_drive_time: Optional[str] = None
+    childcare_drive_time: Optional[str] = None
 
 
 class Cluster(BaseModel):
     id: Optional[int] = None
     label: Optional[str] = None
+    similar_suburb_ids: list[str] = []
 
 
 class DataSource(BaseModel):

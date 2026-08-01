@@ -12,6 +12,7 @@ AppState.onSelect(async (suburbId) => {
 
 function renderSidebar(suburb) {
   const d = suburb.demographics;
+  const a = suburb.access_to_services;
   const panel = document.getElementById("sidebar");
 
   panel.innerHTML = `
@@ -31,8 +32,12 @@ function renderSidebar(suburb) {
         ${statTile("Median rent", formatMoney(d.median_weekly_rent), "/week")}
         ${statTile("Overseas born", formatPct(d.overseas_born_pct))}
         ${statTile("Family households", formatPct(d.family_households_pct))}
+        ${statTile("Population growth", formatSignedPct(d.population_growth_pct), "since 2016")}
       </div>
-      <p class="muted note">Population growth: not yet available — needs a 2016 Census comparison, planned for a later milestone.</p>
+
+      ${suburb.cluster.label ? `<p class="cluster-badge">${suburb.cluster.label}</p>` : ""}
+      <h3 class="section-heading">Suburbs like this</h3>
+      ${similarSuburbsHtml(suburb)}
     </div>
 
     <div class="tab-panel hidden" data-panel="culture">
@@ -44,7 +49,13 @@ function renderSidebar(suburb) {
     </div>
 
     <div class="tab-panel hidden" data-panel="services">
-      <p class="muted note">Access-to-services data (drive time to school, hospital, GP, childcare) isn't available yet &mdash; planned for a later milestone.</p>
+      <div class="stat-grid">
+        ${statTile("Primary school", formatDriveTime(a.primary_school_drive_time))}
+        ${statTile("Hospital", formatDriveTime(a.hospital_drive_time))}
+        ${statTile("GP / clinic", formatDriveTime(a.gp_clinic_drive_time))}
+        ${statTile("Childcare", formatDriveTime(a.childcare_drive_time))}
+      </div>
+      <p class="muted note">Typical drive time from homes in this suburb, based on the most common ABS category among its local areas &mdash; a range, not an exact figure (ABS only publishes category bands, e.g. "2&ndash;4 min").</p>
     </div>
 
     <p class="footer-caption">${suburb.state} &middot; Melbourne suburb &middot; ABS Census ${suburb.data_source.census_year}</p>
@@ -52,6 +63,30 @@ function renderSidebar(suburb) {
 
   wireTabs(panel);
   wireCompareToggle(panel, suburb.id);
+  wireSimilarSuburbs(panel);
+}
+
+function similarSuburbsHtml(suburb) {
+  const ids = suburb.cluster.similar_suburb_ids || [];
+  const matches = ids
+    .map((id) => AppState.allSuburbs.find((s) => s.id === id))
+    .filter(Boolean);
+
+  if (!matches.length) {
+    return '<p class="muted note">No similar suburbs found — clustering hasn\'t run yet, or this suburb has no close matches.</p>';
+  }
+
+  return `
+    <div class="similar-suburbs">
+      ${matches.map((s) => `<button class="similar-suburb-btn" data-id="${s.id}">${s.name}</button>`).join("")}
+    </div>
+  `;
+}
+
+function wireSimilarSuburbs(panel) {
+  panel.querySelectorAll(".similar-suburb-btn").forEach((btn) => {
+    btn.addEventListener("click", () => AppState.select(btn.dataset.id));
+  });
 }
 
 function wireCompareToggle(panel, suburbId) {

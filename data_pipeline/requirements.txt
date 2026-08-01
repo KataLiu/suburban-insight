@@ -1,3 +1,6 @@
 openpyxl
 pyshp
 shapely
+scikit-learn
+numpy
+requests

@@ -8,8 +8,13 @@ API serves — from real ABS sources. No suburb statistics here are invented.
 ```bash
 cd data_pipeline
 pip install -r requirements.txt
-python3 build_master_dataset.py
+python3 build_master_dataset.py   # builds demographics, culture, growth, services
+python3 train_clusters.py         # then: K-means clustering + "similar suburbs"
 ```
+
+`build_master_dataset.py` makes live network calls to the ABS access-to-
+services FeatureServer (one spatial query per suburb, ~5s total for 30
+suburbs) — an internet connection is required to run it.
 
 Requires the raw ABS files already in `data/raw/` (not committed to git —
 see below).
@@ -23,26 +28,36 @@ see below).
   and country-of-birth (for `overseas_born_pct` and `cultural_background`,
   ranked by actual count per suburb, not a fixed country list).
 - `extract_centroids.py` — reads the ABS SAL 2021 boundary shapefile and
-  computes one representative lat/lng point per suburb, for map markers.
-- `build_master_dataset.py` — merges the three into the schema documented in
-  `docs/data-fields.md` and writes `data/processed/suburbs.json`.
+  computes a representative lat/lng point per suburb (for map markers) and
+  each suburb's polygon rings (for the spatial query in
+  `access_to_services.py`).
+- `population_growth.py` — joins the 2016 Census (SSC geography) against the
+  2021 figures, matched by suburb **name** (2016 and 2021 use different
+  suburb-geography standards — SSC vs SAL — so boundaries aren't identical;
+  name-matching is an approximation, not an exact boundary reconciliation).
+- `access_to_services.py` — queries the ABS CARA access-to-services
+  FeatureServer (SA1 geography) with each suburb's boundary polygon as a
+  spatial filter, then takes the most common category among the suburb's
+  SA1 areas. **Output is a range string (e.g. "2–4 min"), not exact
+  minutes** — the public ABS source only publishes category bands, this
+  isn't a simplification we introduced.
+- `train_clusters.py` — K-means clustering (Req.4) over income/rent/
+  overseas-born%/family-household% ; picks k via silhouette score (currently
+  k=2 — the data's natural split, not forced to match the proposal's
+  illustrative 3-cluster example) and writes each suburb's cluster label and
+  nearest same-cluster suburbs back into the dataset.
+- `build_master_dataset.py` — merges all of the above into the schema
+  documented in `docs/data-fields.md` and writes `data/processed/suburbs.json`.
 
 ## Raw data expected in `data/raw/` (gitignored)
 - `2021_GCP_SAL_VIC/` — unzipped ABS 2021 Census GCP DataPack, Suburbs and
   Localities, Victoria (`2021_GCP_SAL_for_VIC_short-header.zip` from
   abs.gov.au/census/find-census-data/datapacks)
+- `2016_GCP_SSC_VIC/` — unzipped ABS 2016 Census GCP DataPack, State
+  Suburbs, Victoria (`2016_GCP_SSC_for_VIC_short-header.zip`, same page)
 - `SAL_2021_AUST_SHP/` — unzipped ABS SAL 2021 digital boundary shapefile
   (`SAL_2021_AUST_GDA2020_SHP.zip` from abs.gov.au's ASGS digital boundary
   files page)
 
-## Deliberately deferred (not in this dataset yet)
-- **Population growth since 2016** — needs a 2016 Census extract joined
-  against 2021, with suburb-boundary changes between Censuses to reconcile.
-  `demographics.population_growth_pct` is `null` in the output until this is
-  built.
-- **Access to services (drive times)** — the ABS data for this lives at SA1
-  geography via an interactive service, not a simple suburb-level bulk
-  download; needs a spatial aggregation step. `access_to_services.*` fields
-  are all `null` in the output until this is built.
-
-Both are explicitly scheduled for a later milestone (see `docs/roadmap.md`).
+Access-to-services data isn't a local file — it's queried live from ABS's
+hosted FeatureServer at build time.

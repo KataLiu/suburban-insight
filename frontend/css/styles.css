@@ -228,6 +228,46 @@ header .logo {
   margin-top: 0.15rem;
 }
 
+.cluster-badge {
+  display: inline-block;
+  background: rgba(15, 157, 142, 0.12);
+  color: var(--teal);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  margin: 0 0 1rem;
+}
+
+.section-heading {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem;
+}
+
+.similar-suburbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.similar-suburb-btn {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.similar-suburb-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
 .culture-row {
   display: flex;
   align-items: center;

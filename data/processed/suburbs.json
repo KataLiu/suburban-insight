@@ -10,7 +10,7 @@
     "boundary": null,
     "demographics": {
       "population": 18988,
-      "population_growth_pct": null,
+      "population_growth_pct": -1.9,
       "median_weekly_household_income": 1494,
       "median_weekly_rent": 400,
       "overseas_born_pct": 72.8,
@@ -35,14 +35,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-box-hill",
+        "vic-melbourne",
+        "vic-springvale"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -60,7 +65,7 @@
     "boundary": null,
     "demographics": {
       "population": 14353,
-      "population_growth_pct": null,
+      "population_growth_pct": 26.0,
       "median_weekly_household_income": 1267,
       "median_weekly_rent": 381,
       "overseas_born_pct": 68.3,
@@ -85,14 +90,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-clayton",
+        "vic-dandenong",
+        "vic-springvale"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -110,7 +120,7 @@
     "boundary": null,
     "demographics": {
       "population": 42642,
-      "population_growth_pct": null,
+      "population_growth_pct": 5.7,
       "median_weekly_household_income": 1918,
       "median_weekly_rent": 480,
       "overseas_born_pct": 62.0,
@@ -135,14 +145,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-mount-waverley",
+        "vic-chadstone",
+        "vic-caulfield"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -160,7 +175,7 @@
     "boundary": null,
     "demographics": {
       "population": 22174,
-      "population_growth_pct": null,
+      "population_growth_pct": 2.1,
       "median_weekly_household_income": 1402,
       "median_weekly_rent": 357,
       "overseas_born_pct": 71.1,
@@ -185,14 +200,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-dandenong",
+        "vic-sunshine",
+        "vic-box-hill"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -210,7 +230,7 @@
     "boundary": null,
     "demographics": {
       "population": 54941,
-      "population_growth_pct": null,
+      "population_growth_pct": 16.2,
       "median_weekly_household_income": 1448,
       "median_weekly_rent": 381,
       "overseas_born_pct": 73.4,
@@ -235,14 +255,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "4\u201310 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-carlton",
+        "vic-clayton",
+        "vic-box-hill"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -260,7 +285,7 @@
     "boundary": null,
     "demographics": {
       "population": 25028,
-      "population_growth_pct": null,
+      "population_growth_pct": -0.5,
       "median_weekly_household_income": 2063,
       "median_weekly_rent": 415,
       "overseas_born_pct": 44.3,
@@ -285,14 +310,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "4\u201310 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-fitzroy",
+        "vic-richmond",
+        "vic-brunswick"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -310,7 +340,7 @@
     "boundary": null,
     "demographics": {
       "population": 17131,
-      "population_growth_pct": null,
+      "population_growth_pct": 4.8,
       "median_weekly_household_income": 1763,
       "median_weekly_rent": 355,
       "overseas_born_pct": 49.1,
@@ -335,14 +365,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "2\u20134 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-st-kilda",
+        "vic-ringwood",
+        "vic-sunshine"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -360,7 +395,7 @@
     "boundary": null,
     "demographics": {
       "population": 25276,
-      "population_growth_pct": null,
+      "population_growth_pct": 2.9,
       "median_weekly_household_income": 2287,
       "median_weekly_rent": 475,
       "overseas_born_pct": 27.7,
@@ -385,14 +420,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-malvern",
+        "vic-coburg",
+        "vic-brunswick"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -410,7 +450,7 @@
     "boundary": null,
     "demographics": {
       "population": 25020,
-      "population_growth_pct": null,
+      "population_growth_pct": 19.5,
       "median_weekly_household_income": 1592,
       "median_weekly_rent": 450,
       "overseas_born_pct": 57.9,
@@ -435,14 +475,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-ringwood",
+        "vic-springvale",
+        "vic-sunshine"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -460,7 +505,7 @@
     "boundary": null,
     "demographics": {
       "population": 30127,
-      "population_growth_pct": null,
+      "population_growth_pct": 0.7,
       "median_weekly_household_income": 1267,
       "median_weekly_rent": 319,
       "overseas_born_pct": 69.1,
@@ -485,14 +530,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-springvale",
+        "vic-box-hill",
+        "vic-sunshine"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -510,7 +560,7 @@
     "boundary": null,
     "demographics": {
       "population": 37331,
-      "population_growth_pct": null,
+      "population_growth_pct": 3.4,
       "median_weekly_household_income": 1387,
       "median_weekly_rent": 342,
       "overseas_born_pct": 29.4,
@@ -535,14 +585,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-ringwood",
+        "vic-werribee",
+        "vic-sunshine"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -560,7 +615,7 @@
     "boundary": null,
     "demographics": {
       "population": 50027,
-      "population_growth_pct": null,
+      "population_growth_pct": 24.0,
       "median_weekly_household_income": 1645,
       "median_weekly_rent": 330,
       "overseas_born_pct": 40.5,
@@ -585,14 +640,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-ringwood",
+        "vic-sunshine",
+        "vic-frankston"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -610,7 +670,7 @@
     "boundary": null,
     "demographics": {
       "population": 21240,
-      "population_growth_pct": null,
+      "population_growth_pct": 3.1,
       "median_weekly_household_income": 2132,
       "median_weekly_rent": 380,
       "overseas_born_pct": 27.9,
@@ -635,14 +695,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "10\u201330 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-coburg",
+        "vic-preston",
+        "vic-hawthorn"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -660,7 +725,7 @@
     "boundary": null,
     "demographics": {
       "population": 26574,
-      "population_growth_pct": null,
+      "population_growth_pct": 1.5,
       "median_weekly_household_income": 2065,
       "median_weekly_rent": 430,
       "overseas_born_pct": 32.9,
@@ -685,14 +750,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "0\u20132 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-cheltenham",
+        "vic-essendon",
+        "vic-preston"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -710,7 +780,7 @@
     "boundary": null,
     "demographics": {
       "population": 5748,
-      "population_growth_pct": null,
+      "population_growth_pct": 2.7,
       "median_weekly_household_income": 2143,
       "median_weekly_rent": 475,
       "overseas_born_pct": 44.2,
@@ -735,14 +805,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-mount-waverley",
+        "vic-coburg",
+        "vic-chadstone"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -760,7 +835,7 @@
     "boundary": null,
     "demographics": {
       "population": 35340,
-      "population_growth_pct": null,
+      "population_growth_pct": 5.1,
       "median_weekly_household_income": 2066,
       "median_weekly_rent": 476,
       "overseas_born_pct": 50.8,
@@ -785,14 +860,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-glen-waverley",
+        "vic-caulfield",
+        "vic-chadstone"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -810,7 +890,7 @@
     "boundary": null,
     "demographics": {
       "population": 9552,
-      "population_growth_pct": null,
+      "population_growth_pct": 10.5,
       "median_weekly_household_income": 1991,
       "median_weekly_rent": 421,
       "overseas_born_pct": 52.0,
@@ -835,14 +915,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "2\u20134 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-caulfield",
+        "vic-mount-waverley",
+        "vic-cheltenham"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -860,7 +945,7 @@
     "boundary": null,
     "demographics": {
       "population": 16055,
-      "population_growth_pct": null,
+      "population_growth_pct": -13.4,
       "median_weekly_household_income": 1292,
       "median_weekly_rent": 365,
       "overseas_born_pct": 60.9,
@@ -885,14 +970,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-melbourne",
+        "vic-st-kilda",
+        "vic-box-hill"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -910,7 +1000,7 @@
     "boundary": null,
     "demographics": {
       "population": 10431,
-      "population_growth_pct": null,
+      "population_growth_pct": -0.1,
       "median_weekly_household_income": 2194,
       "median_weekly_rent": 451,
       "overseas_born_pct": 39.7,
@@ -935,14 +1025,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-richmond",
+        "vic-brunswick",
+        "vic-south-yarra"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -960,7 +1055,7 @@
     "boundary": null,
     "demographics": {
       "population": 28587,
-      "population_growth_pct": null,
+      "population_growth_pct": 3.2,
       "median_weekly_household_income": 2245,
       "median_weekly_rent": 441,
       "overseas_born_pct": 35.3,
@@ -985,14 +1080,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "2\u20134 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-fitzroy",
+        "vic-brunswick",
+        "vic-hawthorn"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1010,7 +1110,7 @@
     "boundary": null,
     "demographics": {
       "population": 19490,
-      "population_growth_pct": null,
+      "population_growth_pct": -3.7,
       "median_weekly_household_income": 1779,
       "median_weekly_rent": 381,
       "overseas_born_pct": 45.0,
@@ -1035,14 +1135,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-footscray",
+        "vic-carlton",
+        "vic-melbourne"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1060,7 +1165,7 @@
     "boundary": null,
     "demographics": {
       "population": 24896,
-      "population_growth_pct": null,
+      "population_growth_pct": 1.7,
       "median_weekly_household_income": 2096,
       "median_weekly_rent": 441,
       "overseas_born_pct": 33.6,
@@ -1085,14 +1190,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-richmond",
+        "vic-fitzroy",
+        "vic-hawthorn"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1110,7 +1220,7 @@
     "boundary": null,
     "demographics": {
       "population": 33790,
-      "population_growth_pct": null,
+      "population_growth_pct": 2.9,
       "median_weekly_household_income": 1844,
       "median_weekly_rent": 392,
       "overseas_born_pct": 36.2,
@@ -1135,14 +1245,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "0\u20132 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-cheltenham",
+        "vic-coburg",
+        "vic-essendon"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1160,7 +1275,7 @@
     "boundary": null,
     "demographics": {
       "population": 22322,
-      "population_growth_pct": null,
+      "population_growth_pct": -5.1,
       "median_weekly_household_income": 2145,
       "median_weekly_rent": 400,
       "overseas_born_pct": 32.1,
@@ -1185,14 +1300,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "0\u20132 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-brunswick",
+        "vic-richmond",
+        "vic-essendon"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1210,7 +1330,7 @@
     "boundary": null,
     "demographics": {
       "population": 21965,
-      "population_growth_pct": null,
+      "population_growth_pct": -0.5,
       "median_weekly_household_income": 2457,
       "median_weekly_rent": 486,
       "overseas_born_pct": 34.2,
@@ -1235,14 +1355,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-malvern",
+        "vic-caulfield",
+        "vic-northcote"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1260,7 +1385,7 @@
     "boundary": null,
     "demographics": {
       "population": 19144,
-      "population_growth_pct": null,
+      "population_growth_pct": 9.6,
       "median_weekly_household_income": 1654,
       "median_weekly_rent": 381,
       "overseas_born_pct": 39.1,
@@ -1285,14 +1410,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-werribee",
+        "vic-frankston",
+        "vic-sunshine"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1310,7 +1440,7 @@
     "boundary": null,
     "demographics": {
       "population": 9445,
-      "population_growth_pct": null,
+      "population_growth_pct": -3.3,
       "median_weekly_household_income": 1566,
       "median_weekly_rent": 340,
       "overseas_born_pct": 54.2,
@@ -1335,14 +1465,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "0\u20132 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 0,
+      "label": "More affordable incomes + Lower-rent",
+      "similar_suburb_ids": [
+        "vic-werribee",
+        "vic-ringwood",
+        "vic-springvale"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1360,7 +1495,7 @@
     "boundary": null,
     "demographics": {
       "population": 9929,
-      "population_growth_pct": null,
+      "population_growth_pct": -1.4,
       "median_weekly_household_income": 2606,
       "median_weekly_rent": 450,
       "overseas_born_pct": 27.2,
@@ -1385,14 +1520,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "2\u20134 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-northcote",
+        "vic-camberwell",
+        "vic-coburg"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1410,7 +1550,7 @@
     "boundary": null,
     "demographics": {
       "population": 23992,
-      "population_growth_pct": null,
+      "population_growth_pct": 7.6,
       "median_weekly_household_income": 1919,
       "median_weekly_rent": 430,
       "overseas_born_pct": 33.5,
@@ -1435,14 +1575,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "4\u201310 min",
+      "gp_clinic_drive_time": "2\u20134 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-coburg",
+        "vic-preston",
+        "vic-essendon"
+      ]
     },
     "data_source": {
       "census_year": 2021,
@@ -1460,7 +1605,7 @@
     "boundary": null,
     "demographics": {
       "population": 23252,
-      "population_growth_pct": null,
+      "population_growth_pct": -0.0,
       "median_weekly_household_income": 2710,
       "median_weekly_rent": 600,
       "overseas_born_pct": 30.9,
@@ -1485,14 +1630,19 @@
       }
     ],
     "access_to_services": {
-      "primary_school_min": null,
-      "hospital_min": null,
-      "gp_clinic_min": null,
-      "childcare_min": null
+      "primary_school_drive_time": "2\u20134 min",
+      "hospital_drive_time": "2\u20134 min",
+      "gp_clinic_drive_time": "0\u20132 min",
+      "childcare_drive_time": "0\u20132 min"
     },
     "cluster": {
-      "id": null,
-      "label": null
+      "id": 1,
+      "label": "Higher-income + Higher-rent",
+      "similar_suburb_ids": [
+        "vic-camberwell",
+        "vic-northcote",
+        "vic-malvern"
+      ]
     },
     "data_source": {
       "census_year": 2021,

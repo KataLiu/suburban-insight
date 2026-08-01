@@ -35,3 +35,24 @@ def load_centroids(sal_codes):
         if len(result) == len(wanted):
             break
     return result
+
+
+def load_boundary_rings(sal_codes):
+    """Returns {sal_code: [[ [x,y], ... ], ...]} — the polygon ring
+    coordinates for each suburb, in GDA2020 lat/lng, used to query the ABS
+    access-to-services FeatureServer with a spatial filter (see
+    access_to_services.py). Not used for map rendering (point markers only)."""
+    wanted = set(sal_codes)
+    result = {}
+    reader = shapefile.Reader(str(SHAPEFILE_PATH))
+    for shape_record in reader.iterShapeRecords():
+        code = shape_record.record["SAL_CODE21"]
+        if code not in wanted:
+            continue
+        points = shape_record.shape.points
+        parts = list(shape_record.shape.parts) + [len(points)]
+        rings = [points[parts[i] : parts[i + 1]] for i in range(len(parts) - 1)]
+        result[code] = rings
+        if len(result) == len(wanted):
+            break
+    return result

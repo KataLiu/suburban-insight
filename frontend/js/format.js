@@ -13,8 +13,15 @@ function formatPct(n) {
   return n == null ? "—" : `${n}%`;
 }
 
-function formatMinutes(n) {
-  return n == null ? "—" : `${n} min`;
+function formatSignedPct(n) {
+  return n == null ? "—" : `${n > 0 ? "+" : ""}${n}%`;
+}
+
+// Access-to-services values are already display-ready range strings
+// (e.g. "2–4 min") produced by data_pipeline/access_to_services.py — the
+// public ABS source only publishes category bands, not exact minutes.
+function formatDriveTime(rangeString) {
+  return rangeString || "—";
 }
 
 function statTile(label, value, suffix = "") {

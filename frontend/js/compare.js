@@ -101,6 +101,7 @@ function buildTable(suburbs) {
         ${row("Median rent", (s) => `${formatMoney(s.demographics.median_weekly_rent)}/wk`)}
         ${row("Overseas born", (s) => formatPct(s.demographics.overseas_born_pct))}
         ${row("Family households", (s) => formatPct(s.demographics.family_households_pct))}
+        ${row("Population growth (since 2016)", (s) => formatSignedPct(s.demographics.population_growth_pct))}
 
         ${sectionRow("Cultural background")}
         <tr>
@@ -114,12 +115,12 @@ function buildTable(suburbs) {
         </tr>
 
         ${sectionRow("Access to services")}
-        ${row("Primary school", (s) => formatMinutes(s.access_to_services.primary_school_min))}
-        ${row("Hospital", (s) => formatMinutes(s.access_to_services.hospital_min))}
-        ${row("GP / clinic", (s) => formatMinutes(s.access_to_services.gp_clinic_min))}
-        ${row("Childcare", (s) => formatMinutes(s.access_to_services.childcare_min))}
+        ${row("Primary school", (s) => formatDriveTime(s.access_to_services.primary_school_drive_time))}
+        ${row("Hospital", (s) => formatDriveTime(s.access_to_services.hospital_drive_time))}
+        ${row("GP / clinic", (s) => formatDriveTime(s.access_to_services.gp_clinic_drive_time))}
+        ${row("Childcare", (s) => formatDriveTime(s.access_to_services.childcare_drive_time))}
       </tbody>
     </table>
-    <p class="muted note">Access-to-services data isn't available yet &mdash; planned for a later milestone.</p>
+    <p class="muted note">Drive times are typical ranges (most common ABS category among the suburb's local areas), not exact figures.</p>
   `;
 }
