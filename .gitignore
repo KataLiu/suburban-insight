@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Env files
+.env
+
+# Data (raw ABS extracts are large and reproducible from the public source —
+# not committed; the small cleaned output the app runs on IS committed)
+data/raw/*
+!data/raw/.gitkeep
+
+# OS
+.DS_Store

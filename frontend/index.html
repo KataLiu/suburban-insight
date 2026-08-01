@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suburban Insight</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header>
+    <span class="logo">Suburban Insight</span>
+    <a id="compare-link" href="compare.html" class="compare-link">Compare suburbs (<span id="compare-count">0</span>)</a>
+  </header>
+
+  <div id="filter-bar" class="filter-bar"></div>
+
+  <main class="app-layout">
+    <div class="map-pane">
+      <div id="map"></div>
+      <span id="map-status" class="status pending map-status-badge">Loading suburbs&hellip;</span>
+    </div>
+    <aside id="sidebar" class="sidebar-pane">
+      <p class="muted">Click a suburb marker to see its profile.</p>
+    </aside>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/compare-state.js"></script>
+  <script src="js/format.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script>
+    document.getElementById("compare-count").textContent = CompareState.getIds().length;
+  </script>
+</body>
+</html>

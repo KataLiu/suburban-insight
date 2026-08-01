@@ -1,0 +1,1502 @@
+[
+  {
+    "id": "vic-clayton",
+    "name": "Clayton",
+    "state": "VIC",
+    "location": {
+      "lat": -37.91507429799998,
+      "lng": 145.13126798499297
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 18988,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1494,
+      "median_weekly_rent": 400,
+      "overseas_born_pct": 72.8,
+      "family_households_pct": 53.5
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 27.2
+      },
+      {
+        "country": "India",
+        "pct": 16.4
+      },
+      {
+        "country": "China",
+        "pct": 14.7
+      },
+      {
+        "country": "Sri Lanka",
+        "pct": 3.6
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-box-hill",
+    "name": "Box Hill",
+    "state": "VIC",
+    "location": {
+      "lat": -37.82140321849994,
+      "lng": 145.12611351961954
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 14353,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1267,
+      "median_weekly_rent": 381,
+      "overseas_born_pct": 68.3,
+      "family_households_pct": 56.3
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 31.7
+      },
+      {
+        "country": "China",
+        "pct": 29.5
+      },
+      {
+        "country": "Malaysia",
+        "pct": 6.4
+      },
+      {
+        "country": "India",
+        "pct": 4.5
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-glen-waverley",
+    "name": "Glen Waverley",
+    "state": "VIC",
+    "location": {
+      "lat": -37.88231285899997,
+      "lng": 145.16976151990565
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 42642,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1918,
+      "median_weekly_rent": 480,
+      "overseas_born_pct": 62.0,
+      "family_households_pct": 78.3
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 38.0
+      },
+      {
+        "country": "China",
+        "pct": 17.8
+      },
+      {
+        "country": "India",
+        "pct": 8.0
+      },
+      {
+        "country": "Malaysia",
+        "pct": 5.6
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-springvale",
+    "name": "Springvale",
+    "state": "VIC",
+    "location": {
+      "lat": -37.943731929999956,
+      "lng": 145.16326967224546
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 22174,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1402,
+      "median_weekly_rent": 357,
+      "overseas_born_pct": 71.1,
+      "family_households_pct": 71.3
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 28.9
+      },
+      {
+        "country": "Vietnam",
+        "pct": 20.9
+      },
+      {
+        "country": "India",
+        "pct": 7.4
+      },
+      {
+        "country": "Cambodia",
+        "pct": 5.6
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-melbourne",
+    "name": "Melbourne",
+    "state": "VIC",
+    "location": {
+      "lat": -37.82657676299996,
+      "lng": 144.97993206761066
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 54941,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1448,
+      "median_weekly_rent": 381,
+      "overseas_born_pct": 73.4,
+      "family_households_pct": 37.5
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 26.6
+      },
+      {
+        "country": "China",
+        "pct": 15.1
+      },
+      {
+        "country": "India",
+        "pct": 7.0
+      },
+      {
+        "country": "Malaysia",
+        "pct": 6.2
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-south-yarra",
+    "name": "South Yarra",
+    "state": "VIC",
+    "location": {
+      "lat": -37.83832980449998,
+      "lng": 144.99149312211188
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 25028,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2063,
+      "median_weekly_rent": 415,
+      "overseas_born_pct": 44.3,
+      "family_households_pct": 42.3
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 55.7
+      },
+      {
+        "country": "England",
+        "pct": 4.4
+      },
+      {
+        "country": "China",
+        "pct": 4.4
+      },
+      {
+        "country": "New Zealand",
+        "pct": 3.1
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-footscray",
+    "name": "Footscray",
+    "state": "VIC",
+    "location": {
+      "lat": -37.80076811899997,
+      "lng": 144.894838036527
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 17131,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1763,
+      "median_weekly_rent": 355,
+      "overseas_born_pct": 49.1,
+      "family_households_pct": 52.1
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 50.9
+      },
+      {
+        "country": "Vietnam",
+        "pct": 8.5
+      },
+      {
+        "country": "India",
+        "pct": 4.7
+      },
+      {
+        "country": "England",
+        "pct": 2.2
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-northcote",
+    "name": "Northcote",
+    "state": "VIC",
+    "location": {
+      "lat": -37.77227040999995,
+      "lng": 145.00092232317667
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 25276,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2287,
+      "median_weekly_rent": 475,
+      "overseas_born_pct": 27.7,
+      "family_households_pct": 60.6
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 72.3
+      },
+      {
+        "country": "England",
+        "pct": 3.8
+      },
+      {
+        "country": "Greece",
+        "pct": 3.5
+      },
+      {
+        "country": "New Zealand",
+        "pct": 2.3
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-doncaster",
+    "name": "Doncaster",
+    "state": "VIC",
+    "location": {
+      "lat": -37.78288644349993,
+      "lng": 145.12209068697922
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 25020,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1592,
+      "median_weekly_rent": 450,
+      "overseas_born_pct": 57.9,
+      "family_households_pct": 70.6
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 42.1
+      },
+      {
+        "country": "China",
+        "pct": 17.1
+      },
+      {
+        "country": "Malaysia",
+        "pct": 5.5
+      },
+      {
+        "country": "Hong Kong",
+        "pct": 3.6
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-dandenong",
+    "name": "Dandenong",
+    "state": "VIC",
+    "location": {
+      "lat": -37.98574686199996,
+      "lng": 145.21225316221825
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 30127,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1267,
+      "median_weekly_rent": 319,
+      "overseas_born_pct": 69.1,
+      "family_households_pct": 65.2
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 30.9
+      },
+      {
+        "country": "Afghanistan",
+        "pct": 11.5
+      },
+      {
+        "country": "India",
+        "pct": 9.5
+      },
+      {
+        "country": "Sri Lanka",
+        "pct": 5.4
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-frankston",
+    "name": "Frankston",
+    "state": "VIC",
+    "location": {
+      "lat": -38.15079739999996,
+      "lng": 145.14236557327487
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 37331,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1387,
+      "median_weekly_rent": 342,
+      "overseas_born_pct": 29.4,
+      "family_households_pct": 62.1
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 70.6
+      },
+      {
+        "country": "England",
+        "pct": 5.1
+      },
+      {
+        "country": "New Zealand",
+        "pct": 2.4
+      },
+      {
+        "country": "China",
+        "pct": 1.2
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-werribee",
+    "name": "Werribee",
+    "state": "VIC",
+    "location": {
+      "lat": -37.907809164999975,
+      "lng": 144.64207938335272
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 50027,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1645,
+      "median_weekly_rent": 330,
+      "overseas_born_pct": 40.5,
+      "family_households_pct": 72.7
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 59.5
+      },
+      {
+        "country": "India",
+        "pct": 7.3
+      },
+      {
+        "country": "New Zealand",
+        "pct": 2.7
+      },
+      {
+        "country": "England",
+        "pct": 2.3
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-essendon",
+    "name": "Essendon",
+    "state": "VIC",
+    "location": {
+      "lat": -37.74921083499996,
+      "lng": 144.90891522778963
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 21240,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2132,
+      "median_weekly_rent": 380,
+      "overseas_born_pct": 27.9,
+      "family_households_pct": 63.8
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 72.1
+      },
+      {
+        "country": "India",
+        "pct": 3.0
+      },
+      {
+        "country": "Italy",
+        "pct": 2.4
+      },
+      {
+        "country": "England",
+        "pct": 1.8
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-coburg",
+    "name": "Coburg",
+    "state": "VIC",
+    "location": {
+      "lat": -37.74502582299996,
+      "lng": 144.96403182477843
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 26574,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2065,
+      "median_weekly_rent": 430,
+      "overseas_born_pct": 32.9,
+      "family_households_pct": 65.8
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 67.1
+      },
+      {
+        "country": "Italy",
+        "pct": 4.4
+      },
+      {
+        "country": "Greece",
+        "pct": 2.6
+      },
+      {
+        "country": "England",
+        "pct": 2.4
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-caulfield",
+    "name": "Caulfield",
+    "state": "VIC",
+    "location": {
+      "lat": -37.88400877699996,
+      "lng": 145.0259401096015
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 5748,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2143,
+      "median_weekly_rent": 475,
+      "overseas_born_pct": 44.2,
+      "family_households_pct": 68.3
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 55.8
+      },
+      {
+        "country": "South Africa",
+        "pct": 5.7
+      },
+      {
+        "country": "China",
+        "pct": 2.5
+      },
+      {
+        "country": "India",
+        "pct": 2.3
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-mount-waverley",
+    "name": "Mount Waverley",
+    "state": "VIC",
+    "location": {
+      "lat": -37.87863099299997,
+      "lng": 145.12845448165302
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 35340,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2066,
+      "median_weekly_rent": 476,
+      "overseas_born_pct": 50.8,
+      "family_households_pct": 77.0
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 49.2
+      },
+      {
+        "country": "China",
+        "pct": 13.0
+      },
+      {
+        "country": "India",
+        "pct": 6.1
+      },
+      {
+        "country": "Sri Lanka",
+        "pct": 4.2
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-chadstone",
+    "name": "Chadstone",
+    "state": "VIC",
+    "location": {
+      "lat": -37.88296466699995,
+      "lng": 145.09953718492585
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 9552,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1991,
+      "median_weekly_rent": 421,
+      "overseas_born_pct": 52.0,
+      "family_households_pct": 68.3
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 48.0
+      },
+      {
+        "country": "China",
+        "pct": 8.2
+      },
+      {
+        "country": "India",
+        "pct": 5.8
+      },
+      {
+        "country": "Sri Lanka",
+        "pct": 4.0
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-carlton",
+    "name": "Carlton",
+    "state": "VIC",
+    "location": {
+      "lat": -37.80003332199996,
+      "lng": 144.96928967034205
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 16055,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1292,
+      "median_weekly_rent": 365,
+      "overseas_born_pct": 60.9,
+      "family_households_pct": 36.4
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 39.1
+      },
+      {
+        "country": "China",
+        "pct": 14.0
+      },
+      {
+        "country": "India",
+        "pct": 5.0
+      },
+      {
+        "country": "Malaysia",
+        "pct": 3.9
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-fitzroy",
+    "name": "Fitzroy",
+    "state": "VIC",
+    "location": {
+      "lat": -37.800947138499936,
+      "lng": 144.97915374639453
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 10431,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2194,
+      "median_weekly_rent": 451,
+      "overseas_born_pct": 39.7,
+      "family_households_pct": 49.5
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 60.3
+      },
+      {
+        "country": "England",
+        "pct": 4.5
+      },
+      {
+        "country": "Vietnam",
+        "pct": 3.3
+      },
+      {
+        "country": "New Zealand",
+        "pct": 3.0
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-richmond",
+    "name": "Richmond",
+    "state": "VIC",
+    "location": {
+      "lat": -37.822111415999956,
+      "lng": 145.00254380909467
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 28587,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2245,
+      "median_weekly_rent": 441,
+      "overseas_born_pct": 35.3,
+      "family_households_pct": 49.7
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 64.7
+      },
+      {
+        "country": "Vietnam",
+        "pct": 4.3
+      },
+      {
+        "country": "England",
+        "pct": 3.7
+      },
+      {
+        "country": "New Zealand",
+        "pct": 2.9
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-st-kilda",
+    "name": "St Kilda",
+    "state": "VIC",
+    "location": {
+      "lat": -37.86399218899996,
+      "lng": 144.9815084228044
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 19490,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1779,
+      "median_weekly_rent": 381,
+      "overseas_born_pct": 45.0,
+      "family_households_pct": 39.1
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 55.0
+      },
+      {
+        "country": "England",
+        "pct": 5.5
+      },
+      {
+        "country": "New Zealand",
+        "pct": 3.2
+      },
+      {
+        "country": "Ireland",
+        "pct": 2.5
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-brunswick",
+    "name": "Brunswick",
+    "state": "VIC",
+    "location": {
+      "lat": -37.76683055199996,
+      "lng": 144.96052931787352
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 24896,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2096,
+      "median_weekly_rent": 441,
+      "overseas_born_pct": 33.6,
+      "family_households_pct": 51.7
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 66.4
+      },
+      {
+        "country": "England",
+        "pct": 3.6
+      },
+      {
+        "country": "New Zealand",
+        "pct": 3.0
+      },
+      {
+        "country": "Italy",
+        "pct": 2.6
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-preston",
+    "name": "Preston",
+    "state": "VIC",
+    "location": {
+      "lat": -37.74174206199996,
+      "lng": 145.00702707358317
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 33790,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1844,
+      "median_weekly_rent": 392,
+      "overseas_born_pct": 36.2,
+      "family_households_pct": 62.0
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 63.8
+      },
+      {
+        "country": "China",
+        "pct": 3.0
+      },
+      {
+        "country": "Italy",
+        "pct": 3.0
+      },
+      {
+        "country": "Greece",
+        "pct": 2.8
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-hawthorn",
+    "name": "Hawthorn",
+    "state": "VIC",
+    "location": {
+      "lat": -37.828510811999934,
+      "lng": 145.03429935022
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 22322,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2145,
+      "median_weekly_rent": 400,
+      "overseas_born_pct": 32.1,
+      "family_households_pct": 53.9
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 67.9
+      },
+      {
+        "country": "India",
+        "pct": 3.5
+      },
+      {
+        "country": "England",
+        "pct": 3.1
+      },
+      {
+        "country": "China",
+        "pct": 3.1
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-camberwell",
+    "name": "Camberwell",
+    "state": "VIC",
+    "location": {
+      "lat": -37.83558133899996,
+      "lng": 145.07452658581047
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 21965,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2457,
+      "median_weekly_rent": 486,
+      "overseas_born_pct": 34.2,
+      "family_households_pct": 73.0
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 65.8
+      },
+      {
+        "country": "China",
+        "pct": 7.0
+      },
+      {
+        "country": "England",
+        "pct": 3.3
+      },
+      {
+        "country": "India",
+        "pct": 2.0
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-ringwood",
+    "name": "Ringwood",
+    "state": "VIC",
+    "location": {
+      "lat": -37.80990575649997,
+      "lng": 145.22841392657614
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 19144,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1654,
+      "median_weekly_rent": 381,
+      "overseas_born_pct": 39.1,
+      "family_households_pct": 65.4
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 60.9
+      },
+      {
+        "country": "China",
+        "pct": 7.3
+      },
+      {
+        "country": "India",
+        "pct": 3.2
+      },
+      {
+        "country": "England",
+        "pct": 2.9
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-sunshine",
+    "name": "Sunshine",
+    "state": "VIC",
+    "location": {
+      "lat": -37.789708417999975,
+      "lng": 144.83559211959414
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 9445,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1566,
+      "median_weekly_rent": 340,
+      "overseas_born_pct": 54.2,
+      "family_households_pct": 66.8
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 45.8
+      },
+      {
+        "country": "Vietnam",
+        "pct": 13.5
+      },
+      {
+        "country": "India",
+        "pct": 4.7
+      },
+      {
+        "country": "Nepal",
+        "pct": 3.7
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-malvern",
+    "name": "Malvern",
+    "state": "VIC",
+    "location": {
+      "lat": -37.85830142699996,
+      "lng": 145.0348488258304
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 9929,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2606,
+      "median_weekly_rent": 450,
+      "overseas_born_pct": 27.2,
+      "family_households_pct": 64.6
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 72.8
+      },
+      {
+        "country": "England",
+        "pct": 3.5
+      },
+      {
+        "country": "China",
+        "pct": 2.2
+      },
+      {
+        "country": "India",
+        "pct": 2.0
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-cheltenham",
+    "name": "Cheltenham",
+    "state": "VIC",
+    "location": {
+      "lat": -37.96189036499996,
+      "lng": 145.05634985166205
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 23992,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 1919,
+      "median_weekly_rent": 430,
+      "overseas_born_pct": 33.5,
+      "family_households_pct": 68.5
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 66.5
+      },
+      {
+        "country": "England",
+        "pct": 4.0
+      },
+      {
+        "country": "China",
+        "pct": 3.1
+      },
+      {
+        "country": "India",
+        "pct": 2.7
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  },
+  {
+    "id": "vic-brighton",
+    "name": "Brighton",
+    "state": "VIC",
+    "location": {
+      "lat": -37.907812484999965,
+      "lng": 144.99695095774473
+    },
+    "boundary": null,
+    "demographics": {
+      "population": 23252,
+      "population_growth_pct": null,
+      "median_weekly_household_income": 2710,
+      "median_weekly_rent": 600,
+      "overseas_born_pct": 30.9,
+      "family_households_pct": 70.4
+    },
+    "cultural_background": [
+      {
+        "country": "Australia",
+        "pct": 69.1
+      },
+      {
+        "country": "England",
+        "pct": 5.4
+      },
+      {
+        "country": "China",
+        "pct": 3.5
+      },
+      {
+        "country": "New Zealand",
+        "pct": 1.6
+      }
+    ],
+    "access_to_services": {
+      "primary_school_min": null,
+      "hospital_min": null,
+      "gp_clinic_min": null,
+      "childcare_min": null
+    },
+    "cluster": {
+      "id": null,
+      "label": null
+    },
+    "data_source": {
+      "census_year": 2021,
+      "last_updated": null
+    }
+  }
+]
