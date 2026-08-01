@@ -2,9 +2,12 @@
 
 Helping newcomers choose where to live in Melbourne. FIT3163 DS01 Project 7.
 
-This is the **initial scaffold** — see `docs/roadmap.md` for what's built vs.
-planned, `docs/requirements.md` for the full requirements traced to the
-project proposal, and `docs/architecture.md` for the technical design.
+Map, filters, suburb comparison, and K-means-based suburb recommendations
+are built and backed by real ABS Census data — see `docs/roadmap.md` for
+exactly what's done vs. planned, `docs/requirements.md` for the full
+requirements traced to the project proposal, and `docs/architecture.md` for
+the technical design. `CLAUDE.md` has quick commands and key architectural
+notes if you're picking this project back up in a new session.
 
 ## Running the backend
 
@@ -42,5 +45,5 @@ running.
 
 ## Status
 
-See the end-of-task report in the conversation (or `docs/roadmap.md`) for
-what currently works and what's next.
+See the "Status" note at the top of `docs/roadmap.md` for what's done vs.
+still planned (last updated 2026-08-01).

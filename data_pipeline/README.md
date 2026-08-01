@@ -16,8 +16,9 @@ python3 train_clusters.py         # then: K-means clustering + "similar suburbs"
 services FeatureServer (one spatial query per suburb, ~5s total for 30
 suburbs) — an internet connection is required to run it.
 
-Requires the raw ABS files already in `data/raw/` (not committed to git —
-see below).
+Requires the raw ABS files already in `../data/newData/` — i.e.
+`ClaudeCode/data/newData/`, one level above this project, **not** inside
+`suburban-insight/` (not committed to git — see below).
 
 ## What each script does
 - `suburb_shortlist.py` — the MVP's Melbourne suburb list (30 well-known
@@ -49,7 +50,7 @@ see below).
 - `build_master_dataset.py` — merges all of the above into the schema
   documented in `docs/data-fields.md` and writes `data/processed/suburbs.json`.
 
-## Raw data expected in `data/raw/` (gitignored)
+## Raw data expected in `ClaudeCode/data/newData/` (outside the repo, not gitignored — it's simply not inside `suburban-insight/`)
 - `2021_GCP_SAL_VIC/` — unzipped ABS 2021 Census GCP DataPack, Suburbs and
   Localities, Victoria (`2021_GCP_SAL_for_VIC_short-header.zip` from
   abs.gov.au/census/find-census-data/datapacks)

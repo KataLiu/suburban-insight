@@ -8,7 +8,8 @@ slightly between the two, so suburbs are matched by NAME (with the same
 another state), not by code. This is an approximation, not an exact
 boundary-for-boundary comparison — noted in docs/data-fields.md.
 
-Source: data/raw/2016_GCP_SSC_VIC/2016 Census GCP State Suburbs for VIC/
+Source: ../data/newData/2016_GCP_SSC_VIC/2016 Census GCP State Suburbs for VIC/
+(ClaudeCode/data/newData/ — one level above this project, not inside it)
 Table used: G01 (population), same as the 2021 pipeline.
 """
 
@@ -17,7 +18,7 @@ from pathlib import Path
 
 import openpyxl
 
-RAW_DIR_2016 = Path(__file__).resolve().parent.parent / "data" / "raw" / "2016_GCP_SSC_VIC"
+RAW_DIR_2016 = Path(__file__).resolve().parent.parent.parent / "data" / "newData" / "2016_GCP_SSC_VIC"
 DATA_TABLE_DIR = RAW_DIR_2016 / "2016 Census GCP State Suburbs for VIC"
 GEOGRAPHY_LOOKUP = RAW_DIR_2016 / "Metadata" / "2016Census_geog_desc_1st_and_2nd_release.xlsx"
 

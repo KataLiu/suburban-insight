@@ -47,6 +47,18 @@ suburban-insight/
 
 **Why `data/raw/` and `data/processed/` are gitignored:** ABS extracts can be large and are reproducible from the public source; committing generated/downloaded data bloats the repo. Only `.gitkeep` placeholders are committed so the folders exist for a fresh clone.
 
+## Status (updated 2026-08-01)
+
+Milestones 1–11 are **done** — map, filters, comparison, and K-means
+clustering are all live and backed by real ABS data (see notes on each
+milestone below for where the actual build diverged from the original
+plan). Milestones 12–14 (responsive/accessibility polish, formal testing,
+deployment) are **not started**.
+
+**One gap nobody's built yet:** suburb search/autocomplete (mentioned in
+Milestone 5 below) was never implemented — the only way to reach a suburb
+today is clicking its map marker.
+
 ## Part B — Development Roadmap
 
 Sequencing follows the requested milestone order, adjusted in two places with reasoning given:
@@ -55,7 +67,7 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 
 ---
 
-### Milestone 1 — Project Setup & Repository Structure
+### Milestone 1 — Project Setup & Repository Structure ✅ Done
 - **Objective:** Establish the repo skeleton, tooling, and dev environment so all four team members can run the project locally.
 - **Features included:** none (infrastructure only).
 - **Files to create:** full folder structure above, `.gitignore`, `README.md`, `backend/requirements.txt`, `backend/.env.example`.
@@ -65,7 +77,7 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** repo pushed, all four members can clone and run it.
 - **Possible risks:** environment differences across team members' machines (Python version, Node presence) — mitigate with a documented Python version in README and no frontend build tooling to keep it dependency-light.
 
-### Milestone 2 — Basic Frontend Layout
+### Milestone 2 — Basic Frontend Layout ✅ Done
 - **Objective:** Static shell of both pages with the navy/teal visual language, no live data yet.
 - **Features included:** navbar, search bar (non-functional), filter chip bar (static), two-panel layout, empty map container, empty sidebar shell with tab headers.
 - **Files:** `frontend/index.html`, `frontend/compare.html`, `frontend/css/styles.css`.
@@ -75,7 +87,7 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** layout approved against wireframes.
 - **Possible risks:** scope creep into building real interactivity before the backend exists — keep this milestone visual-only.
 
-### Milestone 3 — Basic FastAPI Backend
+### Milestone 3 — Basic FastAPI Backend ✅ Done
 - **Objective:** A running backend with a health-check endpoint and CORS configured for the frontend origin.
 - **Features included:** `/health`.
 - **Files:** `backend/app/main.py`, `backend/app/core/config.py`, `backend/app/api/routes/health.py`, `backend/tests/test_health.py`.
@@ -85,19 +97,19 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** backend runs locally and is reachable from the frontend dev environment (CORS verified).
 - **Possible risks:** none significant — smallest possible backend surface.
 
-### Milestone 4 — Dataset Loading & Cleaning
+### Milestone 4 — Dataset Loading & Cleaning ✅ Done
 - **Objective:** Produce one clean master dataset from raw ABS extracts, without inventing any suburb statistics.
 - **Features included:** offline cleaning pipeline.
-- **Files:** `data_pipeline/clean_census.py`, `clean_access_measures.py`, `build_master_dataset.py`, `docs/data-dictionary.md` (draft).
-- **Dependencies:** Milestone 1; **blocked on the user providing/confirming actual ABS source files and table IDs** (requirements §20 item 1).
-- **Expected output:** `data/processed/master_dataset.parquet` with one row per suburb.
-- **Testing criteria:** spot-check a handful of suburbs' cleaned values against the raw ABS source.
-- **Completion criteria:** dataset covers the confirmed suburb list with no missing required fields, or missing values handled explicitly (not silently zero-filled).
-- **Possible risks:** ABS data cleaning complexity — explicitly called out as an anticipated challenge in the proposal itself (Slide 16). Real ABS Census tables often need geographic-code joins (e.g. SA2 to suburb name) that can be fiddly.
+- **Actual files** (JSON output, not parquet — see architecture.md's note on this simplification): `data_pipeline/clean_census.py`, `extract_centroids.py`, `population_growth.py`, `access_to_services.py`, `suburb_shortlist.py`, `build_master_dataset.py`.
+- **Dependencies:** Milestone 1.
+- **Actual output:** `data/processed/suburbs.json`, one object per suburb, for the 30-suburb shortlist in `suburb_shortlist.py` (a placeholder "Melbourne" scope — see requirements §20 item 3, still unconfirmed).
+- **Testing criteria:** spot-checked several suburbs' values (Clayton, Box Hill, Northcote) against the raw ABS source directly.
+- **Completion criteria met:** all fields populated for all 30 suburbs — population growth (2016→2021 name-matched join) and access-to-services (live spatial query against an ABS FeatureServer) were both closed as data gaps after this milestone first shipped with them null.
+- **Risk that materialized:** ABS data cleaning complexity, as anticipated (Slide 16) — the access-to-services source turned out to be categorical (range bands), not exact minutes, and required a live spatial query rather than a simple file join.
 
-### Milestone 5 — Suburb API Endpoints
+### Milestone 5 — Suburb API Endpoints ✅ Done (search/autocomplete NOT built)
 - **Objective:** Serve the cleaned dataset over HTTP.
-- **Features included:** `/api/suburbs`, `/api/suburbs/{id}`, `/api/suburbs/search`.
+- **Features included:** `/api/suburbs`, `/api/suburbs/{id}`. **`/api/suburbs/search` was never built** — there is no suburb search/autocomplete anywhere in the app; the only way to reach a suburb is clicking its map marker. Still open.
 - **Files:** `backend/app/api/routes/suburbs.py`, `backend/app/services/data_loader.py`, `backend/app/models/schemas.py`.
 - **Dependencies:** Milestone 3, Milestone 4.
 - **Expected output:** endpoints return real (or clearly-marked placeholder) suburb data as JSON.
@@ -105,7 +117,7 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** frontend can fetch suburb data successfully.
 - **Possible risks:** if Milestone 4 is blocked on data, this milestone must use clearly-labelled placeholder data (per the "no invented data" rule) rather than stall entirely.
 
-### Milestone 6 — Interactive Leaflet Map
+### Milestone 6 — Interactive Leaflet Map ✅ Done
 - **Objective:** Real map with clickable suburb markers wired to live API data.
 - **Features included:** FR1 (map with clickable suburbs).
 - **Files:** `frontend/js/map.js`, `frontend/js/api.js`, `frontend/js/state.js`.
@@ -115,7 +127,7 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** map renders all suburbs from the dataset; click events fire correctly.
 - **Possible risks:** suburb boundary/GeoJSON source is unconfirmed (requirements §20 item 2) — this milestone deliberately uses point markers only, matching the wireframe, to avoid blocking on that open question.
 
-### Milestone 7 — Suburb Information Panel
+### Milestone 7 — Suburb Information Panel ✅ Done
 - **Objective:** Sidebar profile with Overview/Culture/Services tabs showing real data for the clicked suburb.
 - **Features included:** FR6.
 - **Files:** `frontend/js/sidebar.js`.
@@ -125,27 +137,22 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** all fields from `/api/suburbs/{id}` are represented in the UI.
 - **Possible risks:** none major — mostly rendering work once the endpoint exists.
 
-### Milestone 8 — Filters
-- **Objective:** Persona filter chips (background, family size, budget) that actually narrow results.
-- **Features included:** FR2.
+### Milestone 8 — Filters ✅ Done (built to Req.2, not the wireframe's exact chips)
+- **Objective:** Filters that actually narrow results, matching Req.2 exactly: rent, income, cultural background.
+- **Features included:** FR2. The wireframe's "family size" chip was deliberately **not** built — there's no suburb-level field it maps to honestly (see data-fields.md). All three filters run client-side against the already-fetched suburb list (dims non-matching map markers); there is no `/api/filter` or `/api/recommend` endpoint.
 - **Files:** `frontend/js/filters.js`.
 - **Dependencies:** Milestone 6, Milestone 7.
-- **Expected output:** changing a filter updates which suburbs are highlighted/shown as recommended.
-- **Testing criteria:** manual — apply each filter individually and in combination, confirm results narrow sensibly.
-- **Completion criteria:** filter state is reflected in the UI and available for the recommend endpoint (Milestone 11).
-- **Possible risks:** full filter set/value ranges are still open (requirements §20 item 6) — start with the 3 wireframe filters, extend once confirmed.
+- **Completion criteria met:** filter state (rent bucket, income bucket, cultural background) dims/highlights map markers live and shows a match count; verified in-browser.
+- **Note:** filters are independent of Milestone 11's clustering — clustering surfaces "similar suburbs" per-suburb, not filter-driven recommendations (a deliberate product decision, see requirements §20 item 4).
 
-### Milestone 9 — Charts and Visualisations
-- **Objective:** D3-built cultural background bars on the profile sidebar.
+### Milestone 9 — Charts and Visualisations ✅ Done (plain CSS bars, not D3.js — deviation from architecture.md)
+- **Objective:** Cultural background bars on the profile sidebar and comparison table.
 - **Features included:** part of FR6, visual polish toward Req.3.
-- **Files:** `frontend/js/charts/culture-bar.js`.
+- **Actual implementation:** `cultureBar()` in `frontend/js/format.js` — plain HTML/CSS percentage bars, reused by both `sidebar.js` and `compare.js`. **D3.js was never added to the project** despite being named in the original tech stack (architecture.md, Slide 10) — the bars didn't need it, and no other chart type has been built yet. If a future feature needs a real chart (scatter, distribution, etc.), D3 would need to be introduced then.
 - **Dependencies:** Milestone 7.
-- **Expected output:** cultural background renders as horizontal bars, not a plain list.
-- **Testing criteria:** visual check against Slide 7's cultural background section.
-- **Completion criteria:** chart renders correctly for suburbs with varying numbers of top backgrounds.
-- **Possible risks:** none major.
+- **Completion criteria met:** bars render correctly for suburbs with varying numbers of top backgrounds (verified 1–4 countries).
 
-### Milestone 10 — Suburb Comparison
+### Milestone 10 — Suburb Comparison ✅ Done (no colour-highlighting)
 - **Objective:** Full `/compare` page functionality.
 - **Features included:** FR3, FR7.
 - **Files:** `frontend/compare.html`, `frontend/js/compare.js`, `backend/app/api/routes/compare.py`.
@@ -155,15 +162,14 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** table matches Slide 9's grouped layout (Demographics / Cultural Background / Access to Services).
 - **Possible risks:** the colour-highlighting rule for "better" values is unconfirmed (requirements §20 item 5) — ship without highlighting first, add it once the rule is confirmed, rather than guessing.
 
-### Milestone 11 — Recommendation / Clustering System
-- **Objective:** Real K-means-based "Recommended for You".
+### Milestone 11 — Recommendation / Clustering System ✅ Done (suburb-similarity, not filter-based — a deliberate product decision)
+- **Objective:** Real K-means-based suburb recommendations.
 - **Features included:** FR4.
-- **Files:** `data_pipeline`/`backend/app/ml/train_clusters.py` (offline training), `backend/app/ml/clustering.py`, `backend/app/api/routes/recommend.py`.
-- **Dependencies:** Milestone 4 (needs the master dataset), Milestone 8 (needs filter state to match against).
-- **Expected output:** `/api/recommend` returns suburbs from the best-matching cluster given active filters.
-- **Testing criteria:** elbow/silhouette analysis documented; pytest for the recommend endpoint with a fixed filter input.
-- **Completion criteria:** cluster count and labels are derived from real data, not hardcoded to the Slide 8 illustrative example.
-- **Possible risks:** explicitly anticipated in the proposal itself — "ML clustering may not produce meaningful groups" (Slide 16). If clusters aren't meaningful, fall back to simple rule-based filtering rather than shipping a misleading recommendation.
+- **Actual files:** `data_pipeline/train_clusters.py` (offline training only — there is no `backend/app/ml/` module and no `/api/recommend` endpoint). `similar_suburb_ids` (top 3, same cluster, ranked by distance) is precomputed and embedded directly in each suburb's `cluster` field, already returned by the existing `/api/suburbs/{id}`. The frontend renders it as a "Suburbs like this" section with clickable links in `sidebar.js`.
+- **Why not filter-based:** mapping the filter bar's rent/income buckets onto a K-means feature vector would mean inventing proxies (what point represents "under $400/wk"?) — the user chose the cleaner, direct suburb-similarity approach instead (see requirements §20 item 4). This can still be added as a second pass later if wanted.
+- **Dependencies:** Milestone 4 (needs the master dataset).
+- **Silhouette analysis result:** k=2 scored highest (0.325) across k=2–6 — a real 13/17 "affordable" vs "higher-income" split, not the wireframe's illustrative 3-cluster example. This was surfaced to and confirmed by the user rather than silently picked.
+- **Completion criteria met:** cluster count/labels are derived from real data (auto-labelled from each centroid's most distinguishing features) and verified end-to-end in-browser (clicking a "similar suburb" correctly navigates and shows its own profile + its own similar suburbs).
 
 ### Milestone 12 — Responsive Design and Accessibility
 - **Objective:** Layout reflows reasonably at tablet widths; baseline accessibility practices applied.

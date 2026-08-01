@@ -2,12 +2,15 @@
 Extracts a representative point (lat/lng) per suburb from the ABS SAL 2021
 digital boundary shapefile, for use as a map marker location.
 
-Source: data/raw/SAL_2021_AUST_SHP/SAL_2021_AUST_GDA2020.shp (national file;
-filtered here to the suburb shortlist). GDA2020 coordinates are treated as
-WGS84 lat/lng for Leaflet — the datum difference is negligible at this scale.
+Source: ../data/newData/SAL_2021_AUST_SHP/SAL_2021_AUST_GDA2020.shp
+(ClaudeCode/data/newData/ — one level above this project, not inside it;
+national file, filtered here to the suburb shortlist). GDA2020 coordinates
+are treated as WGS84 lat/lng for Leaflet — the datum difference is
+negligible at this scale.
 
-Suburb boundary polygons themselves are not used yet (map markers only, per
-docs/architecture.md's decision to defer boundary layers).
+Map markers use points only (per docs/architecture.md's decision to defer
+boundary layers), but the full polygon rings are also extracted here
+(load_boundary_rings) for access_to_services.py's spatial query.
 """
 
 from pathlib import Path
@@ -16,8 +19,8 @@ import shapefile
 from shapely.geometry import shape
 
 SHAPEFILE_PATH = (
-    Path(__file__).resolve().parent.parent
-    / "data" / "raw" / "SAL_2021_AUST_SHP" / "SAL_2021_AUST_GDA2020.shp"
+    Path(__file__).resolve().parent.parent.parent
+    / "data" / "newData" / "SAL_2021_AUST_SHP" / "SAL_2021_AUST_GDA2020.shp"
 )
 
 

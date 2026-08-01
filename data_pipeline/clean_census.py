@@ -2,21 +2,22 @@
 Cleans the ABS 2021 Census GCP (Suburbs and Localities) tables for Victoria
 into per-suburb demographic and cultural-background fields.
 
-Source: data/raw/2021_GCP_SAL_VIC/2021 Census GCP Suburbs and Localities for VIC/
+Source: ../data/newData/2021_GCP_SAL_VIC/2021 Census GCP Suburbs and Localities for VIC/
+(ClaudeCode/data/newData/ — one level above this project, not inside it)
 Tables used: G01 (population), G02 (median income/rent), G33 (household
 composition), G09F/G09G/G09H (country of birth — the sub-files that hold the
 "Persons" totals; see docs/data-fields.md for the full field mapping).
 
-Population growth (needs a 2016 Census join) and access-to-services drive
-times are intentionally not handled here — deferred to a later milestone.
+Population growth is handled in population_growth.py; access-to-services
+drive times in access_to_services.py.
 """
 
 import csv
 from pathlib import Path
 
 RAW_DIR = (
-    Path(__file__).resolve().parent.parent
-    / "data" / "raw" / "2021_GCP_SAL_VIC"
+    Path(__file__).resolve().parent.parent.parent
+    / "data" / "newData" / "2021_GCP_SAL_VIC"
     / "2021 Census GCP Suburbs and Localities for VIC"
 )
 
