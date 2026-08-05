@@ -59,6 +59,16 @@ def _display_country(key):
     return COUNTRY_DISPLAY_NAMES.get(key, key.replace("_", " "))
 
 
+def _median_or_none(value):
+    """ABS reports a literal 0 for these medians in very small/low-response
+    suburbs (e.g. Reefton pop. 102, Yering pop. 138) — that means "too few
+    responses to calculate a median" (or no renter households at all), not
+    a real $0 figure. Treating it as missing avoids a fake outlier skewing
+    the choropleth colour scale and the clustering."""
+    n = _to_number(value)
+    return n if n else None
+
+
 def load_demographics():
     """Returns {sal_code: {population, median_weekly_household_income,
     median_weekly_rent, family_households_pct}}"""
@@ -81,10 +91,10 @@ def load_demographics():
 
         result[sal_code] = {
             "population": _to_number(row.get("Tot_P_P")),
-            "median_weekly_household_income": _to_number(
+            "median_weekly_household_income": _median_or_none(
                 income_row.get("Median_tot_hhd_inc_weekly")
             ),
-            "median_weekly_rent": _to_number(income_row.get("Median_rent_weekly")),
+            "median_weekly_rent": _median_or_none(income_row.get("Median_rent_weekly")),
             "family_households_pct": family_households_pct,
         }
     return result

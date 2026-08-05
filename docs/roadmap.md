@@ -47,7 +47,7 @@ suburban-insight/
 
 **Why `data/raw/` and `data/processed/` are gitignored:** ABS extracts can be large and are reproducible from the public source; committing generated/downloaded data bloats the repo. Only `.gitkeep` placeholders are committed so the folders exist for a fresh clone.
 
-## Status (updated 2026-08-01)
+## Status (updated 2026-08-05)
 
 Milestones 1–11 are **done** — map, filters, comparison, and K-means
 clustering are all live and backed by real ABS data (see notes on each
@@ -57,7 +57,27 @@ deployment) are **not started**.
 
 **One gap nobody's built yet:** suburb search/autocomplete (mentioned in
 Milestone 5 below) was never implemented — the only way to reach a suburb
-today is clicking its map marker.
+is clicking into its map shape (previously a marker, now a polygon — see
+below).
+
+**Post-MVP: map scaled from 30 hand-picked suburbs to the real Melbourne
+scope (2026-08-05).** The original 30-suburb list was always a placeholder
+(requirements §20 item 3). It's now replaced with all **531 suburbs across
+the 31 official Metro Melbourne councils** (Victorian Auditor-General's
+Metropolitan + Interface classification — a real, citable boundary, not
+another arbitrary pick; 527 build successfully, 4 are essentially
+uninhabited localities). Milestone 6's point-marker map is superseded by a
+**two-level choropleth**: all 31 councils shown first (coloured by average
+rent), click one to drill into its actual suburb boundaries (coloured by
+their own rent). See `data_pipeline/melbourne_suburbs.py` for why this
+boundary was chosen over two earlier candidates (GCCSA — too broad, sweeps
+in rural fringe; SUA — not pursued once councils proved cleaner), and
+`CLAUDE.md` for the resulting architecture notes (new `/api/councils`
+endpoint, `build_councils.py`, the `AppState.allSuburbs` vs
+`allSuburbNames` split, the zero-median data-cleaning fix). Re-running
+`train_clusters.py` at this larger scale changed the chosen k from 2 to 10
+— silhouette score genuinely picks a different k depending on how many
+suburbs are in the dataset, which is expected, not a regression.
 
 ## Part B — Development Roadmap
 

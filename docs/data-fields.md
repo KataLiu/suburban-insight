@@ -2,6 +2,8 @@
 
 This document re-derives the data needs directly from `proposal.pdf` and the existing `requirements.md` / `architecture.md`, with no invented statistics. It answers: what fields are needed, why, where they come from, and what's essential for the first working version (per the Milestone 4–10 slice in `roadmap.md`, i.e. map + profile + filters + comparison, *before* recommendations).
 
+**Update (2026-08-05):** the two rows below marked "deferred"/"not named" are resolved — see `docs/roadmap.md`'s Status section and `data_pipeline/melbourne_suburbs.py`. Scope is now 531 suburbs across the 31 official Metro Melbourne councils (not the placeholder 30), and suburb boundary polygons are used directly (choropleth map, not point markers). A `council` field (the suburb's council name, e.g. "Monash") was added, used for the map's council→suburb drill-down.
+
 ## 1. Required fields
 
 ### Identity & geography
@@ -10,8 +12,9 @@ This document re-derives the data needs directly from `proposal.pdf` and the exi
 | `suburb_id` | Internal stable identifier for a suburb | Every API call, comparison chips, search results | Generated locally when building the master dataset (not from ABS directly) | **Yes** |
 | `suburb_name` | Display name, e.g. "Clayton" | Map labels, sidebar header, search, comparison headers | ABS geographic classification (suburb/SA2 name) | **Yes** |
 | `state` | e.g. "VIC" | Sidebar header "Clayton, VIC", footer caption | ABS geographic classification | **Yes** |
-| `lat` / `lng` (point) | Coordinates for a map marker | Leaflet map markers (Milestone 6) | **Not named in the proposal** — needs a geocoding/centroid source (e.g. ABS ASGS SA2 centroid, or a public suburb gazetteer). You need to confirm/provide this. | **Yes** — v1 uses point markers, per the wireframe |
-| `boundary` (GeoJSON polygon) | Suburb boundary shape | Future boundary-based map layer (WBS mentions "Leaflet map + GeoJSON") | Unclear — likely ABS ASGS shapefiles, not confirmed | **No** — deliberately deferred; wireframe only shows points |
+| `council` | The suburb's council, e.g. "Monash" | Council→suburb drill-down map | ABS LGA 2021 boundary, spatial join (`melbourne_suburbs.py`) | **Yes** |
+| `lat` / `lng` (point) | Coordinates for a map marker | Suburb centroid (still used for the "similar suburbs" click target and other point-based needs) | ABS SAL 2021 boundary shapefile, `representative_point()` | **Yes** |
+| `boundary` (GeoJSON polygon) | Suburb boundary shape | The choropleth map itself — suburbs and councils are both rendered as their real shape, not point markers | ABS SAL/LGA 2021 boundary shapefiles, simplified (`extract_centroids.load_simplified_boundaries`) | **Yes** |
 
 ### Demographics (Overview tab, Slide 7)
 | Field | What it is | Feature(s) | Source | Essential for v1? |

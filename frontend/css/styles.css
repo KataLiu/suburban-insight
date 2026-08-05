@@ -124,6 +124,61 @@ header .logo {
   z-index: 1000;
 }
 
+.hidden {
+  display: none !important;
+}
+
+.back-to-councils-btn {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-councils-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.map-legend {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 0.75rem;
+  z-index: 1000;
+  background: white;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  font-size: 0.8rem;
+  min-width: 160px;
+}
+
+.legend-label {
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.legend-bar {
+  height: 10px;
+  border-radius: 999px;
+}
+
+.legend-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  color: var(--muted);
+}
+
 .sidebar-pane {
   flex: 1 1 35%;
   max-width: 420px;

@@ -7,19 +7,26 @@ router = APIRouter(prefix="/api/suburbs")
 
 
 @router.get("", response_model=list[SuburbSummary])
-def list_suburbs():
+def list_suburbs(council_id: str | None = None):
+    """Pass council_id (e.g. "council-yarra") to get just that council's
+    suburbs, including boundary geometry, for the drill-down map view.
+    Without it, returns every suburb WITHOUT boundary geometry (~2MB of
+    polygons for all 527 suburbs is too much to send on every page load —
+    only needed once a specific council is chosen)."""
     return [
         SuburbSummary(
             id=suburb["id"],
             name=suburb["name"],
             state=suburb["state"],
+            council=suburb["council"],
             location=suburb["location"],
+            boundary=suburb["boundary"] if council_id else None,
             population=suburb["demographics"]["population"],
             median_weekly_rent=suburb["demographics"]["median_weekly_rent"],
             median_weekly_household_income=suburb["demographics"]["median_weekly_household_income"],
             cultural_background=suburb["cultural_background"],
         )
-        for suburb in get_all_suburbs()
+        for suburb in get_all_suburbs(council_id=council_id)
     ]
 
 

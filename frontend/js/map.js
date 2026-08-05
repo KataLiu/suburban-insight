@@ -1,39 +1,132 @@
-const markersBySuburbId = {};
+/*
+ * Two-level choropleth map: councils first (all 31, coloured by average
+ * rent), click one to drill into its actual suburbs (coloured by their own
+ * rent). Replaces the old point-marker map — see docs/roadmap.md Milestone
+ * "scale to all of Melbourne" for why (30 hand-picked suburbs wasn't
+ * actually "every suburb in Melbourne", and pins don't scale to 500+).
+ */
+
+const MELBOURNE_CENTER = [-37.8136, 144.9631];
+const MELBOURNE_ZOOM = 10;
+
+let leafletMap;
+let currentLayer = null;
+let suburbLayerById = {};
 
 function initMap() {
-  const map = L.map("map").setView([-37.8136, 144.9631], 10); // Melbourne CBD
+  leafletMap = L.map("map").setView(MELBOURNE_CENTER, MELBOURNE_ZOOM);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors",
     maxZoom: 18,
-  }).addTo(map);
+  }).addTo(leafletMap);
 
-  fetchSuburbs()
-    .then((suburbs) => {
-      suburbs.forEach((suburb) => {
-        const marker = L.marker([suburb.location.lat, suburb.location.lng]).addTo(map);
-        marker.bindTooltip(suburb.name, { direction: "top" });
-        marker.on("click", () => AppState.select(suburb.id));
-        markersBySuburbId[suburb.id] = marker;
-      });
-      AppState.setSuburbs(suburbs);
-      document.getElementById("map-status").remove();
-    })
-    .catch((err) => {
-      console.error(err);
-      const statusEl = document.getElementById("map-status");
-      statusEl.textContent = "Could not load suburb markers — is the backend running?";
-      statusEl.className = "status error map-status-badge";
-    });
+  document.getElementById("back-to-councils").addEventListener("click", loadCouncilView);
 
-  return map;
+  loadCouncilView();
+  fetchSuburbs().then((suburbs) => AppState.setAllSuburbNames(suburbs)).catch(console.error);
 }
 
-// Dims markers not in matchingIds; pass null to clear all highlighting (show everything at full opacity).
+function setMapStatus(text, isError = false) {
+  const el = document.getElementById("map-status");
+  el.textContent = text;
+  el.className = `status map-status-badge ${isError ? "error" : "pending"}`;
+  el.classList.remove("hidden");
+}
+
+function clearMapStatus() {
+  document.getElementById("map-status").classList.add("hidden");
+}
+
+function toGeoJSONFeatures(items) {
+  return items
+    .filter((item) => item.boundary)
+    .map((item) => ({ type: "Feature", properties: item, geometry: item.boundary }));
+}
+
+async function loadCouncilView() {
+  setMapStatus("Loading councils…");
+  document.getElementById("back-to-councils").classList.add("hidden");
+  document.getElementById("filter-bar").classList.add("hidden");
+  document.getElementById("sidebar").innerHTML =
+    '<p class="muted">Click a council to explore its suburbs.</p>';
+
+  try {
+    const councils = await fetchCouncils();
+    const rents = councils.map((c) => c.avg_median_weekly_rent).filter((r) => r != null);
+    const min = Math.min(...rents);
+    const max = Math.max(...rents);
+
+    if (currentLayer) leafletMap.removeLayer(currentLayer);
+    currentLayer = L.geoJSON(toGeoJSONFeatures(councils), {
+      style: (feature) => ({
+        color: "#14213d",
+        weight: 1,
+        fillColor: rentColor(feature.properties.avg_median_weekly_rent, min, max),
+        fillOpacity: 0.6,
+      }),
+      onEachFeature: (feature, layer) => {
+        const c = feature.properties;
+        layer.bindTooltip(`${c.name} — ${c.suburb_count} suburbs, avg $${Math.round(c.avg_median_weekly_rent)}/wk`);
+        layer.on("click", () => loadSuburbView(c.id, c.name));
+      },
+    }).addTo(leafletMap);
+
+    leafletMap.fitBounds(currentLayer.getBounds());
+    renderRentLegend(document.getElementById("map-legend"), min, max, "Average weekly rent by council");
+    clearMapStatus();
+  } catch (err) {
+    console.error(err);
+    setMapStatus("Could not load councils — is the backend running?", true);
+  }
+}
+
+async function loadSuburbView(councilId, councilName) {
+  setMapStatus(`Loading ${councilName} suburbs…`);
+  document.getElementById("back-to-councils").classList.remove("hidden");
+  document.getElementById("sidebar").innerHTML =
+    `<p class="muted">Click a suburb in ${councilName} to see its profile.</p>`;
+
+  try {
+    const suburbs = await fetchSuburbs(councilId);
+    const rents = suburbs.map((s) => s.median_weekly_rent).filter((r) => r != null);
+    const min = Math.min(...rents);
+    const max = Math.max(...rents);
+
+    if (currentLayer) leafletMap.removeLayer(currentLayer);
+    suburbLayerById = {};
+    currentLayer = L.geoJSON(toGeoJSONFeatures(suburbs), {
+      style: (feature) => ({
+        color: "#0f9d8e",
+        weight: 1,
+        fillColor: rentColor(feature.properties.median_weekly_rent, min, max),
+        fillOpacity: 0.6,
+      }),
+      onEachFeature: (feature, layer) => {
+        layer.bindTooltip(feature.properties.name);
+        layer.on("click", () => AppState.select(feature.properties.id));
+        suburbLayerById[feature.properties.id] = layer;
+      },
+    }).addTo(leafletMap);
+
+    leafletMap.fitBounds(currentLayer.getBounds());
+    renderRentLegend(document.getElementById("map-legend"), min, max, `Weekly rent — ${councilName}`);
+    document.getElementById("filter-bar").classList.remove("hidden");
+    AppState.setSuburbs(suburbs);
+    clearMapStatus();
+  } catch (err) {
+    console.error(err);
+    setMapStatus("Could not load suburbs — is the backend running?", true);
+  }
+}
+
+// Dims suburb polygons not in matchingIds; pass null to clear (full opacity
+// for all). Only meaningful in suburb-view mode — filters are hidden at the
+// council level.
 function setSuburbHighlight(matchingIds) {
-  Object.entries(markersBySuburbId).forEach(([suburbId, marker]) => {
+  Object.entries(suburbLayerById).forEach(([suburbId, layer]) => {
     const isMatch = matchingIds === null || matchingIds.has(suburbId);
-    marker.setOpacity(isMatch ? 1 : 0.25);
+    layer.setStyle({ fillOpacity: isMatch ? 0.6 : 0.12, opacity: isMatch ? 1 : 0.25 });
   });
 }
 

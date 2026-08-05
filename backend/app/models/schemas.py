@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel
 
@@ -45,14 +45,16 @@ class DataSource(BaseModel):
 
 
 class SuburbSummary(BaseModel):
-    """Shape for map markers, extended with the fields needed to filter
-    client-side (rent, income, cultural background) without a second
-    per-suburb request."""
+    """Shape for the choropleth map and client-side filtering (rent, income,
+    cultural background) — includes boundary geometry so the map can render
+    the suburb's actual shape rather than a point marker."""
 
     id: str
     name: str
     state: str
+    council: Optional[str] = None
     location: Location
+    boundary: Optional[dict[str, Any]] = None
     population: Optional[int] = None
     median_weekly_rent: Optional[int] = None
     median_weekly_household_income: Optional[int] = None
@@ -65,9 +67,20 @@ class SuburbDetail(BaseModel):
     id: str
     name: str
     state: str
+    council: Optional[str] = None
     location: Location
     demographics: Demographics
     cultural_background: list[CulturalBackgroundEntry]
     access_to_services: AccessToServices
     cluster: Cluster
     data_source: DataSource
+
+
+class Council(BaseModel):
+    """Shape for the top-level council choropleth map."""
+
+    id: str
+    name: str
+    boundary: dict[str, Any]
+    suburb_count: int
+    avg_median_weekly_rent: Optional[float] = None

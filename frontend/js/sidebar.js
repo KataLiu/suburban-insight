@@ -69,7 +69,7 @@ function renderSidebar(suburb) {
 function similarSuburbsHtml(suburb) {
   const ids = suburb.cluster.similar_suburb_ids || [];
   const matches = ids
-    .map((id) => AppState.allSuburbs.find((s) => s.id === id))
+    .map((id) => AppState.allSuburbNames.find((s) => s.id === id))
     .filter(Boolean);
 
   if (!matches.length) {

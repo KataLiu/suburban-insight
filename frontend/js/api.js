@@ -6,10 +6,21 @@ async function checkBackendHealth() {
   return response.json();
 }
 
-async function fetchSuburbs() {
-  const response = await fetch(`${API_BASE_URL}/api/suburbs`);
+async function fetchSuburbs(councilId) {
+  const url = councilId
+    ? `${API_BASE_URL}/api/suburbs?council_id=${encodeURIComponent(councilId)}`
+    : `${API_BASE_URL}/api/suburbs`;
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to load suburbs (${response.status})`);
+  }
+  return response.json();
+}
+
+async function fetchCouncils() {
+  const response = await fetch(`${API_BASE_URL}/api/councils`);
+  if (!response.ok) {
+    throw new Error(`Failed to load councils (${response.status})`);
   }
   return response.json();
 }

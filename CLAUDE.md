@@ -24,8 +24,10 @@ pytest tests/test_suburbs.py::test_get_known_suburb   # single test
 
 **Data pipeline** (from `data_pipeline/`, with `backend/.venv` active) — **order matters**:
 ```bash
-python3 build_master_dataset.py   # regenerates data/processed/suburbs.json; RESETS cluster fields to null
+python3 build_master_dataset.py   # regenerates data/processed/suburbs.json; RESETS cluster fields to null; ~1.5 min (527 suburbs)
 python3 train_clusters.py         # must run AFTER build_master_dataset.py — repopulates cluster fields
+python3 build_councils.py         # must run AFTER build_master_dataset.py — aggregates rent per council for the top-level map
+python3 export_csv.py             # optional: flat suburbs.csv for reports
 ```
 `build_master_dataset.py` makes live network calls to an ABS FeatureServer (access-to-services); needs internet.
 
@@ -45,10 +47,13 @@ python3 train_clusters.py         # must run AFTER build_master_dataset.py — r
   the public ABS source (CARA FeatureServer, SA1 geography) only publishes
   category bands, not exact figures. Don't reintroduce a numeric-minutes
   field without re-checking this constraint.
-- Suburb clustering (`cluster.id` / `cluster.label` / `cluster.similar_suburb_ids`) is precomputed offline by `train_clusters.py` — k was chosen via silhouette score (currently **k=2**), not hardcoded to match the proposal wireframe's illustrative 3-cluster example.
-- The 30-suburb list in `data_pipeline/suburb_shortlist.py` is a placeholder "Greater Melbourne" scope, not an official ABS boundary — see `docs/requirements.md` §20.
+- Suburb clustering (`cluster.id` / `cluster.label` / `cluster.similar_suburb_ids`) is precomputed offline by `train_clusters.py` — k was chosen via silhouette score (currently **k=10** at 527-suburb scale — it was k=2 at the old 30-suburb scale; re-running at a different suburb count can change k). Suburbs missing any of the 4 clustering features (e.g. airports, near-zero-population localities) are deliberately excluded from clustering rather than given a fabricated cluster.
+- **Suburb scope is the real "531 suburbs across the 31 official Metro Melbourne councils"** (`data_pipeline/melbourne_suburbs.py`), not a hand-picked list — replaced the old 30-suburb `suburb_shortlist.py` (deleted). The 31 councils (22 "Metropolitan" + 9 "Interface") are Victorian Auditor-General's official classification, verified 2026-08-05 — see that module's docstring for why GCCSA and SUA boundaries were tried and rejected first. 527 of the 531 build successfully (4 are essentially uninhabited localities with no usable Census data).
+- **The map is a two-level choropleth, not point markers**: councils first (all 31, coloured by average rent), click one to drill into its actual suburb boundaries (coloured by their own rent). `frontend/js/map.js` owns both levels on one Leaflet instance; `GET /api/councils` for the top level, `GET /api/suburbs?council_id=X` for the drill-down (boundary geometry is only included when `council_id` is passed — sending all 527 suburbs' boundaries in one response would be ~2MB+, not needed until a specific council is chosen).
+- **`AppState.allSuburbs` vs `AppState.allSuburbNames`** (`frontend/js/state.js`): `allSuburbs` is scoped to whichever council is currently being viewed (used by filters.js); `allSuburbNames` is every suburb, name/id only, loaded once at startup — needed because a suburb's "similar suburbs" (from clustering) can be in a *different* council than the one currently open, so resolving their names can't use the scoped list.
+- ABS reports a literal `0` for `median_weekly_rent`/`median_weekly_household_income` in some very-low-population suburbs (too few responses to calculate a median) — `clean_census.py`'s `_median_or_none()` treats that as `null`, not a real $0 figure. Don't remove this guard; without it a couple of suburbs skew the choropleth colour scale and get spuriously included in clustering.
 - Frontend is deliberately framework-free (plain HTML/CSS/JS, no build step, no SPA framework) — this is a website, not an app.
-- Filtering (rent/income/cultural background) happens entirely client-side against the already-fetched suburb list; there is no `/api/filter` endpoint.
+- Filtering (rent/income/cultural background) happens entirely client-side against the currently-viewed council's suburb list; there is no `/api/filter` endpoint, and filters are only shown/active in the suburb drill-down view, not the top-level council map.
 - Comparison state (`CompareState` in `frontend/js/compare-state.js`) is persisted in `localStorage`, not a query string or backend session — that's how the selected suburbs survive navigating between `index.html` and `compare.html`.
 
 ## Documentation

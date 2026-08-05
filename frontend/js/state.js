@@ -1,6 +1,13 @@
 const AppState = {
   selectedSuburbId: null,
+  // The currently-viewed council's suburbs (used by filters.js) — NOT every
+  // Melbourne suburb, since suburb detail (incl. boundaries) is only
+  // fetched per-council now. See allSuburbNames for a global lookup.
   allSuburbs: [],
+  // Every suburb, name/id only (no boundary) — loaded once at startup.
+  // Used to resolve "similar suburbs" names, which can point to a suburb in
+  // a different council than the one currently being viewed.
+  allSuburbNames: [],
   _selectListeners: [],
   _suburbsLoadedListeners: [],
 
@@ -20,5 +27,9 @@ const AppState = {
 
   onSuburbsLoaded(fn) {
     this._suburbsLoadedListeners.push(fn);
+  },
+
+  setAllSuburbNames(suburbs) {
+    this.allSuburbNames = suburbs;
   },
 };

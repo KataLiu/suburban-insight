@@ -83,20 +83,31 @@ def label_cluster(centroid):
 
 
 def train():
-    suburbs = json.loads(DATASET_PATH.read_text())
-    X = build_feature_matrix(suburbs)
+    all_suburbs = json.loads(DATASET_PATH.read_text())
+
+    # Suburbs with any missing clustering feature (e.g. airports, industrial
+    # areas with ~no residential population) can't be meaningfully clustered
+    # — leave them with no cluster rather than imputing a fake value.
+    clusterable = [s for s in all_suburbs if all(s["demographics"][f] is not None for f in FEATURES)]
+    clusterable_ids = {s["id"] for s in clusterable}
+    unclusterable = [s for s in all_suburbs if s["id"] not in clusterable_ids]
+    if unclusterable:
+        print(f"Excluding {len(unclusterable)} suburbs from clustering (missing feature data): "
+              f"{[s['name'] for s in unclusterable]}")
+
+    X = build_feature_matrix(clusterable)
     X_scaled = StandardScaler().fit_transform(X)
 
-    max_k = min(6, len(suburbs) - 1)
+    max_k = min(10, len(clusterable) - 1)
     best_k = choose_k(X_scaled, range(2, max_k + 1))
 
     kmeans = KMeans(n_clusters=best_k, random_state=RANDOM_STATE, n_init=10).fit(X_scaled)
     labels = [label_cluster(centroid) for centroid in kmeans.cluster_centers_]
 
-    for suburb, cluster_id, point in zip(suburbs, kmeans.labels_, X_scaled):
+    for suburb, cluster_id, point in zip(clusterable, kmeans.labels_, X_scaled):
         same_cluster = [
             (other["id"], np.linalg.norm(point - other_point))
-            for other, other_id, other_point in zip(suburbs, kmeans.labels_, X_scaled)
+            for other, other_id, other_point in zip(clusterable, kmeans.labels_, X_scaled)
             if other_id == cluster_id and other["id"] != suburb["id"]
         ]
         same_cluster.sort(key=lambda pair: pair[1])
@@ -108,11 +119,15 @@ def train():
             "similar_suburb_ids": similar_ids,
         }
 
-    DATASET_PATH.write_text(json.dumps(suburbs, indent=2))
-    print(f"\nWrote cluster assignments for {len(suburbs)} suburbs to {DATASET_PATH}")
+    for suburb in unclusterable:
+        suburb["cluster"] = {"id": None, "label": None, "similar_suburb_ids": []}
+
+    DATASET_PATH.write_text(json.dumps(all_suburbs, indent=2))
+    print(f"\nWrote cluster assignments for {len(clusterable)} suburbs to {DATASET_PATH} "
+          f"({len(unclusterable)} left unclustered)")
 
     for cluster_id in range(best_k):
-        members = [s["name"] for s in suburbs if s["cluster"]["id"] == cluster_id]
+        members = [s["name"] for s in clusterable if s["cluster"]["id"] == cluster_id]
         print(f"\nCluster {cluster_id} — {labels[cluster_id]} ({len(members)} suburbs)")
         print(f"  {', '.join(members)}")
 
