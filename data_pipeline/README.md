@@ -10,6 +10,7 @@ cd data_pipeline
 pip install -r requirements.txt
 python3 build_master_dataset.py   # builds demographics, culture, growth, services
 python3 train_clusters.py         # then: K-means clustering + "similar suburbs"
+python3 export_csv.py             # optional: flat suburbs.csv, for Excel/reports
 ```
 
 `build_master_dataset.py` makes live network calls to the ABS access-to-
@@ -49,6 +50,11 @@ Requires the raw ABS files already in `../data/newData/` — i.e.
   nearest same-cluster suburbs back into the dataset.
 - `build_master_dataset.py` — merges all of the above into the schema
   documented in `docs/data-fields.md` and writes `data/processed/suburbs.json`.
+- `export_csv.py` — flattens `suburbs.json` into `data/processed/suburbs.csv`
+  (e.g. `cultural_background`'s variable-length list becomes 4 fixed
+  `culture_N_country`/`culture_N_pct` column pairs). Not used by the app
+  itself — just a convenience export for opening in Excel/Sheets or
+  attaching to a report.
 
 ## Raw data expected in `ClaudeCode/data/newData/` (outside the repo, not gitignored — it's simply not inside `suburban-insight/`)
 - `2021_GCP_SAL_VIC/` — unzipped ABS 2021 Census GCP DataPack, Suburbs and
