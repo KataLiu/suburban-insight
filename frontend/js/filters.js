@@ -33,17 +33,20 @@ function renderFilterBar(suburbs) {
 
   const bar = document.getElementById("filter-bar");
   bar.innerHTML = `
+    <label for="filter-rent" class="visually-hidden">Filter by weekly rent</label>
     <select id="filter-rent">
       ${RENT_BUCKETS.map((b, i) => `<option value="${i}">${b.label}</option>`).join("")}
     </select>
+    <label for="filter-income" class="visually-hidden">Filter by weekly household income</label>
     <select id="filter-income">
       ${INCOME_BUCKETS.map((b, i) => `<option value="${i}">${b.label}</option>`).join("")}
     </select>
+    <label for="filter-country" class="visually-hidden">Filter by cultural background</label>
     <select id="filter-country">
       <option value="">Any cultural background</option>
       ${countries.map((c) => `<option value="${c}">From ${c}</option>`).join("")}
     </select>
-    <span id="filter-count" class="muted"></span>
+    <span id="filter-count" class="muted" role="status" aria-live="polite"></span>
   `;
 
   document.getElementById("filter-rent").addEventListener("change", (e) => {

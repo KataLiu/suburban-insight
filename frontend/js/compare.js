@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (err) {
     console.error(err);
     document.getElementById("compare-root").innerHTML =
-      '<p class="status error">Could not load the suburb list — is the backend running?</p>';
+      '<p class="status error" role="alert">Could not load the suburb list — is the backend running?</p>';
   }
 });
 
@@ -36,7 +36,8 @@ function renderChips() {
   const addControl =
     ids.length >= CompareState.MAX_SUBURBS
       ? `<span class="muted">Max ${CompareState.MAX_SUBURBS} suburbs</span>`
-      : `<select id="add-suburb">
+      : `<label for="add-suburb" class="visually-hidden">Add a suburb to compare</label>
+        <select id="add-suburb">
           <option value="">+ Add suburb</option>
           ${availableOptions.map((s) => `<option value="${s.id}">${s.name}</option>`).join("")}
         </select>`;
@@ -70,13 +71,13 @@ async function renderTable() {
     return;
   }
 
-  root.innerHTML = '<p class="muted">Loading&hellip;</p>';
+  root.innerHTML = '<p class="muted" role="status">Loading&hellip;</p>';
   try {
     const suburbs = await fetchComparison(ids);
     root.innerHTML = buildTable(suburbs);
   } catch (err) {
     console.error(err);
-    root.innerHTML = '<p class="status error">Could not load comparison data.</p>';
+    root.innerHTML = '<p class="status error" role="alert">Could not load comparison data.</p>';
   }
 }
 
@@ -90,7 +91,8 @@ function buildTable(suburbs) {
   const cols = suburbs.length;
   const headerCells = suburbs
     .map(
-      (s) => `<th>${s.name}<br><span class="muted">Pop. ${formatNumber(s.demographics.population)}</span></th>`
+      (s) =>
+        `<th scope="col">${s.name}<br><span class="muted">Pop. ${formatNumber(s.demographics.population)}</span></th>`
     )
     .join("");
 
@@ -111,13 +113,14 @@ function buildTable(suburbs) {
       })
       .join("");
 
-    return `<tr><td>${label}</td>${cells}</tr>`;
+    return `<tr><th scope="row">${label}</th>${cells}</tr>`;
   };
-  const sectionRow = (label) => `<tr class="section-row"><td colspan="${cols + 1}">${label}</td></tr>`;
+  const sectionRow = (label) => `<tr class="section-row"><th scope="colgroup" colspan="${cols + 1}">${label}</th></tr>`;
 
   return `
     <table class="compare-table">
-      <thead><tr><th></th>${headerCells}</tr></thead>
+      <caption class="visually-hidden">Comparison of selected suburbs' demographics, cultural background, and access to services</caption>
+      <thead><tr><th scope="col"></th>${headerCells}</tr></thead>
       <tbody>
         ${sectionRow("Demographics")}
         ${row("Median household income", (s) => `${formatMoney(s.demographics.median_weekly_household_income)}/wk`)}
@@ -133,7 +136,7 @@ function buildTable(suburbs) {
 
         ${sectionRow("Cultural background")}
         <tr>
-          <td>Top backgrounds</td>
+          <th scope="row">Top backgrounds</th>
           ${suburbs
             .map(
               (s) =>

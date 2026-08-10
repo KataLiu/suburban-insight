@@ -17,13 +17,13 @@ function renderSidebarEmptyState(title, message) {
 
 AppState.onSelect(async (suburbId) => {
   const panel = document.getElementById("sidebar");
-  panel.innerHTML = '<p class="muted">Loading&hellip;</p>';
+  panel.innerHTML = '<p class="muted" role="status">Loading&hellip;</p>';
   try {
     const suburb = await fetchSuburbDetail(suburbId);
     renderSidebar(suburb);
   } catch (err) {
     console.error(err);
-    panel.innerHTML = '<p class="status error">Could not load this suburb’s details.</p>';
+    panel.innerHTML = '<p class="status error" role="alert">Could not load this suburb’s details.</p>';
   }
 });
 
@@ -37,13 +37,13 @@ function renderSidebar(suburb) {
     <p class="muted">${formatNumber(d.population)} residents</p>
     <button id="compare-toggle" class="compare-toggle-btn"></button>
 
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="overview">Overview</button>
-      <button class="tab-btn" data-tab="culture">Culture</button>
-      <button class="tab-btn" data-tab="services">Services</button>
+    <div class="tabs" role="tablist" aria-label="Suburb details">
+      <button id="tab-overview" class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-overview" tabindex="0" data-tab="overview">Overview</button>
+      <button id="tab-culture" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-culture" tabindex="-1" data-tab="culture">Culture</button>
+      <button id="tab-services" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-services" tabindex="-1" data-tab="services">Services</button>
     </div>
 
-    <div class="tab-panel" data-panel="overview">
+    <div id="panel-overview" class="tab-panel" role="tabpanel" aria-labelledby="tab-overview" data-panel="overview">
       <div class="stat-grid">
         ${statTile("Median household income", formatMoney(d.median_weekly_household_income), "/week")}
         ${statTile("Median rent", formatMoney(d.median_weekly_rent), "/week")}
@@ -57,7 +57,7 @@ function renderSidebar(suburb) {
       ${similarSuburbsHtml(suburb)}
     </div>
 
-    <div class="tab-panel hidden" data-panel="culture">
+    <div id="panel-culture" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-culture" data-panel="culture">
       ${
         suburb.cultural_background.length
           ? suburb.cultural_background.map(cultureBar).join("")
@@ -65,7 +65,7 @@ function renderSidebar(suburb) {
       }
     </div>
 
-    <div class="tab-panel hidden" data-panel="services">
+    <div id="panel-services" class="tab-panel hidden" role="tabpanel" aria-labelledby="tab-services" data-panel="services">
       <div class="stat-grid">
         ${statTile("Primary school", formatDriveTime(a.primary_school_drive_time))}
         ${statTile("Hospital", formatDriveTime(a.hospital_drive_time))}
@@ -135,16 +135,35 @@ function wireCompareToggle(panel, suburbId) {
   render();
 }
 
+// Standard ARIA tabs pattern (APG "Tabs"): only the active tab sits in the
+// Tab order (tabindex 0 vs -1 on the rest) — Left/Right/Home/End move focus
+// *and* activate the tab they land on, matching how native OS tab strips
+// behave and what a screen reader announcing role="tab" leads users to expect.
 function wireTabs(panel) {
-  const buttons = panel.querySelectorAll(".tab-btn");
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      buttons.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      const target = btn.dataset.tab;
-      panel.querySelectorAll(".tab-panel").forEach((p) => {
-        p.classList.toggle("hidden", p.dataset.panel !== target);
-      });
+  const buttons = Array.from(panel.querySelectorAll(".tab-btn"));
+
+  function activate(btn) {
+    buttons.forEach((b) => {
+      const isActive = b === btn;
+      b.classList.toggle("active", isActive);
+      b.setAttribute("aria-selected", String(isActive));
+      b.tabIndex = isActive ? 0 : -1;
+    });
+    btn.focus();
+    const target = btn.dataset.tab;
+    panel.querySelectorAll(".tab-panel").forEach((p) => {
+      p.classList.toggle("hidden", p.dataset.panel !== target);
+    });
+  }
+
+  buttons.forEach((btn, i) => {
+    btn.addEventListener("click", () => activate(btn));
+    btn.addEventListener("keydown", (e) => {
+      const targets = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: buttons.length - 1 };
+      if (!(e.key in targets)) return;
+      e.preventDefault();
+      const next = (targets[e.key] + buttons.length) % buttons.length;
+      activate(buttons[next]);
     });
   });
 }

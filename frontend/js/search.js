@@ -57,9 +57,15 @@ function renderSearchResults(input, list, query) {
   input.setAttribute("aria-expanded", "true");
   input.removeAttribute("aria-activedescendant");
 
+  const status = document.getElementById("suburb-search-status");
+
   if (!searchResults.length) {
-    list.innerHTML = '<li class="suburb-search-empty muted">No suburbs match.</li>';
+    // role="presentation" — this isn't a selectable option, so it shouldn't
+    // be counted by assistive tech navigating the listbox; the live region
+    // below is what actually announces "no results" to screen readers.
+    list.innerHTML = '<li class="suburb-search-empty muted" role="presentation">No suburbs match.</li>';
     list.classList.remove("hidden");
+    status.textContent = "No suburbs match.";
     return;
   }
 
@@ -86,6 +92,7 @@ function renderSearchResults(input, list, query) {
   });
 
   list.classList.remove("hidden");
+  status.textContent = `${searchResults.length} suburb${searchResults.length === 1 ? "" : "s"} found.`;
 }
 
 function setActiveResult(input, list, index) {
@@ -110,6 +117,7 @@ function closeSearchResults(input, list) {
   searchActiveIndex = -1;
   input.setAttribute("aria-expanded", "false");
   input.removeAttribute("aria-activedescendant");
+  document.getElementById("suburb-search-status").textContent = "";
 }
 
 function chooseSuburb(suburb) {
