@@ -507,3 +507,29 @@ header .logo {
 .compare-table .culture-country {
   flex: 0 0 70px;
 }
+
+.compare-table td.winner {
+  background: rgba(15, 157, 142, 0.12);
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.winner-badge {
+  color: var(--teal);
+  margin-left: 0.25rem;
+}
+
+/* Screen-reader-only text — e.g. the "Best" label next to .winner-badge,
+   which is otherwise a color/bold cue that colorblind or non-visual users
+   would miss. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

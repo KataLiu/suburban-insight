@@ -80,6 +80,12 @@ async function renderTable() {
   }
 }
 
+// Access-to-services values are display-ready range strings (e.g. "2–4 min"),
+// not numbers — see format.js formatDriveTime(). This ranks them so "winner"
+// rows can compare bands the same way they'd compare a number. Keep the
+// en-dash (–, U+2013) — it's what data_pipeline/access_to_services.py emits.
+const DRIVE_RANK = { "0–2 min": 0, "2–4 min": 1, "4–10 min": 2, "10–30 min": 3, "30–90 min": 4 };
+
 function buildTable(suburbs) {
   const cols = suburbs.length;
   const headerCells = suburbs
@@ -88,8 +94,25 @@ function buildTable(suburbs) {
     )
     .join("");
 
-  const row = (label, valueFn) =>
-    `<tr><td>${label}</td>${suburbs.map((s) => `<td>${valueFn(s)}</td>`).join("")}</tr>`;
+  // rawFn + direction are only passed for rows with an objectively "better"
+  // direction (lower rent, shorter drive time) — see the caller below.
+  // Rows without them (income, cultural mix, etc.) render exactly as before.
+  const row = (label, valueFn, rawFn = null, direction = null) => {
+    const winnerIds = rawFn ? findWinners(suburbs, rawFn, direction) : null;
+
+    const cells = suburbs
+      .map((s) => {
+        const isWinner = winnerIds && winnerIds.has(s.id);
+        return `<td${isWinner ? ' class="winner"' : ""}>${valueFn(s)}${
+          isWinner
+            ? ' <span class="winner-badge" aria-hidden="true">✓</span><span class="visually-hidden"> Best</span>'
+            : ""
+        }</td>`;
+      })
+      .join("");
+
+    return `<tr><td>${label}</td>${cells}</tr>`;
+  };
   const sectionRow = (label) => `<tr class="section-row"><td colspan="${cols + 1}">${label}</td></tr>`;
 
   return `
@@ -98,7 +121,12 @@ function buildTable(suburbs) {
       <tbody>
         ${sectionRow("Demographics")}
         ${row("Median household income", (s) => `${formatMoney(s.demographics.median_weekly_household_income)}/wk`)}
-        ${row("Median rent", (s) => `${formatMoney(s.demographics.median_weekly_rent)}/wk`)}
+        ${row(
+          "Median rent",
+          (s) => `${formatMoney(s.demographics.median_weekly_rent)}/wk`,
+          (s) => s.demographics.median_weekly_rent,
+          "lower"
+        )}
         ${row("Overseas born", (s) => formatPct(s.demographics.overseas_born_pct))}
         ${row("Family households", (s) => formatPct(s.demographics.family_households_pct))}
         ${row("Population growth (since 2016)", (s) => formatSignedPct(s.demographics.population_growth_pct))}
@@ -115,12 +143,49 @@ function buildTable(suburbs) {
         </tr>
 
         ${sectionRow("Access to services")}
-        ${row("Primary school", (s) => formatDriveTime(s.access_to_services.primary_school_drive_time))}
-        ${row("Hospital", (s) => formatDriveTime(s.access_to_services.hospital_drive_time))}
-        ${row("GP / clinic", (s) => formatDriveTime(s.access_to_services.gp_clinic_drive_time))}
-        ${row("Childcare", (s) => formatDriveTime(s.access_to_services.childcare_drive_time))}
+        ${row(
+          "Primary school",
+          (s) => formatDriveTime(s.access_to_services.primary_school_drive_time),
+          (s) => DRIVE_RANK[s.access_to_services.primary_school_drive_time] ?? null,
+          "lower"
+        )}
+        ${row(
+          "Hospital",
+          (s) => formatDriveTime(s.access_to_services.hospital_drive_time),
+          (s) => DRIVE_RANK[s.access_to_services.hospital_drive_time] ?? null,
+          "lower"
+        )}
+        ${row(
+          "GP / clinic",
+          (s) => formatDriveTime(s.access_to_services.gp_clinic_drive_time),
+          (s) => DRIVE_RANK[s.access_to_services.gp_clinic_drive_time] ?? null,
+          "lower"
+        )}
+        ${row(
+          "Childcare",
+          (s) => formatDriveTime(s.access_to_services.childcare_drive_time),
+          (s) => DRIVE_RANK[s.access_to_services.childcare_drive_time] ?? null,
+          "lower"
+        )}
       </tbody>
     </table>
     <p class="muted note">Drive times are typical ranges (most common ABS category among the suburb's local areas), not exact figures.</p>
   `;
+}
+
+// Suburbs with a null raw value are excluded (never crowned a winner). If
+// every remaining value ties, nobody wins. Ties among the best value all win.
+function findWinners(suburbs, rawFn, direction) {
+  const values = suburbs.map((s) => ({ id: s.id, value: rawFn(s) })).filter((v) => v.value != null);
+  if (values.length < 2) return null;
+
+  const allTie = values.every((v) => v.value === values[0].value);
+  if (allTie) return null;
+
+  const best =
+    direction === "lower"
+      ? Math.min(...values.map((v) => v.value))
+      : Math.max(...values.map((v) => v.value));
+
+  return new Set(values.filter((v) => v.value === best).map((v) => v.id));
 }
