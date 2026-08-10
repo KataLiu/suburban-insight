@@ -10,6 +10,20 @@
 <body>
   <header>
     <span class="logo">Suburban Insight</span>
+    <div class="suburb-search" id="suburb-search-wrap">
+      <input
+        type="text"
+        id="suburb-search"
+        class="suburb-search-input"
+        placeholder="Search suburbs…"
+        autocomplete="off"
+        role="combobox"
+        aria-expanded="false"
+        aria-controls="suburb-search-results"
+        aria-autocomplete="list"
+      />
+      <ul id="suburb-search-results" class="suburb-search-results hidden" role="listbox"></ul>
+    </div>
     <a id="compare-link" href="compare.html" class="compare-link">Compare suburbs (<span id="compare-count">0</span>)</a>
   </header>
 
@@ -37,6 +51,7 @@
   <script src="js/map.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/sidebar.js"></script>
+  <script src="js/search.js"></script>
   <script>
     document.getElementById("compare-count").textContent = CompareState.getIds().length;
   </script>

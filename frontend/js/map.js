@@ -120,6 +120,25 @@ async function loadSuburbView(councilId, councilName) {
   }
 }
 
+// Pans/zooms to a suburb's polygon and highlights it, if that suburb is
+// part of the currently-displayed council (i.e. has an entry in
+// suburbLayerById). No-op otherwise — used by the search box (search.js) to
+// jump to a result; picking a suburb from a different council than the one
+// currently on screen just leaves the map where it is, same as clicking a
+// "similar suburb" in the sidebar already does.
+function focusSuburb(suburbId) {
+  const layer = suburbLayerById[suburbId];
+  if (!layer) return;
+
+  leafletMap.fitBounds(layer.getBounds(), { maxZoom: 15 });
+  layer.bringToFront();
+  layer.setStyle({ weight: 3, color: "#0f9d8e" });
+
+  if (typeof layer.getTooltip === "function" && layer.getTooltip()) {
+    layer.openTooltip();
+  }
+}
+
 // Dims suburb polygons not in matchingIds; pass null to clear (full opacity
 // for all). Only meaningful in suburb-view mode — filters are hidden at the
 // council level.

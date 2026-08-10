@@ -38,6 +38,70 @@ header .logo {
   font-size: 1.1rem;
 }
 
+.suburb-search {
+  position: relative;
+  flex: 1 1 320px;
+  max-width: 420px;
+  margin: 0 1.5rem;
+}
+
+.suburb-search-input {
+  width: 100%;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.suburb-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.suburb-search-input:focus {
+  outline: none;
+  background: white;
+  color: var(--text);
+  border-color: var(--teal);
+}
+
+.suburb-search-results {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  margin: 0;
+  padding: 0.3rem;
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 1100;
+}
+
+.suburb-search-option {
+  padding: 0.45rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.suburb-search-option:hover,
+.suburb-search-option.active {
+  background: rgba(15, 157, 142, 0.12);
+  color: var(--teal);
+}
+
+.suburb-search-empty {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.85rem;
+}
+
 .compare-link {
   color: white;
   background: var(--teal);
