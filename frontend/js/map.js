@@ -44,6 +44,41 @@ function toGeoJSONFeatures(items) {
     .map((item) => ({ type: "Feature", properties: item, geometry: item.boundary }));
 }
 
+// Leaflet renders council/suburb polygons as SVG <path> elements with no
+// keyboard affordance by default — the existing layer.on("click", ...)
+// handlers are mouse-only, so keyboard users had no way to reach the map's
+// primary interaction at all. This makes each shape behave like a button:
+// focusable, announced with the same text as its tooltip, Enter/Space
+// triggers it, and the tooltip opens/closes on focus/blur so a keyboard
+// user sees the same info a mouse user gets on hover. Waits for the layer's
+// "add" event because getElement() returns nothing until Leaflet has
+// actually mounted the <path> in the DOM.
+function makeLayerKeyboardAccessible(layer, label, activate) {
+  layer.on("add", () => {
+    const el = layer.getElement();
+    if (!el) return;
+
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "button");
+    el.setAttribute("aria-label", label);
+
+    el.addEventListener("focus", () => {
+      layer.openTooltip();
+      layer.setStyle({ weight: 3 });
+    });
+    el.addEventListener("blur", () => {
+      layer.closeTooltip();
+      layer.setStyle({ weight: 1 });
+    });
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        activate();
+      }
+    });
+  });
+}
+
 async function loadCouncilView() {
   setMapStatus("Loading councils…");
   document.getElementById("back-to-councils").classList.add("hidden");
@@ -69,8 +104,11 @@ async function loadCouncilView() {
       }),
       onEachFeature: (feature, layer) => {
         const c = feature.properties;
-        layer.bindTooltip(`${c.name} — ${c.suburb_count} suburbs, avg $${Math.round(c.avg_median_weekly_rent)}/wk`);
-        layer.on("click", () => loadSuburbView(c.id, c.name));
+        const label = `${c.name} — ${c.suburb_count} suburbs, avg $${Math.round(c.avg_median_weekly_rent)}/wk`;
+        layer.bindTooltip(label);
+        const activate = () => loadSuburbView(c.id, c.name);
+        layer.on("click", activate);
+        makeLayerKeyboardAccessible(layer, label, activate);
       },
     }).addTo(leafletMap);
 
@@ -104,9 +142,17 @@ async function loadSuburbView(councilId, councilName) {
         fillOpacity: 0.6,
       }),
       onEachFeature: (feature, layer) => {
-        layer.bindTooltip(feature.properties.name);
-        layer.on("click", () => AppState.select(feature.properties.id));
-        suburbLayerById[feature.properties.id] = layer;
+        const s = feature.properties;
+        // Includes rent (not just the name) so the suburb's relative rent
+        // isn't only readable from the choropleth's colour — colourblind
+        // users get a text figure here the same way the council-level
+        // tooltip already includes one.
+        const label = `${s.name} — ${formatMoney(s.median_weekly_rent)}/wk`;
+        layer.bindTooltip(label);
+        const activate = () => AppState.select(s.id);
+        layer.on("click", activate);
+        suburbLayerById[s.id] = layer;
+        makeLayerKeyboardAccessible(layer, label, activate);
       },
     }).addTo(leafletMap);
 

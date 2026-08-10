@@ -4,6 +4,29 @@
   --bg: #ffffff;
   --text: #1a1a1a;
   --muted: #6b7280;
+
+  /* --teal itself only reaches ~3.4:1 against white/off-white — enough for
+     borders and non-text fills (which only need 3:1) but not for text/icons
+     (which need 4.5:1). Use this darker shade anywhere teal renders as text,
+     an icon, or sits under white text; keep --teal for borders, map fills,
+     and other non-text decoration where the original brand shade already
+     passes. See frontend/css contrast notes below each usage. */
+  --teal-text: #0a746a;
+}
+
+/* Consistent, visible keyboard-focus ring for every focusable element
+   (buttons, links, inputs, selects, and the map's now keyboard-operable
+   council/suburb shapes) — WCAG 2.4.7. --teal clears the 3:1 non-text
+   threshold against both white and the navy header background (verified:
+   4.74:1 on navy, 3.37:1 on white), which --teal-text does not (2.83:1 on
+   navy), so the ring intentionally uses --teal, not --teal-text. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
 }
 
 * {
@@ -61,7 +84,6 @@ header .logo {
 }
 
 .suburb-search-input:focus {
-  outline: none;
   background: white;
   color: var(--text);
   border-color: var(--teal);
@@ -94,7 +116,7 @@ header .logo {
 .suburb-search-option:hover,
 .suburb-search-option.active {
   background: rgba(15, 157, 142, 0.12);
-  color: var(--teal);
+  color: var(--teal-text);
 }
 
 .suburb-search-empty {
@@ -104,7 +126,7 @@ header .logo {
 
 .compare-link {
   color: white;
-  background: var(--teal);
+  background: var(--teal-text);
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -122,14 +144,14 @@ header .logo {
   border-radius: 999px;
   border: 1px solid var(--teal);
   background: white;
-  color: var(--teal);
+  color: var(--teal-text);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
 }
 
 .compare-toggle-btn.active {
-  background: var(--teal);
+  background: var(--teal-text);
   color: white;
 }
 
@@ -210,7 +232,7 @@ header .logo {
 
 .back-to-councils-btn:hover {
   border-color: var(--teal);
-  color: var(--teal);
+  color: var(--teal-text);
 }
 
 .map-legend {
@@ -297,17 +319,22 @@ header .logo {
 
 .status.ok {
   background: rgba(15, 157, 142, 0.15);
-  color: var(--teal);
+  color: var(--teal-text);
 }
 
+/* #dc2626 only reached 3.81:1 against its own 15%-tint background — swapped
+   for a darker red that clears 4.5:1 there. */
 .status.error {
   background: rgba(220, 38, 38, 0.15);
-  color: #dc2626;
+  color: #b91c1c;
 }
 
+/* var(--muted) only reached 4.02:1 against its own 15%-tint background —
+   darkened locally rather than changing --muted globally, since --muted
+   already passes AA everywhere else it's used (on white/#f8fafc). */
 .status.pending {
   background: rgba(107, 114, 128, 0.15);
-  color: var(--muted);
+  color: #4b5563;
 }
 
 .muted {
@@ -336,7 +363,7 @@ header .logo {
 }
 
 .tab-btn.active {
-  color: var(--teal);
+  color: var(--teal-text);
   border-bottom-color: var(--teal);
   font-weight: 600;
 }
@@ -380,7 +407,7 @@ header .logo {
 .cluster-badge {
   display: inline-block;
   background: rgba(15, 157, 142, 0.12);
-  color: var(--teal);
+  color: var(--teal-text);
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.3rem 0.7rem;
@@ -414,7 +441,7 @@ header .logo {
 
 .similar-suburb-btn:hover {
   border-color: var(--teal);
-  color: var(--teal);
+  color: var(--teal-text);
 }
 
 .culture-row {
@@ -516,17 +543,22 @@ header .logo {
   border-top: none;
 }
 
-.compare-table .section-row td {
+.compare-table .section-row td,
+.compare-table .section-row th {
   background: #f8fafc;
   font-weight: 600;
-  color: var(--teal);
+  color: var(--teal-text);
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
-.compare-table td:first-child {
+/* Row-label cells are <th scope="row"> for screen readers (see compare.js) —
+   font-weight reset because browsers bold <th> by default and these were
+   never meant to look bold, just like the <td> they replaced. */
+.compare-table tbody th[scope="row"] {
   color: var(--muted);
+  font-weight: 400;
   white-space: nowrap;
 }
 
@@ -545,7 +577,7 @@ header .logo {
 }
 
 .winner-badge {
-  color: var(--teal);
+  color: var(--teal-text);
   margin-left: 0.25rem;
 }
 
