@@ -20,6 +20,7 @@ def test_get_known_suburb():
     assert body["name"] == "Clayton"
     assert body["demographics"]["population"] > 0
     assert len(body["cultural_background"]) > 0
+    assert body["commute_to_work"]["car_pct"] > 0
 
 
 def test_get_unknown_suburb_returns_404():

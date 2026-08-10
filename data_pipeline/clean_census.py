@@ -6,7 +6,8 @@ Source: ../data/newData/2021_GCP_SAL_VIC/2021 Census GCP Suburbs and Localities 
 (ClaudeCode/data/newData/ — one level above this project, not inside it)
 Tables used: G01 (population), G02 (median income/rent), G33 (household
 composition), G09F/G09G/G09H (country of birth — the sub-files that hold the
-"Persons" totals; see docs/data-fields.md for the full field mapping).
+"Persons" totals; see docs/data-fields.md for the full field mapping), G62
+(method of travel to work).
 
 Population growth is handled in population_growth.py; access-to-services
 drive times in access_to_services.py.
@@ -142,5 +143,41 @@ def load_cultural_background():
                 {"country": _display_country(key), "pct": round(100 * count / total, 1)}
                 for key, count in top_countries
             ],
+        }
+    return result
+
+
+# Maps our output field name -> the "One method, Persons" column in G62.
+# Deliberately a subset of every mode G62 has (excludes Ferry, Taxi/
+# Rideshare, Truck, Motorbike, Car-as-passenger, Other, multi-method
+# combinations) — these are the modes actually relevant to "can I get
+# around this suburb without a car", not an exhaustive dump of the table.
+TRANSPORT_MODE_COLUMNS = {
+    "train_pct": "One_method_Train_P",
+    "tram_pct": "One_met_Tram_or_lt_rail_P",
+    "bus_pct": "One_method_Bus_P",
+    "car_pct": "One_method_Car_as_driver_P",
+    "bicycle_pct": "One_method_Bicycle_P",
+    "walked_pct": "One_method_Walked_only_P",
+    "worked_from_home_pct": "Worked_home_P",
+}
+
+
+def load_commute_to_work():
+    """Returns {sal_code: {train_pct, tram_pct, bus_pct, car_pct,
+    bicycle_pct, walked_pct, worked_from_home_pct}} — each a % of ALL
+    employed persons the table covers (Tot_P), so they're directly
+    comparable across suburbs but won't sum to 100% (excluded modes,
+    multi-method commutes, and "did not go to work" aren't included)."""
+    g62 = _index_by_sal(_read_csv("2021Census_G62_VIC_SAL.csv"))
+
+    result = {}
+    for sal_code, row in g62.items():
+        total = _to_number(row.get("Tot_P"))
+        if not total:
+            continue
+        result[sal_code] = {
+            field_name: round(100 * (_to_number(row.get(column)) or 0) / total, 1)
+            for field_name, column in TRANSPORT_MODE_COLUMNS.items()
         }
     return result

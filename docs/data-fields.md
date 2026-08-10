@@ -39,6 +39,13 @@ This document re-derives the data needs directly from `proposal.pdf` and the exi
 | `gp_clinic_min` | Drive time to nearest GP/clinic | Services tab, comparison | same | **Yes** (same caveat) |
 | `childcare_min` | Drive time to nearest childcare | Services tab, comparison | same | **Yes** (same caveat) |
 
+### Commute to work (added 2026-08-10 — not in the original proposal, a post-MVP addition)
+| Field | What it is | Feature(s) | Source | Essential for v1? |
+|---|---|---|---|---|
+| `train_pct` / `tram_pct` / `bus_pct` / `car_pct` / `bicycle_pct` / `walked_pct` / `worked_from_home_pct` | % of all employed persons in the suburb, by method of travel to work | Suburb profile — a public-transport-access proxy where actual station locations aren't an ABS dataset (see requirements §20-style reasoning: literal train-station locations are PTV/state infrastructure data, not ABS) | ABS 2021 Census Table G62, "Method of Travel to Work" (`data_pipeline/clean_census.py`'s `load_commute_to_work()`) | **No** — not part of the original 5 requirements; added as a genuinely useful, ABS-only enrichment once the core product was working |
+
+Won't sum to 100% — deliberately excludes less common modes (ferry, taxi/rideshare, truck, motorbike, car-as-passenger), multi-method commutes, and "did not go to work"/not-stated, since the goal is a readable "how do people get around here" signal, not an exhaustive reproduction of the table.
+
 ### Recommendation / clustering (not raw ABS data — computed)
 | Field | What it is | Feature(s) | Source | Essential for v1? |
 |---|---|---|---|---|
@@ -52,42 +59,56 @@ Two of the wireframe's filter chips describe the **user**, not the suburb, and d
 
 ## 2. Proposed suburb data structure
 
-One nested shape, used both as the API response and as the target shape the data pipeline produces — the same structure supports the map, profile, filters, charts, comparison, and (later) recommendations without transformation between features:
+One nested shape, used both as the API response and as the target shape the data pipeline produces — the same structure supports the map, profile, filters, charts, comparison, and recommendations without transformation between features.
+
+**This example reflects the actual current schema** (`backend/app/models/schemas.py`, `SuburbDetail`) as of 2026-08-10 — Clayton's real values, not illustrative wireframe numbers like the original version of this doc had:
 
 ```json
 {
   "id": "vic-clayton",
   "name": "Clayton",
   "state": "VIC",
-  "location": { "lat": -37.9147, "lng": 145.1128 },
-  "boundary": null,
+  "council": "Monash",
+  "location": { "lat": -37.9151, "lng": 145.1313 },
+  "boundary": { "type": "Polygon", "coordinates": [ /* simplified GeoJSON */ ] },
 
   "demographics": {
-    "population": 18420,
-    "population_growth_pct": 8.4,
-    "median_weekly_household_income": 1240,
-    "median_weekly_rent": 420,
-    "overseas_born_pct": 52,
-    "family_households_pct": 61
+    "population": 18988,
+    "population_growth_pct": -1.9,
+    "median_weekly_household_income": 1494,
+    "median_weekly_rent": 400,
+    "overseas_born_pct": 72.8,
+    "family_households_pct": 53.5
   },
 
   "cultural_background": [
-    { "country": "China", "pct": 38 },
-    { "country": "India", "pct": 22 },
-    { "country": "Australia", "pct": 18 },
-    { "country": "Vietnam", "pct": 10 }
+    { "country": "Australia", "pct": 27.2 },
+    { "country": "India", "pct": 16.4 },
+    { "country": "China", "pct": 14.7 },
+    { "country": "Sri Lanka", "pct": 3.6 }
   ],
 
+  "commute_to_work": {
+    "train_pct": 4.5,
+    "tram_pct": 0.1,
+    "bus_pct": 3.3,
+    "car_pct": 41.5,
+    "bicycle_pct": 0.8,
+    "walked_pct": 5.7,
+    "worked_from_home_pct": 19.9
+  },
+
   "access_to_services": {
-    "primary_school_min": 4,
-    "hospital_min": 8,
-    "gp_clinic_min": 3,
-    "childcare_min": 5
+    "primary_school_drive_time": "2–4 min",
+    "hospital_drive_time": "4–10 min",
+    "gp_clinic_drive_time": "0–2 min",
+    "childcare_drive_time": "0–2 min"
   },
 
   "cluster": {
-    "id": null,
-    "label": null
+    "id": 1,
+    "label": "Share / non-family households + Higher-rent",
+    "similar_suburb_ids": ["vic-box-hill", "vic-melbourne", "vic-springvale"]
   },
 
   "data_source": {
