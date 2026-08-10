@@ -77,6 +77,7 @@ function renderChips() {
       maxResults: Infinity,
       openOnFocus: true,
       emptyText: "No matches.",
+      showCouncil: false,
     });
   }
 }

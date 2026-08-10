@@ -16,6 +16,7 @@ function initSuburbCombobox({
   maxResults = 8,
   openOnFocus = false,
   emptyText = "No suburbs match.",
+  showCouncil = true,
 }) {
   let results = [];
   let activeIndex = -1;
@@ -75,7 +76,7 @@ function initSuburbCombobox({
             role="option"
             aria-selected="false"
             data-index="${i}"
-          >${s.name}${s.council ? ` &mdash; ${s.council}` : ""}</li>
+          >${s.name}${showCouncil && s.council ? ` &mdash; ${s.council}` : ""}</li>
         `
       )
       .join("");
