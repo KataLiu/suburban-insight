@@ -119,6 +119,15 @@ header .logo {
   color: var(--teal-text);
 }
 
+.suburb-search-option-sep {
+  color: var(--muted);
+}
+
+.suburb-search-option-council {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 .suburb-search-empty {
   padding: 0.45rem 0.7rem;
   font-size: 0.85rem;

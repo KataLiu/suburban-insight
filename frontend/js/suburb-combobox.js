@@ -76,7 +76,11 @@ function initSuburbCombobox({
             role="option"
             aria-selected="false"
             data-index="${i}"
-          >${s.name}${showCouncil && s.council ? ` &mdash; ${s.council}` : ""}</li>
+          >${s.name}${
+            showCouncil && s.council
+              ? ` <span class="suburb-search-option-sep" aria-hidden="true">&middot;</span> <span class="suburb-search-option-council">${s.council}</span>`
+              : ""
+          }</li>
         `
       )
       .join("");
