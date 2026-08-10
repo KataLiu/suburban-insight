@@ -257,6 +257,36 @@ header .logo {
   color: var(--navy);
 }
 
+.sidebar-empty-state {
+  height: 100%;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.4rem;
+}
+
+.empty-state-icon {
+  color: var(--teal);
+  opacity: 0.35;
+  margin-bottom: 0.4rem;
+}
+
+.empty-state-title {
+  margin: 0;
+  color: var(--navy);
+  font-size: 1.1rem;
+}
+
+.empty-state-message {
+  margin: 0;
+  max-width: 260px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 .status {
   display: inline-block;
   padding: 0.25rem 0.75rem;

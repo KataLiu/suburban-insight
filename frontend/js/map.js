@@ -48,8 +48,10 @@ async function loadCouncilView() {
   setMapStatus("Loading councils…");
   document.getElementById("back-to-councils").classList.add("hidden");
   document.getElementById("filter-bar").classList.add("hidden");
-  document.getElementById("sidebar").innerHTML =
-    '<p class="muted">Click a council to explore its suburbs.</p>';
+  renderSidebarEmptyState(
+    "Explore Melbourne suburbs",
+    "Click a council on the map to see its suburbs, then pick one to compare — or search above."
+  );
 
   try {
     const councils = await fetchCouncils();
@@ -84,8 +86,7 @@ async function loadCouncilView() {
 async function loadSuburbView(councilId, councilName) {
   setMapStatus(`Loading ${councilName} suburbs…`);
   document.getElementById("back-to-councils").classList.remove("hidden");
-  document.getElementById("sidebar").innerHTML =
-    `<p class="muted">Click a suburb in ${councilName} to see its profile.</p>`;
+  renderSidebarEmptyState(councilName, "Now click a suburb to see its details.");
 
   try {
     const suburbs = await fetchSuburbs(councilId);

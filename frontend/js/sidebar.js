@@ -1,3 +1,20 @@
+// Shown before any suburb is selected — reused by map.js at both the
+// council level (loadCouncilView) and the suburb level (loadSuburbView) so
+// the empty-state markup lives in one place. Icon is decorative (aria-hidden)
+// — the heading + message carry the actual content for screen readers.
+function renderSidebarEmptyState(title, message) {
+  document.getElementById("sidebar").innerHTML = `
+    <div class="sidebar-empty-state">
+      <svg class="empty-state-icon" viewBox="0 0 24 24" width="56" height="56" fill="none" aria-hidden="true" focusable="false">
+        <path d="M12 21s7-7.58 7-13a7 7 0 1 0-14 0c0 5.42 7 13 7 13z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+        <circle cx="12" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+      <h2 class="empty-state-title">${title}</h2>
+      <p class="empty-state-message">${message}</p>
+    </div>
+  `;
+}
+
 AppState.onSelect(async (suburbId) => {
   const panel = document.getElementById("sidebar");
   panel.innerHTML = '<p class="muted">Loading&hellip;</p>';
