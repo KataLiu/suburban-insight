@@ -34,12 +34,14 @@ function renderRentLegend(containerEl, min, max, label) {
     return;
   }
   const gradient = `linear-gradient(to right, ${SCALE_STOPS.map((rgb) => `rgb(${rgb.join(",")})`).join(", ")})`;
+  const mid = (min + max) / 2;
   containerEl.innerHTML = `
     <div class="legend-label">${label}</div>
     <div class="legend-bar" style="background:${gradient}"></div>
     <div class="legend-scale">
-      <span>$${Math.round(min)}/wk</span>
-      <span>$${Math.round(max)}/wk</span>
+      <span class="legend-scale-min">$${Math.round(min)}/wk</span>
+      <span class="legend-scale-mid">$${Math.round(mid)}/wk</span>
+      <span class="legend-scale-max">$${Math.round(max)}/wk</span>
     </div>
   `;
 }
