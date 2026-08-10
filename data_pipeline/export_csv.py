@@ -31,6 +31,8 @@ FIELDNAMES = [
     "culture_2_country", "culture_2_pct",
     "culture_3_country", "culture_3_pct",
     "culture_4_country", "culture_4_pct",
+    "train_pct", "tram_pct", "bus_pct", "car_pct", "bicycle_pct",
+    "walked_pct", "worked_from_home_pct",
     "primary_school_drive_time", "hospital_drive_time",
     "gp_clinic_drive_time", "childcare_drive_time",
     "cluster_id", "cluster_label", "similar_suburbs",
@@ -43,6 +45,7 @@ MAX_CULTURE_COLUMNS = 4
 def _flatten(suburb, name_by_id):
     d = suburb["demographics"]
     a = suburb["access_to_services"]
+    t = suburb["commute_to_work"]
     c = suburb["cluster"]
     culture = suburb["cultural_background"]
 
@@ -58,6 +61,13 @@ def _flatten(suburb, name_by_id):
         "median_weekly_rent": d["median_weekly_rent"],
         "overseas_born_pct": d["overseas_born_pct"],
         "family_households_pct": d["family_households_pct"],
+        "train_pct": t["train_pct"],
+        "tram_pct": t["tram_pct"],
+        "bus_pct": t["bus_pct"],
+        "car_pct": t["car_pct"],
+        "bicycle_pct": t["bicycle_pct"],
+        "walked_pct": t["walked_pct"],
+        "worked_from_home_pct": t["worked_from_home_pct"],
         "primary_school_drive_time": a["primary_school_drive_time"],
         "hospital_drive_time": a["hospital_drive_time"],
         "gp_clinic_drive_time": a["gp_clinic_drive_time"],

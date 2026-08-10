@@ -18,7 +18,7 @@ import re
 from pathlib import Path
 
 from access_to_services import load_access_to_services
-from clean_census import load_cultural_background, load_demographics
+from clean_census import load_commute_to_work, load_cultural_background, load_demographics
 from extract_centroids import load_boundary_rings, load_centroids, load_simplified_boundaries
 from melbourne_suburbs import get_melbourne_suburbs
 from population_growth import load_population_growth
@@ -39,6 +39,7 @@ def build():
 
     demographics = load_demographics()
     cultural = load_cultural_background()
+    commute = load_commute_to_work()
     centroids = load_centroids(s["sal_code"] for s in melbourne_suburbs)
     boundaries = load_simplified_boundaries(s["sal_code"] for s in melbourne_suburbs)
     population_2016 = load_population_growth(s["name"] for s in melbourne_suburbs)
@@ -79,6 +80,11 @@ def build():
                 "family_households_pct": demo["family_households_pct"],
             },
             "cultural_background": culture["cultural_background"],
+            "commute_to_work": commute.get(census_key, {
+                "train_pct": None, "tram_pct": None, "bus_pct": None,
+                "car_pct": None, "bicycle_pct": None, "walked_pct": None,
+                "worked_from_home_pct": None,
+            }),
             "access_to_services": access_services.get(sal_code, {
                 "primary_school_drive_time": None,
                 "hospital_drive_time": None,

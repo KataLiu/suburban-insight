@@ -33,6 +33,22 @@ class AccessToServices(BaseModel):
     childcare_drive_time: Optional[str] = None
 
 
+class CommuteToWork(BaseModel):
+    """% of all employed persons the ABS table covers (Table G62), by
+    method of travel to work. Won't sum to 100% — excludes less common
+    modes (ferry, taxi, truck, motorbike, car-as-passenger), multi-method
+    commutes, and "did not go to work"/not-stated. See
+    data_pipeline/clean_census.py's load_commute_to_work()."""
+
+    train_pct: Optional[float] = None
+    tram_pct: Optional[float] = None
+    bus_pct: Optional[float] = None
+    car_pct: Optional[float] = None
+    bicycle_pct: Optional[float] = None
+    walked_pct: Optional[float] = None
+    worked_from_home_pct: Optional[float] = None
+
+
 class Cluster(BaseModel):
     id: Optional[int] = None
     label: Optional[str] = None
@@ -71,6 +87,7 @@ class SuburbDetail(BaseModel):
     location: Location
     demographics: Demographics
     cultural_background: list[CulturalBackgroundEntry]
+    commute_to_work: CommuteToWork
     access_to_services: AccessToServices
     cluster: Cluster
     data_source: DataSource
