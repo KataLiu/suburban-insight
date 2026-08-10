@@ -201,10 +201,15 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria:** no WCAG target was specified (requirements §20), so completion here means "baseline practices applied", not a specific conformance level, until confirmed otherwise.
 - **Possible risks:** low — mostly CSS effort.
 
-### Milestone 13 — Testing
+### Milestone 13 — Testing 🟡 All 4 IEEE 829 levels now documented; 2 of 4 executed
 - **Objective:** The dedicated testing pass from Slide 12: cross-browser and usability testing, on top of the pytest suite that's been growing since Milestone 3.
+- **Formalized as the IEEE 829 test-level hierarchy** (`tests/`, one folder per level — each plan gets its own folder, not shared):
+  - **Component** (`tests/component-test-plan/`) — ✅ done, 10/10 automated tests passing (`backend/tests/test_health.py`/`test_suburbs.py`/`test_compare.py`/`test_councils.py`)
+  - **Component Integration** (`tests/component-integration-test-plan/`) — ✅ done 2026-08-10, 5 automated tests (`backend/tests/test_integration.py`) + 3 manual browser procedures, all passing
+  - **System** (`tests/system-test-plan/`) — 🟡 plan written, 4 of 6 journeys verified informally across development sessions but not yet run as one single dated formal pass; cross-browser (Firefox/Safari) and performance benchmarking not started
+  - **Acceptance** (`tests/acceptance-test-plan/`) — 🟡 plan written (using the proposal's own Slide 12 tasks/metrics verbatim), **cannot be executed without real participants** — recruiting 5+ international students is the only blocker
 - **Features included:** none new.
-- **Files:** none new (test artifacts/notes only).
+- **Files:** `tests/component-test-plan/`, `tests/component-integration-test-plan/`, `tests/system-test-plan/`, `tests/acceptance-test-plan/` (one `.md` plan each), `backend/tests/test_integration.py`.
 - **Dependencies:** all prior milestones.
 - **Expected output:** cross-browser check across Chrome/Firefox/Safari; usability sessions with 5+ international students on the 3 key tasks (find a suburb, apply filters, compare suburbs).
 - **Testing criteria:** task completion rate, navigation clarity, data comprehension accuracy, user satisfaction (Slide 12's own metrics).

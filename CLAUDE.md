@@ -56,9 +56,12 @@ python3 export_csv.py             # optional: flat suburbs.csv for reports
 - Filtering (rent/income/cultural background) happens entirely client-side against the currently-viewed council's suburb list; there is no `/api/filter` endpoint, and filters are only shown/active in the suburb drill-down view, not the top-level council map.
 - Comparison state (`CompareState` in `frontend/js/compare-state.js`) is persisted in `localStorage`, not a query string or backend session — that's how the selected suburbs survive navigating between `index.html` and `compare.html`.
 
+- **Testing is split by IEEE 829 level, one folder per level under `tests/`** — never merge these into a shared folder. `backend/tests/*.py` is the actual Component-level test *code*; `tests/component-test-plan/` documents that code. `tests/component-integration-test-plan/` covers already-tested components working *together* (pipeline→backend, cross-file/cross-record referential integrity, frontend↔backend contracts) — automated (`backend/tests/test_integration.py`) plus 3 manual browser procedures, all done and passing. `tests/system-test-plan/` covers full end-to-end user journeys — plan written, journeys verified informally across sessions but not yet run as one dated formal pass; cross-browser (Firefox/Safari) and performance benchmarking not started. `tests/acceptance-test-plan/` covers real target users — plan written (straight from the proposal's Slide 12), but **cannot be executed without real international student participants**; don't fabricate results for this level.
+
 ## Documentation
 
 - `docs/requirements.md` — full requirements traced to the project proposal (`docs/proposal.pdf`), including an explicit "unclear/missing info" section
 - `docs/architecture.md` — technical design and the reasoning behind stack choices
 - `docs/roadmap.md` — repo structure plus the milestone plan (what's built vs. planned)
+- `tests/` — formal IEEE 829-style test plans, one subfolder per test level
 - `docs/data-fields.md` — every data field, its ABS source, and the suburb JSON schema
