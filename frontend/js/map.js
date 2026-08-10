@@ -48,8 +48,10 @@ async function loadCouncilView() {
   setMapStatus("Loading councils…");
   document.getElementById("back-to-councils").classList.add("hidden");
   document.getElementById("filter-bar").classList.add("hidden");
-  document.getElementById("sidebar").innerHTML =
-    '<p class="muted">Click a council to explore its suburbs.</p>';
+  renderSidebarEmptyState(
+    "Explore Melbourne suburbs",
+    "Click a council on the map to see its suburbs, then pick one to compare — or search above."
+  );
 
   try {
     const councils = await fetchCouncils();
@@ -84,8 +86,7 @@ async function loadCouncilView() {
 async function loadSuburbView(councilId, councilName) {
   setMapStatus(`Loading ${councilName} suburbs…`);
   document.getElementById("back-to-councils").classList.remove("hidden");
-  document.getElementById("sidebar").innerHTML =
-    `<p class="muted">Click a suburb in ${councilName} to see its profile.</p>`;
+  renderSidebarEmptyState(councilName, "Now click a suburb to see its details.");
 
   try {
     const suburbs = await fetchSuburbs(councilId);
@@ -117,6 +118,25 @@ async function loadSuburbView(councilId, councilName) {
   } catch (err) {
     console.error(err);
     setMapStatus("Could not load suburbs — is the backend running?", true);
+  }
+}
+
+// Pans/zooms to a suburb's polygon and highlights it, if that suburb is
+// part of the currently-displayed council (i.e. has an entry in
+// suburbLayerById). No-op otherwise — used by the search box (search.js) to
+// jump to a result; picking a suburb from a different council than the one
+// currently on screen just leaves the map where it is, same as clicking a
+// "similar suburb" in the sidebar already does.
+function focusSuburb(suburbId) {
+  const layer = suburbLayerById[suburbId];
+  if (!layer) return;
+
+  leafletMap.fitBounds(layer.getBounds(), { maxZoom: 15 });
+  layer.bringToFront();
+  layer.setStyle({ weight: 3, color: "#0f9d8e" });
+
+  if (typeof layer.getTooltip === "function" && layer.getTooltip()) {
+    layer.openTooltip();
   }
 }
 

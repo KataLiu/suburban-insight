@@ -10,6 +10,20 @@
 <body>
   <header>
     <span class="logo">Suburban Insight</span>
+    <div class="suburb-search" id="suburb-search-wrap">
+      <input
+        type="text"
+        id="suburb-search"
+        class="suburb-search-input"
+        placeholder="Search suburbs…"
+        autocomplete="off"
+        role="combobox"
+        aria-expanded="false"
+        aria-controls="suburb-search-results"
+        aria-autocomplete="list"
+      />
+      <ul id="suburb-search-results" class="suburb-search-results hidden" role="listbox"></ul>
+    </div>
     <a id="compare-link" href="compare.html" class="compare-link">Compare suburbs (<span id="compare-count">0</span>)</a>
   </header>
 
@@ -22,9 +36,7 @@
       <div id="map-legend" class="map-legend"></div>
       <span id="map-status" class="status pending map-status-badge hidden"></span>
     </div>
-    <aside id="sidebar" class="sidebar-pane">
-      <p class="muted">Click a council to explore its suburbs.</p>
-    </aside>
+    <aside id="sidebar" class="sidebar-pane"></aside>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -37,6 +49,7 @@
   <script src="js/map.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/sidebar.js"></script>
+  <script src="js/search.js"></script>
   <script>
     document.getElementById("compare-count").textContent = CompareState.getIds().length;
   </script>
