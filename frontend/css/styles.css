@@ -100,7 +100,7 @@ header .logo {
   list-style: none;
   margin: 0;
   padding: 0.3rem;
-  max-height: 280px;
+  max-height: 420px;
   overflow-y: auto;
   z-index: 1100;
 }
