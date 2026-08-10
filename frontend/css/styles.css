@@ -509,6 +509,25 @@ header .logo {
   padding: 0.1rem 0.3rem;
 }
 
+/* Searchable "+ Add suburb" combobox — same dropdown/option styling as the
+   header's .suburb-search-* (see suburb-combobox.js), but the input itself
+   matches .filter-bar select's look since this bar has a light background,
+   not the dark header. */
+.add-suburb-wrap {
+  position: relative;
+}
+
+.add-suburb-input {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: white;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text);
+  min-width: 180px;
+}
+
 .compare-page {
   flex: 1;
   padding: 1.5rem 2rem;
