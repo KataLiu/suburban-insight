@@ -23,6 +23,18 @@ function initMap() {
 
   document.getElementById("back-to-councils").addEventListener("click", loadCouncilView);
 
+  // The header title as a "home" shortcut — same loadCouncilView() the
+  // back-to-councils button uses (which already re-fits the map to all
+  // councils, no separate view-reset needed), plus clearing the current
+  // selection and re-arming the hint. This is the only place that ever
+  // un-hides #map-hint — loadCouncilView() itself deliberately doesn't, or
+  // the back-to-councils button would bring the hint back too.
+  document.getElementById("logo-home-btn").addEventListener("click", () => {
+    AppState.deselect();
+    document.getElementById("map-hint").classList.remove("hidden");
+    loadCouncilView();
+  });
+
   loadCouncilView();
   fetchSuburbs().then((suburbs) => AppState.setAllSuburbNames(suburbs)).catch(console.error);
 }
@@ -171,16 +183,6 @@ async function loadSuburbView(councilId, councilName) {
   }
 }
 
-// Tells Leaflet to recompute the map's tile grid — needed any time the
-// container's on-screen size changes for a reason Leaflet didn't cause
-// itself (here: the side panel's slide-in/out resizing .map-pane). Exposed
-// as a function rather than the leafletMap variable itself, same as
-// focusSuburb()/setSuburbHighlight() below — panel.js calls this, it
-// doesn't reach into map.js's internals directly.
-function invalidateMapSize() {
-  if (leafletMap) leafletMap.invalidateSize();
-}
-
 // Pans/zooms to a suburb's polygon and highlights it, if that suburb is
 // part of the currently-displayed council (i.e. has an entry in
 // suburbLayerById). No-op otherwise — used by the search box (search.js) to
@@ -191,7 +193,13 @@ function focusSuburb(suburbId) {
   const layer = suburbLayerById[suburbId];
   if (!layer) return;
 
-  leafletMap.fitBounds(layer.getBounds(), { maxZoom: 15 });
+  // The side panel is about to open over the map's right edge (see
+  // styles.css/panel.js) — .map-pane itself never resizes for it, so
+  // without this the target suburb could end up hidden behind the panel.
+  // offsetWidth is accurate even before the panel is visible, since
+  // visibility:hidden still lays the box out.
+  const panelWidth = document.getElementById("sidebar-panel")?.offsetWidth || 380;
+  leafletMap.fitBounds(layer.getBounds(), { maxZoom: 15, paddingBottomRight: [panelWidth, 0] });
   layer.bringToFront();
   layer.setStyle({ weight: 3, color: "#0f9d8e" });
 

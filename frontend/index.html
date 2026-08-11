@@ -9,7 +9,7 @@
 </head>
 <body>
   <header>
-    <span class="logo">Suburban Insight</span>
+    <button id="logo-home-btn" class="logo" aria-label="Suburban Insight — back to full map">Suburban Insight</button>
     <div class="suburb-search" id="suburb-search-wrap" role="search">
       <label for="suburb-search" class="visually-hidden">Search suburbs</label>
       <input
@@ -39,10 +39,10 @@
       <div id="map-legend" class="map-legend"></div>
       <span id="map-status" class="status pending map-status-badge hidden" role="status" aria-live="polite"></span>
       <p id="map-hint" class="map-hint">Click a council to explore its suburbs.</p>
-    </div>
-    <div id="sidebar-panel" class="sidebar-panel">
-      <button id="panel-close" class="panel-close-btn" aria-label="Close">&times;</button>
-      <aside id="sidebar" class="sidebar-pane"></aside>
+      <div id="sidebar-panel" class="sidebar-panel">
+        <button id="panel-close" class="panel-close-btn" aria-label="Close">&times;</button>
+        <aside id="sidebar" class="sidebar-pane"></aside>
+      </div>
     </div>
   </main>
 

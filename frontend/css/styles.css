@@ -56,9 +56,27 @@ header {
   justify-content: space-between;
 }
 
+/* Shared by index.html's clickable <button> "home" shortcut (#logo-home-btn
+   below, resets away from initial state without a reload — see map.js) and
+   compare.html's <a href="index.html"> (a plain navigation, same href the
+   existing "← Back to map" link already uses — a full page load already
+   resets index.html to its initial state via initMap(), so no JS needed
+   there). text-decoration:none is only needed for the <a>, harmless on the
+   <button>. */
 header .logo {
   font-weight: 700;
   font-size: 1.1rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+header .logo:hover {
+  opacity: 0.85;
 }
 
 .suburb-search {
@@ -203,8 +221,14 @@ header .logo {
 
 .map-pane {
   position: relative;
-  flex: 1 1 65%;
+  /* Sole child of .app-layout now that .sidebar-panel is an overlay inside
+     it rather than a flex sibling — always fills the full width, doesn't
+     shrink for the panel. overflow:hidden clips .sidebar-panel's slid-out
+     (translateX(100%)) portion so it doesn't push the page into a
+     horizontal scrollbar. */
+  flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
 #map {
@@ -290,27 +314,38 @@ header .logo {
   color: var(--muted);
 }
 
-/* Collapsed by default (zero width, not in layout) — expands only once
-   AppState.select() fires (see panel.js). visibility is delayed on the way
-   *out* (stays visible through the slide-out) but instant on the way *in*,
-   the standard pattern for not leaving focusable content reachable behind a
-   width:0/overflow:hidden box, which alone doesn't remove it from the tab
-   order or accessibility tree the way visibility:hidden does. */
+/* A pure overlay on top of the map — .map-pane never resizes for it (see
+   above), so there's no layout-vs-animation split to manage here anymore,
+   just one GPU-only transform. Positioned inside .map-pane the same way
+   #back-to-councils/#map-legend/#map-status/#map-hint already are (all
+   position:absolute children of it), so it's naturally confined to the map
+   area and never overlaps the header — they don't share screen space, so
+   no z-index coordination with the header is needed either. z-index:1000
+   matches those existing map overlays. visibility keeps the asymmetric
+   open/close delay from before (instant on open, delayed until the slide
+   finishes on close) since transform alone doesn't remove off-screen
+   content from the tab order or accessibility tree. */
 .sidebar-panel {
-  position: relative;
-  flex: 0 0 0;
-  min-width: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  width: 35%;
+  min-width: 280px;
   max-width: 420px;
-  overflow: hidden;
+  background: var(--bg);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
   visibility: hidden;
-  transition: flex-basis 260ms ease, visibility 0s linear 260ms;
+  transform: translateX(100%);
+  transition: transform 240ms ease-out, visibility 0s linear 240ms;
+  will-change: transform;
 }
 
 .sidebar-panel.panel-open {
-  flex: 1 1 35%;
-  min-width: 280px;
   visibility: visible;
-  transition: flex-basis 260ms ease, visibility 0s linear 0s;
+  transform: translateX(0);
+  transition: transform 240ms ease-out, visibility 0s linear 0s;
 }
 
 .panel-close-btn {

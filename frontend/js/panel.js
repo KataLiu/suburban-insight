@@ -1,9 +1,10 @@
 /*
- * Slide-in/out side panel. Collapsed (zero width, hidden from layout and
- * assistive tech) by default and whenever nothing is selected; opens when
- * AppState.select() fires, closes on AppState.deselect() (wired to the
- * close button here). Doesn't touch the existing selection plumbing in
- * state.js or the sidebar rendering in sidebar.js — this only reacts to it.
+ * Slide-in/out side panel — a pure overlay on top of the map (.map-pane's
+ * own size never changes, see styles.css), so no Leaflet resize handling
+ * is needed here. Collapsed by default and whenever nothing is selected;
+ * opens when AppState.select() fires, closes on AppState.deselect() (wired
+ * to the close button here). Doesn't touch the existing selection plumbing
+ * in state.js or the sidebar rendering in sidebar.js — this only reacts to it.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,14 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
   AppState.onDeselect(closePanel);
 
   closeBtn.addEventListener("click", () => AppState.deselect());
-
-  // Leaflet doesn't know its container resized until told — without this the
-  // map keeps its old tile layout and shows grey gaps/misaligned tiles once
-  // the panel's slide animation changes .map-pane's width. Only fires once
-  // per transition (flex-basis is the one property actually animating).
-  panel.addEventListener("transitionend", (e) => {
-    if (e.propertyName === "flex-basis") invalidateMapSize();
-  });
 
   closePanel();
 });
