@@ -563,6 +563,13 @@ header .logo:hover {
 
 .culture-bar-track {
   flex: 1;
+  /* The track is an empty div, so inside the compare <table> it contributes
+     zero intrinsic width — once 3-4 suburb columns squeeze the table down to
+     its natural width, each column gets exactly country+pct+gaps and flex:1
+     resolves to 0px, silently deleting every bar. A real minimum keeps the
+     track visible at any column count; #compare-root's overflow-x absorbs
+     the extra width on narrow screens. */
+  min-width: 60px;
   background: #e5e7eb;
   border-radius: 999px;
   height: 8px;
