@@ -87,7 +87,8 @@ async function renderTable() {
   const root = document.getElementById("compare-root");
 
   if (ids.length === 0) {
-    root.innerHTML = '<p class="muted">No suburbs selected yet — add some above, or from the map page.</p>';
+    root.innerHTML = emptyCompareStateHtml();
+    wireEmptyCompareState(root);
     return;
   }
 
@@ -99,6 +100,35 @@ async function renderTable() {
     console.error(err);
     root.innerHTML = '<p class="status error" role="alert">Could not load comparison data.</p>';
   }
+}
+
+// Shown before any suburbs are picked. Reuses the .empty-state-icon/-title/
+// -message classes from the map page's sidebar empty state (sidebar.js) for
+// a consistent look — only the container class and icon differ, since this
+// sits in the page's main content area rather than a narrow sidebar.
+function emptyCompareStateHtml() {
+  return `
+    <div class="compare-empty-state">
+      <svg class="empty-state-icon" viewBox="0 0 24 24" width="56" height="56" fill="none" aria-hidden="true" focusable="false">
+        <rect x="3" y="4" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+        <rect x="13" y="4" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+      <h2 class="empty-state-title">Compare suburbs side by side</h2>
+      <p class="empty-state-message">Add two or more suburbs to see their demographics, rent, and cultural data side by side.</p>
+      <button id="empty-state-add-suburb" class="empty-state-cta">+ Add suburb</button>
+    </div>
+  `;
+}
+
+// Focuses the "+ Add suburb" combobox already rendered in the chips bar
+// (renderChips(), openOnFocus: true) instead of building a second picker —
+// same dropdown, same keyboard/ARIA behaviour, one implementation.
+function wireEmptyCompareState(root) {
+  const btn = root.querySelector("#empty-state-add-suburb");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    document.getElementById("add-suburb-input")?.focus();
+  });
 }
 
 // Access-to-services values are display-ready range strings (e.g. "2–4 min"),
