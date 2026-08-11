@@ -10,7 +10,7 @@ Insight puts rent, income, demographics, cultural makeup, and access to
 services on one interactive map and a side-by-side comparison view, so
 someone deciding where to live can see the real numbers at a glance.
 
-A team project for Monash University's FIT3163 DS01, Project 7.
+A team project for Monash University's FIT3164 DS_01, Project 7.
 
 ## Features
 
@@ -149,7 +149,15 @@ Two things worth knowing before reading too much into a number:
   or a suburb's population is too small for ABS to publish a reliable
   median.
 
-Current scope: 527 of the 531 suburbs across Melbourne's 31 official
-councils (Victorian Auditor-General's Metropolitan + Interface
-classification) — the remaining 4 are essentially uninhabited localities
-with no usable Census data.
+**Suburb counts, and how they relate:**
+- **531** — the full official list: every suburb across Melbourne's 31
+  councils (Victorian Auditor-General's Metropolitan + Interface
+  classification).
+- **527** of those 531 actually appear in the app — the other 4 are
+  essentially uninhabited localities with no usable Census data to show.
+- **518** of those 527 get a "Suburbs like this" recommendation — the
+  remaining 9 have real profile data but are missing one of the 4 features
+  the K-means clustering runs on (e.g. an industrial area or near-zero-
+  population locality with no meaningful income/rent/demographic figures
+  to cluster on), so they're deliberately left out of clustering rather
+  than given a fabricated match.
