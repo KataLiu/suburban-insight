@@ -100,7 +100,7 @@ header .logo {
   list-style: none;
   margin: 0;
   padding: 0.3rem;
-  max-height: 280px;
+  max-height: 420px;
   overflow-y: auto;
   z-index: 1100;
 }
@@ -117,6 +117,15 @@ header .logo {
 .suburb-search-option.active {
   background: rgba(15, 157, 142, 0.12);
   color: var(--teal-text);
+}
+
+.suburb-search-option-sep {
+  color: var(--muted);
+}
+
+.suburb-search-option-council {
+  font-size: 0.8rem;
+  color: var(--muted);
 }
 
 .suburb-search-empty {
@@ -507,6 +516,25 @@ header .logo {
   line-height: 1;
   cursor: pointer;
   padding: 0.1rem 0.3rem;
+}
+
+/* Searchable "+ Add suburb" combobox — same dropdown/option styling as the
+   header's .suburb-search-* (see suburb-combobox.js), but the input itself
+   matches .filter-bar select's look since this bar has a light background,
+   not the dark header. */
+.add-suburb-wrap {
+  position: relative;
+}
+
+.add-suburb-input {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: white;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text);
+  min-width: 180px;
 }
 
 .compare-page {

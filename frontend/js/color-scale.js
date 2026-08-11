@@ -1,16 +1,24 @@
-// Sequential blue -> yellow -> red colour scale (reversed RdYlBu) used to
-// colour both the council-level and suburb-level choropleth maps by rent.
-// Colour-blind-safe by design: cheapest and priciest ends are distinguished
-// by both lightness and a blue/red hue contrast (not a red/green contrast,
-// which is indistinguishable under the most common colour vision
-// deficiencies) — do not replace this with a green -> red scale.
+// Sequential YlOrRd colour scale (golden yellow -> orange -> deep red) used
+// to colour both the council-level and suburb-level choropleth maps by rent.
+// Deliberately sequential, not diverging: rent is a low-to-high ordered
+// quantity with no natural "midpoint" to anchor a diverging scale against
+// (a diverging red/blue scale would wrongly imply one), so one hue ramping
+// monotonically from light to dark reads correctly as "cheap -> expensive".
+// Still colour-blind-safe: the ends are distinguished by lightness alone
+// (pale -> saturated, not e.g. red vs green), which holds up under the most
+// common colour vision deficiencies.
 
+// The palest ColorBrewer YlOrRd stop (#ffffb2) was checked against the OSM
+// basemap and dropped — over real map tiles (semi-transparent fill, not
+// print-on-white) it blended into pale rural land tiles. Using classes 2-6
+// of the 6-class YlOrRd ramp instead keeps the same sequential, colour-blind
+// -safe family while starting noticeably more saturated/golden.
 const SCALE_STOPS = [
-  [44, 123, 182], // cheapest — blue
-  [171, 217, 233],
-  [255, 255, 191], // midpoint — yellow
-  [253, 174, 97],
-  [215, 48, 39], // priciest — red
+  [254, 217, 118], // cheapest — golden yellow
+  [254, 178, 76],
+  [253, 141, 60],
+  [240, 59, 32],
+  [189, 0, 38], // priciest — deep red
 ];
 
 function rentColor(value, min, max) {
@@ -34,12 +42,14 @@ function renderRentLegend(containerEl, min, max, label) {
     return;
   }
   const gradient = `linear-gradient(to right, ${SCALE_STOPS.map((rgb) => `rgb(${rgb.join(",")})`).join(", ")})`;
+  const mid = (min + max) / 2;
   containerEl.innerHTML = `
     <div class="legend-label">${label}</div>
     <div class="legend-bar" style="background:${gradient}"></div>
     <div class="legend-scale">
-      <span>$${Math.round(min)}/wk</span>
-      <span>$${Math.round(max)}/wk</span>
+      <span class="legend-scale-min">$${Math.round(min)}/wk</span>
+      <span class="legend-scale-mid">$${Math.round(mid)}/wk</span>
+      <span class="legend-scale-max">$${Math.round(max)}/wk</span>
     </div>
   `;
 }

@@ -36,11 +36,22 @@ function renderChips() {
   const addControl =
     ids.length >= CompareState.MAX_SUBURBS
       ? `<span class="muted">Max ${CompareState.MAX_SUBURBS} suburbs</span>`
-      : `<label for="add-suburb" class="visually-hidden">Add a suburb to compare</label>
-        <select id="add-suburb">
-          <option value="">+ Add suburb</option>
-          ${availableOptions.map((s) => `<option value="${s.id}">${s.name}</option>`).join("")}
-        </select>`;
+      : `<div class="add-suburb-wrap" id="add-suburb-wrap">
+          <label for="add-suburb-input" class="visually-hidden">Add a suburb to compare</label>
+          <input
+            type="text"
+            id="add-suburb-input"
+            class="add-suburb-input"
+            placeholder="+ Add suburb"
+            autocomplete="off"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="add-suburb-results"
+            aria-autocomplete="list"
+          />
+          <ul id="add-suburb-results" class="suburb-search-results hidden" role="listbox" aria-label="Suburbs available to add"></ul>
+          <span id="add-suburb-status" class="visually-hidden" role="status" aria-live="polite"></span>
+        </div>`;
 
   bar.innerHTML = `${chips}${addControl}`;
 
@@ -51,13 +62,22 @@ function renderChips() {
     });
   });
 
-  const addSelect = document.getElementById("add-suburb");
-  if (addSelect) {
-    addSelect.addEventListener("change", (e) => {
-      if (e.target.value) {
-        CompareState.add(e.target.value);
+  const addWrap = document.getElementById("add-suburb-wrap");
+  if (addWrap) {
+    initSuburbCombobox({
+      input: document.getElementById("add-suburb-input"),
+      list: document.getElementById("add-suburb-results"),
+      wrap: addWrap,
+      status: document.getElementById("add-suburb-status"),
+      getSuburbs: () => availableOptions,
+      onChoose: (suburb) => {
+        CompareState.add(suburb.id);
         render();
-      }
+      },
+      maxResults: Infinity,
+      openOnFocus: true,
+      emptyText: "No matches.",
+      showCouncil: false,
     });
   }
 }
