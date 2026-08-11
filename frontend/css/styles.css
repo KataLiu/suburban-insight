@@ -563,6 +563,13 @@ header .logo:hover {
 
 .culture-bar-track {
   flex: 1;
+  /* The track is an empty div, so inside the compare <table> it contributes
+     zero intrinsic width — once 3-4 suburb columns squeeze the table down to
+     its natural width, each column gets exactly country+pct+gaps and flex:1
+     resolves to 0px, silently deleting every bar. A real minimum keeps the
+     track visible at any column count; #compare-root's overflow-x absorbs
+     the extra width on narrow screens. */
+  min-width: 60px;
   background: #e5e7eb;
   border-radius: 999px;
   height: 8px;
@@ -755,6 +762,77 @@ header .logo:hover {
 .winner-badge {
   color: var(--teal-text);
   margin-left: 0.25rem;
+}
+
+/* Up to 4 suburb columns plus a row-label column don't fit a phone-width
+   viewport without crushing every cell — scroll the table horizontally
+   inside its own container instead of letting it force the whole page to
+   scroll sideways. Harmless at desktop widths: no scrollbar appears unless
+   the table actually exceeds the available width. */
+#compare-root {
+  overflow-x: auto;
+}
+
+/* Responsive breakpoints */
+
+@media (max-width: 900px) {
+  .sidebar-panel {
+    width: 60%;
+  }
+}
+
+@media (max-width: 640px) {
+  header {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .suburb-search {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .filter-bar {
+    padding: 0.6rem 1rem;
+  }
+
+  .sidebar-panel {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .sidebar-pane {
+    padding: 1.25rem 1.25rem 1.25rem 1rem;
+  }
+
+  /* Full-screen detail view needs an unmistakable way back to the map —
+     bigger tap target (WCAG 2.5.5) and a shadow so it doesn't read as a
+     minor corner decoration against the sidebar content beneath it. */
+  .panel-close-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-page {
+    padding: 1.25rem 1rem;
+  }
+
+  .compare-empty-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .compare-table {
+    min-width: 480px;
+  }
 }
 
 /* Screen-reader-only text — e.g. the "Best" label next to .winner-badge,
