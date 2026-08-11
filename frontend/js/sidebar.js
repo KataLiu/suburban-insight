@@ -86,7 +86,14 @@ function renderSidebar(suburb) {
   // itself opens synchronously on AppState.select(), but this runs after
   // the async fetchSuburbDetail() above resolves) — tabindex="-1" makes the
   // heading focusable without adding it to the normal Tab order.
-  panel.querySelector("h2").focus();
+  // preventScroll: true — this fires while .sidebar-panel is typically
+  // still mid-slide (240ms transform vs. a usually-much-faster local fetch),
+  // and the browser's default focus()-triggered "scroll into view" was
+  // reading the heading's live (still off-screen, pre-transform-finished)
+  // position and briefly scrolling the page to compensate — visible as the
+  // map wobbling on open. Nothing here needs that scroll: the panel is a
+  // fixed overlay, not something the page needs to pan to reach.
+  panel.querySelector("h2").focus({ preventScroll: true });
 }
 
 function similarSuburbsHtml(suburb) {
