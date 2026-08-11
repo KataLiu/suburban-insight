@@ -548,6 +548,58 @@ header .logo {
   color: var(--navy);
 }
 
+.compare-empty-state {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compare-empty-card {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  background: rgba(20, 33, 61, 0.03);
+  border: 1px solid rgba(20, 33, 61, 0.08);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+}
+
+.empty-state-cta {
+  margin-top: 0.5rem;
+  background: var(--teal-text);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.empty-state-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.empty-state-suggestions-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-right: 0.15rem;
+}
+
+.empty-state-cta:hover {
+  opacity: 0.9;
+}
+
 .compare-table {
   margin-top: 1.5rem;
   border-collapse: collapse;

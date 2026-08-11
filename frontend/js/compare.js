@@ -17,6 +17,14 @@ async function render() {
   await renderTable();
 }
 
+// The one place that actually adds a suburb to the comparison — used by the
+// "+ Add suburb" combobox (renderChips()) and the empty state's suggestion
+// chips (wireEmptyCompareState()), so there's a single add path, not two.
+function addSuburbToCompare(suburb) {
+  CompareState.add(suburb.id);
+  render();
+}
+
 function renderChips() {
   const ids = CompareState.getIds();
   const bar = document.getElementById("compare-chips");
@@ -70,10 +78,7 @@ function renderChips() {
       wrap: addWrap,
       status: document.getElementById("add-suburb-status"),
       getSuburbs: () => availableOptions,
-      onChoose: (suburb) => {
-        CompareState.add(suburb.id);
-        render();
-      },
+      onChoose: addSuburbToCompare,
       maxResults: Infinity,
       openOnFocus: true,
       emptyText: "No matches.",
@@ -87,7 +92,8 @@ async function renderTable() {
   const root = document.getElementById("compare-root");
 
   if (ids.length === 0) {
-    root.innerHTML = '<p class="muted">No suburbs selected yet — add some above, or from the map page.</p>';
+    root.innerHTML = emptyCompareStateHtml();
+    wireEmptyCompareState(root);
     return;
   }
 
@@ -99,6 +105,75 @@ async function renderTable() {
     console.error(err);
     root.innerHTML = '<p class="status error" role="alert">Could not load comparison data.</p>';
   }
+}
+
+// Highest-population suburbs from the already-fetched allSuburbsById (no
+// hardcoded names, no extra request) — used as one-tap suggestions in the
+// empty state. Suburbs with no population figure are skipped rather than
+// sorted as if population were 0.
+function recommendedSuburbs(count = 5) {
+  return Object.values(allSuburbsById)
+    .filter((s) => s.population != null)
+    .sort((a, b) => b.population - a.population)
+    .slice(0, count);
+}
+
+// Shown before any suburbs are picked. Reuses the .empty-state-icon/-title/
+// -message classes from the map page's sidebar empty state (sidebar.js) for
+// a consistent look — only the container class and icon differ, since this
+// sits in the page's main content area rather than a narrow sidebar.
+function emptyCompareStateHtml() {
+  const suggestions = recommendedSuburbs();
+
+  return `
+    <div class="compare-empty-state">
+      <div class="compare-empty-card">
+        <svg class="empty-state-icon" viewBox="0 0 24 24" width="56" height="56" fill="none" aria-hidden="true" focusable="false">
+          <rect x="3" y="4" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+          <rect x="13" y="4" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+        <h2 class="empty-state-title">Compare suburbs side by side</h2>
+        <p class="empty-state-message">Add two or more suburbs to see their demographics, rent, and cultural data side by side.</p>
+        <button id="empty-state-add-suburb" class="empty-state-cta">+ Add suburb</button>
+        ${
+          suggestions.length
+            ? `
+              <div class="empty-state-suggestions">
+                <span class="empty-state-suggestions-label">Largest suburbs:</span>
+                ${suggestions
+                  .map(
+                    (s) =>
+                      `<button class="similar-suburb-btn suggestion-chip" data-id="${s.id}">${s.name}</button>`
+                  )
+                  .join("")}
+              </div>
+            `
+            : ""
+        }
+      </div>
+    </div>
+  `;
+}
+
+// Focuses the "+ Add suburb" combobox already rendered in the chips bar
+// (renderChips(), openOnFocus: true) instead of building a second picker —
+// same dropdown, same keyboard/ARIA behaviour, one implementation. The
+// suggestion chips reuse addSuburbToCompare() directly — same add path as
+// picking a suburb from that combobox, not a second one.
+function wireEmptyCompareState(root) {
+  const btn = root.querySelector("#empty-state-add-suburb");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      document.getElementById("add-suburb-input")?.focus();
+    });
+  }
+
+  root.querySelectorAll(".suggestion-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const suburb = allSuburbsById[chip.dataset.id];
+      if (suburb) addSuburbToCompare(suburb);
+    });
+  });
 }
 
 // Access-to-services values are display-ready range strings (e.g. "2–4 min"),
