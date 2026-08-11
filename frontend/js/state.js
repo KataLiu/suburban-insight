@@ -9,6 +9,7 @@ const AppState = {
   // a different council than the one currently being viewed.
   allSuburbNames: [],
   _selectListeners: [],
+  _deselectListeners: [],
   _suburbsLoadedListeners: [],
 
   select(suburbId) {
@@ -18,6 +19,18 @@ const AppState = {
 
   onSelect(fn) {
     this._selectListeners.push(fn);
+  },
+
+  // Clears the current selection — e.g. the side panel's close button. No
+  // prior deselect concept existed; this mirrors select()/onSelect() so
+  // listeners (panel.js) can react without reaching into selectedSuburbId.
+  deselect() {
+    this.selectedSuburbId = null;
+    this._deselectListeners.forEach((fn) => fn());
+  },
+
+  onDeselect(fn) {
+    this._deselectListeners.push(fn);
   },
 
   setSuburbs(suburbs) {
