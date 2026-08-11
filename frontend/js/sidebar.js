@@ -33,7 +33,7 @@ function renderSidebar(suburb) {
   const panel = document.getElementById("sidebar");
 
   panel.innerHTML = `
-    <h2>${suburb.name}, ${suburb.state}</h2>
+    <h2 tabindex="-1">${suburb.name}, ${suburb.state}</h2>
     <p class="muted">${formatNumber(d.population)} residents</p>
     <button id="compare-toggle" class="compare-toggle-btn"></button>
 
@@ -81,6 +81,12 @@ function renderSidebar(suburb) {
   wireTabs(panel);
   wireCompareToggle(panel, suburb.id);
   wireSimilarSuburbs(panel);
+
+  // Moves focus into the panel once its real content exists (the panel
+  // itself opens synchronously on AppState.select(), but this runs after
+  // the async fetchSuburbDetail() above resolves) — tabindex="-1" makes the
+  // heading focusable without adding it to the normal Tab order.
+  panel.querySelector("h2").focus();
 }
 
 function similarSuburbsHtml(suburb) {

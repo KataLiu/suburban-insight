@@ -38,8 +38,12 @@
       <button id="back-to-councils" class="back-to-councils-btn hidden">&larr; Back to all councils</button>
       <div id="map-legend" class="map-legend"></div>
       <span id="map-status" class="status pending map-status-badge hidden" role="status" aria-live="polite"></span>
+      <p id="map-hint" class="map-hint">Click a council to explore its suburbs.</p>
     </div>
-    <aside id="sidebar" class="sidebar-pane"></aside>
+    <div id="sidebar-panel" class="sidebar-panel">
+      <button id="panel-close" class="panel-close-btn" aria-label="Close">&times;</button>
+      <aside id="sidebar" class="sidebar-pane"></aside>
+    </div>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -52,6 +56,7 @@
   <script src="js/map.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/sidebar.js"></script>
+  <script src="js/panel.js"></script>
   <script src="js/suburb-combobox.js"></script>
   <script src="js/search.js"></script>
   <script>

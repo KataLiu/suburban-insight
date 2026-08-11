@@ -257,6 +257,22 @@ header .logo {
   min-width: 160px;
 }
 
+.map-hint {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(20, 33, 61, 0.85);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  margin: 0;
+}
+
 .legend-label {
   color: var(--muted);
   margin-bottom: 0.35rem;
@@ -274,11 +290,56 @@ header .logo {
   color: var(--muted);
 }
 
-.sidebar-pane {
-  flex: 1 1 35%;
+/* Collapsed by default (zero width, not in layout) — expands only once
+   AppState.select() fires (see panel.js). visibility is delayed on the way
+   *out* (stays visible through the slide-out) but instant on the way *in*,
+   the standard pattern for not leaving focusable content reachable behind a
+   width:0/overflow:hidden box, which alone doesn't remove it from the tab
+   order or accessibility tree the way visibility:hidden does. */
+.sidebar-panel {
+  position: relative;
+  flex: 0 0 0;
+  min-width: 0;
   max-width: 420px;
+  overflow: hidden;
+  visibility: hidden;
+  transition: flex-basis 260ms ease, visibility 0s linear 260ms;
+}
+
+.sidebar-panel.panel-open {
+  flex: 1 1 35%;
   min-width: 280px;
-  padding: 1.5rem;
+  visibility: visible;
+  transition: flex-basis 260ms ease, visibility 0s linear 0s;
+}
+
+.panel-close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 10;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.panel-close-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal-text);
+}
+
+.sidebar-pane {
+  height: 100%;
+  padding: 1.5rem 2.5rem 1.5rem 1.5rem;
   overflow-y: auto;
   border-left: 1px solid #e5e7eb;
 }

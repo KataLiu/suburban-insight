@@ -125,6 +125,10 @@ async function loadSuburbView(councilId, councilName) {
   setMapStatus(`Loading ${councilName} suburbs…`);
   document.getElementById("back-to-councils").classList.remove("hidden");
   renderSidebarEmptyState(councilName, "Now click a suburb to see its details.");
+  // Every council activation (mouse click or keyboard, both route through
+  // this function via makeLayerKeyboardAccessible's shared `activate`)
+  // dismisses the "click a council" hint for good — nothing ever re-shows it.
+  document.getElementById("map-hint").classList.add("hidden");
 
   try {
     const suburbs = await fetchSuburbs(councilId);
@@ -165,6 +169,16 @@ async function loadSuburbView(councilId, councilName) {
     console.error(err);
     setMapStatus("Could not load suburbs — is the backend running?", true);
   }
+}
+
+// Tells Leaflet to recompute the map's tile grid — needed any time the
+// container's on-screen size changes for a reason Leaflet didn't cause
+// itself (here: the side panel's slide-in/out resizing .map-pane). Exposed
+// as a function rather than the leafletMap variable itself, same as
+// focusSuburb()/setSuburbHighlight() below — panel.js calls this, it
+// doesn't reach into map.js's internals directly.
+function invalidateMapSize() {
+  if (leafletMap) leafletMap.invalidateSize();
 }
 
 // Pans/zooms to a suburb's polygon and highlights it, if that suburb is
