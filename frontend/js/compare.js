@@ -213,6 +213,7 @@ function buildTable(suburbs) {
   const sectionRow = (label) => `<tr class="section-row"><th scope="colgroup" colspan="${cols + 1}">${label}</th></tr>`;
 
   return `
+    <div class="compare-table-scroll">
     <table class="compare-table">
       <caption class="visually-hidden">Comparison of selected suburbs' demographics, cultural background, and access to services</caption>
       <thead><tr><th scope="col"></th>${headerCells}</tr></thead>
@@ -267,6 +268,7 @@ function buildTable(suburbs) {
         )}
       </tbody>
     </table>
+    </div>
     <p class="muted note">Drive times are typical ranges (most common ABS category among the suburb's local areas), not exact figures.</p>
   `;
 }
