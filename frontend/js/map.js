@@ -183,12 +183,51 @@ async function loadSuburbView(councilId, councilName) {
   }
 }
 
+// Council list cache for the name -> id lookup in focusSuburbAnywhere()
+// below — separate from currentLayer, which gets replaced every time the
+// user drills into a specific council.
+let cachedCouncils = null;
+
+async function findCouncilByName(name) {
+  if (!name) return null;
+  if (!cachedCouncils) {
+    cachedCouncils = await fetchCouncils();
+  }
+  return cachedCouncils.find((c) => c.name === name) || null;
+}
+
+// Used by the header search (search.js) to jump to a suburb regardless of
+// which council (if any) is currently on screen — unlike focusSuburb() below,
+// this drills into the suburb's own council first if it isn't already
+// loaded, awaiting it so suburbLayerById is populated before focusing.
+// Falls back to centering on the suburb's point location (no error, no
+// stuck map) if the council name can't be resolved, loading it fails, or
+// the suburb has no boundary of its own (e.g. an excluded near-zero
+// -population locality that never gets an entry in suburbLayerById even
+// once its council is loaded).
+async function focusSuburbAnywhere(suburb) {
+  if (!suburbLayerById[suburb.id]) {
+    try {
+      const council = await findCouncilByName(suburb.council);
+      if (council) {
+        await loadSuburbView(council.id, council.name);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  if (suburbLayerById[suburb.id]) {
+    focusSuburb(suburb.id);
+  } else {
+    leafletMap.setView([suburb.location.lat, suburb.location.lng], 15);
+  }
+}
+
 // Pans/zooms to a suburb's polygon and highlights it, if that suburb is
 // part of the currently-displayed council (i.e. has an entry in
-// suburbLayerById). No-op otherwise — used by the search box (search.js) to
-// jump to a result; picking a suburb from a different council than the one
-// currently on screen just leaves the map where it is, same as clicking a
-// "similar suburb" in the sidebar already does.
+// suburbLayerById) — see focusSuburbAnywhere() above for jumping to a
+// suburb whose council isn't loaded yet.
 function focusSuburb(suburbId) {
   const layer = suburbLayerById[suburbId];
   if (!layer) return;

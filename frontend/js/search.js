@@ -13,22 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
     wrap: document.getElementById("suburb-search-wrap"),
     status: document.getElementById("suburb-search-status"),
     getSuburbs: () => AppState.allSuburbNames,
-    onChoose: (suburb) => {
+    onChoose: async (suburb) => {
       input.value = suburb.name;
 
-      // Same selection path as the sidebar's "similar suburb" buttons — see
-      // sidebar.js wireSimilarSuburbs(). Works regardless of which council is
-      // currently on the map; only the sidebar is guaranteed to update.
-      AppState.select(suburb.id);
+      // Awaited before AppState.select() below — focusSuburbAnywhere() may
+      // drill into a different council via loadSuburbView(), which renders
+      // its own "now click a suburb" placeholder into #sidebar the moment
+      // it starts. Firing these two concurrently races both of them for
+      // #sidebar's content: if loadSuburbView's placeholder lands *after*
+      // the sidebar has already rendered this suburb's real profile, it
+      // clobbers it right back to the placeholder. Sequencing them removes
+      // the race — the placeholder (if any) always settles first.
+      await focusSuburbAnywhere(suburb);
 
-      // TODO (v2): auto-switch the map to the suburb's own council view when
-      // it isn't the one currently displayed. Needs a council-name -> council-id
-      // lookup first — allSuburbNames only carries the council *name* (e.g.
-      // "Yarra"), not the id loadSuburbView() needs (e.g. "council-yarra") —
-      // then call loadSuburbView(councilId, councilName) before focusing.
-      // Out of scope for this pass; for now the map just stays put when the
-      // result belongs to a different council than the one on screen.
-      focusSuburb(suburb.id);
+      // Same selection path as the sidebar's "similar suburb" buttons — see
+      // sidebar.js wireSimilarSuburbs(). Moves keyboard focus into the panel
+      // once it renders (sidebar.js renderSidebar()), so choosing a result
+      // doesn't strand focus on this input.
+      AppState.select(suburb.id);
     },
   });
 });
