@@ -696,8 +696,18 @@ header .logo:hover {
   opacity: 0.9;
 }
 
-.compare-table {
+/* Comparing more than 2-3 suburbs (or just a narrow phone screen) makes the
+   table wider than the viewport — scope the horizontal scroll to the table
+   itself via this wrapper instead of letting it overflow .compare-page and
+   scroll the whole document sideways. The row-label column stays put via
+   position:sticky (see .compare-table th[scope="row"] below) so you can
+   still tell which metric a scrolled-in column belongs to. */
+.compare-table-scroll {
+  overflow-x: auto;
   margin-top: 1.5rem;
+}
+
+.compare-table {
   border-collapse: collapse;
   width: 100%;
 }
@@ -736,6 +746,12 @@ header .logo:hover {
   color: var(--muted);
   font-weight: 400;
   white-space: nowrap;
+  /* Pinned while .compare-table-scroll scrolls horizontally — needs an
+     opaque background (matching each row's own) or scrolled-under cells
+     would show through. */
+  position: sticky;
+  left: 0;
+  background: var(--bg);
 }
 
 .compare-table .culture-row {
@@ -770,4 +786,108 @@ header .logo:hover {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Mobile (phones, <=640px) --------------------------------------------- */
+/* Everything above was already written width-agnostic (flex-wrap, %/rem
+   sizing, no fixed page width) and holds up on a phone unassisted. This
+   block covers the handful of spots that don't: the header's three flex
+   children fighting over space once the search box's 320px flex-basis has
+   nowhere left to shrink to, the side panel's 280px desktop min-width
+   eating most of a phone screen instead of just taking it over on purpose,
+   and a couple of icon buttons sized for a mouse cursor rather than a
+   fingertip. */
+@media (max-width: 640px) {
+  header {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Its own full-width row under the logo/compare-link row, rather than
+     squeezed to near-zero width between them. order:3 (both siblings stay
+     at the default order:0) is what pushes it onto that second flex line;
+     flex-basis:100% is what makes it fill that line once wrapped there. */
+  .suburb-search {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .suburb-search-results {
+    max-height: 60vh;
+  }
+
+  .compare-link {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .filter-bar {
+    padding: 0.6rem 1rem;
+  }
+
+  .filter-bar #filter-count {
+    margin-left: 0;
+    flex: 1 1 100%;
+  }
+
+  /* On a phone-width .map-pane, the desktop rule's 280px min-width leaves
+     only a sliver of map visible behind the panel — so instead it takes
+     over the full screen, same as most map apps' mobile detail sheets. */
+  .sidebar-panel {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  /* Right padding widened to 3.75rem (from the desktop rule's 2.5rem) to
+     clear the enlarged .panel-close-btn below — its right:0.75rem offset
+     plus its own 2.75rem width need ~3.5rem of clearance, or the sidebar
+     heading's text runs under the button (verified: it did, before this
+     was widened to match). */
+  .sidebar-pane {
+    padding: 1.25rem 3.75rem 1.5rem 1.25rem;
+  }
+
+  /* 44px is the WCAG 2.5.5 minimum comfortable touch-target size — the
+     close button is icon-only (no visible label to pad it out), so it
+     needs the explicit bump; a mouse-era 2rem square never needed it. */
+  .panel-close-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.3rem;
+  }
+
+  .compare-page {
+    padding: 1.25rem 1rem;
+  }
+
+  /* Its own full-width row below the chips, same reasoning as
+     .suburb-search above — 180px min-width plus a row of chips doesn't
+     fit a phone's width. */
+  .add-suburb-wrap {
+    flex: 1 1 100%;
+  }
+
+  .add-suburb-input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* #map-legend (bottom-left) and #map-hint (bottom-center) are both
+     visible together in the initial council view (loadCouncilView() never
+     hides the hint — only a council click does). On a phone-width map
+     that's narrow enough for the hint's centered box to horizontally
+     overlap the legend's ~160px+ width, so on mobile the hint moves up to
+     sit in its own band above the legend instead — vertical stacking that
+     holds regardless of exactly how wide either one renders, unlike trying
+     to re-balance their horizontal positions. max-width stops the hint's
+     shrink-to-fit text from running past the screen edges. */
+  .map-hint {
+    bottom: 6.5rem;
+    max-width: calc(100% - 1.5rem);
+    text-align: center;
+  }
 }
