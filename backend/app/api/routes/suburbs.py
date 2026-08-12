@@ -24,6 +24,9 @@ def list_suburbs(council_id: str | None = None):
             population=suburb["demographics"]["population"],
             median_weekly_rent=suburb["demographics"]["median_weekly_rent"],
             median_weekly_household_income=suburb["demographics"]["median_weekly_household_income"],
+            overseas_born_pct=suburb["demographics"]["overseas_born_pct"],
+            family_households_pct=suburb["demographics"]["family_households_pct"],
+            access_to_services=suburb["access_to_services"],
             cultural_background=suburb["cultural_background"],
         )
         for suburb in get_all_suburbs(council_id=council_id)

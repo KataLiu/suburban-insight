@@ -151,6 +151,17 @@ header .logo:hover {
   font-size: 0.85rem;
 }
 
+/* Groups the header's action links (Find my suburb / Compare) into one
+   flex child so header's top-level space-between still sees three items
+   (logo, search, actions) — matches the original two-link rhythm instead
+   of spreading four independent items unevenly across the row. */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: none;
+}
+
 .compare-link {
   color: white;
   background: var(--teal-text);
@@ -159,6 +170,7 @@ header .logo:hover {
   font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .compare-link:hover {
@@ -773,11 +785,260 @@ header .logo:hover {
   overflow-x: auto;
 }
 
+/* Find my suburb page */
+
+.match-page {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+}
+
+.match-page h1 {
+  margin: 0 0 0.25rem;
+  color: var(--navy);
+}
+
+.match-layout {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  align-items: flex-start;
+}
+
+.match-controls {
+  flex: 0 0 320px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.match-controls h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+
+.weight-slider-intro {
+  font-size: 0.85rem;
+  margin: 0 0 1.25rem;
+}
+
+.weight-slider {
+  margin-bottom: 1.25rem;
+}
+
+.weight-slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.weight-slider-head label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--navy);
+}
+
+.weight-slider-pct {
+  font-size: 0.85rem;
+  color: var(--teal-text);
+  font-weight: 600;
+}
+
+.weight-slider-desc {
+  font-size: 0.8rem;
+  margin: 0.1rem 0 0.5rem;
+}
+
+/* Native range input, restyled to match the navy/teal theme. Deliberately
+   not a JS-driven "filled up to value" track — that needs recomputing a
+   background-size on every input event across three vendor-prefixed
+   pseudo-elements, and the thumb position already shows the value; a plain
+   track keeps this robust across browsers instead of chasing rendering
+   quirks for a purely decorative effect. */
+input[type="range"] {
+  width: 100%;
+  height: 1.25rem;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: #d1d5db;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--teal-text);
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: #d1d5db;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--teal-text);
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.show-more-btn {
+  display: block;
+  margin: 0.5rem auto 0;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--teal);
+  background: white;
+  color: var(--teal-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.show-more-btn:hover {
+  background: rgba(15, 157, 142, 0.08);
+}
+
+.match-results {
+  flex: 1;
+  min-width: 0;
+}
+
+.match-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.match-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.match-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.match-rank {
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 2rem;
+}
+
+.match-card-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.match-card-title h3 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 1.05rem;
+}
+
+.match-score {
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.match-reweighted-note {
+  margin: 0.5rem 0 0;
+}
+
+.match-factor-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.match-factor {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.match-factor-missing {
+  color: var(--muted);
+}
+
+.match-factor-label {
+  flex: 0 0 130px;
+}
+
+.match-factor-track {
+  flex: 1;
+  min-width: 60px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.match-factor-fill {
+  background: var(--teal);
+  height: 100%;
+}
+
+.match-factor-raw {
+  flex: 0 0 auto;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.match-factor-contribution {
+  flex: 0 0 50px;
+  text-align: right;
+  color: var(--teal-text);
+  font-weight: 600;
+}
+
 /* Responsive breakpoints */
 
 @media (max-width: 900px) {
   .sidebar-panel {
     width: 60%;
+  }
+
+  .match-layout {
+    flex-direction: column;
+  }
+
+  .match-controls {
+    flex: none;
+    width: 100%;
+    position: static;
   }
 }
 
@@ -785,6 +1046,12 @@ header .logo:hover {
   header {
     flex-wrap: wrap;
     row-gap: 0.5rem;
+  }
+
+  .header-actions {
+    order: 2;
+    flex: 1 1 100%;
+    justify-content: flex-end;
   }
 
   .suburb-search {
@@ -832,6 +1099,26 @@ header .logo:hover {
 
   .compare-table {
     min-width: 480px;
+  }
+
+  .match-page {
+    padding: 1.25rem 1rem;
+  }
+
+  .match-layout {
+    gap: 1.25rem;
+  }
+
+  .match-controls {
+    padding: 1rem;
+  }
+
+  .match-card {
+    padding: 0.85rem 1rem;
+  }
+
+  .match-factor-label {
+    flex-basis: 100px;
   }
 }
 

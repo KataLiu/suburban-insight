@@ -63,7 +63,12 @@ class DataSource(BaseModel):
 class SuburbSummary(BaseModel):
     """Shape for the choropleth map and client-side filtering (rent, income,
     cultural background) — includes boundary geometry so the map can render
-    the suburb's actual shape rather than a point marker."""
+    the suburb's actual shape rather than a point marker.
+
+    overseas_born_pct/family_households_pct/access_to_services were added
+    for the "Find my suburb" match scorer (frontend/js/recommend.js), which
+    needs all 527 suburbs' scoring fields in one request rather than one
+    GET /api/suburbs/{id} per suburb."""
 
     id: str
     name: str
@@ -74,6 +79,9 @@ class SuburbSummary(BaseModel):
     population: Optional[int] = None
     median_weekly_rent: Optional[int] = None
     median_weekly_household_income: Optional[int] = None
+    overseas_born_pct: Optional[float] = None
+    family_households_pct: Optional[float] = None
+    access_to_services: AccessToServices
     cultural_background: list[CulturalBackgroundEntry] = []
 
 
