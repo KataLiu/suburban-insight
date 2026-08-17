@@ -55,10 +55,15 @@ milestone below for where the actual build diverged from the original
 plan). Milestones 12–14 (responsive/accessibility polish, formal testing,
 deployment) are **not started**.
 
-**One gap nobody's built yet:** suburb search/autocomplete (mentioned in
-Milestone 5 below) was never implemented — the only way to reach a suburb
-is clicking into its map shape (previously a marker, now a polygon — see
-below).
+**Update (2026-08-17): suburb search/autocomplete is now built** —
+originally scoped in Milestone 5 as a backend `/api/suburbs/search`
+endpoint, it shipped instead as a client-side combobox
+(`frontend/js/search.js` + `frontend/js/suburb-combobox.js`, added after
+this roadmap's Milestone 5 note was written) that filters
+`AppState.allSuburbNames` in the browser — no search endpoint exists or is
+needed. The same combobox is reused for the compare page's "+ Add suburb"
+picker. See `CLAUDE.md`'s notes on `initSuburbCombobox()` for the shared
+implementation and why it stayed client-side.
 
 **Post-MVP: map scaled from 30 hand-picked suburbs to the real Melbourne
 scope (2026-08-05).** The original 30-suburb list was always a placeholder
@@ -127,9 +132,9 @@ Sequencing follows the requested milestone order, adjusted in two places with re
 - **Completion criteria met:** all fields populated for all 30 suburbs — population growth (2016→2021 name-matched join) and access-to-services (live spatial query against an ABS FeatureServer) were both closed as data gaps after this milestone first shipped with them null.
 - **Risk that materialized:** ABS data cleaning complexity, as anticipated (Slide 16) — the access-to-services source turned out to be categorical (range bands), not exact minutes, and required a live spatial query rather than a simple file join.
 
-### Milestone 5 — Suburb API Endpoints ✅ Done (search/autocomplete NOT built)
+### Milestone 5 — Suburb API Endpoints ✅ Done (search/autocomplete built client-side, not as an endpoint)
 - **Objective:** Serve the cleaned dataset over HTTP.
-- **Features included:** `/api/suburbs`, `/api/suburbs/{id}`. **`/api/suburbs/search` was never built** — there is no suburb search/autocomplete anywhere in the app; the only way to reach a suburb is clicking its map marker. Still open.
+- **Features included:** `/api/suburbs`, `/api/suburbs/{id}`. **`/api/suburbs/search` was never built as a backend endpoint** — search/autocomplete was instead added later as a client-side combobox (`frontend/js/search.js`, `frontend/js/suburb-combobox.js`) that filters the already-loaded suburb list in the browser. See the Status section above.
 - **Files:** `backend/app/api/routes/suburbs.py`, `backend/app/services/data_loader.py`, `backend/app/models/schemas.py`.
 - **Dependencies:** Milestone 3, Milestone 4.
 - **Expected output:** endpoints return real (or clearly-marked placeholder) suburb data as JSON.
