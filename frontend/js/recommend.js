@@ -15,6 +15,13 @@ const DRIVE_RANK = { "0–2 min": 0, "2–4 min": 1, "4–10 min": 2, "10–30 m
 // when a suburb has no real data for this factor — normalizedFactorScore()
 // turns that into "this factor is skipped for this suburb", never a
 // fabricated number.
+//
+// Overseas-born % and family-households % have no objectively "better"
+// direction (compare.js never highlights a winner for them, for the same
+// reason) — so their labels describe the raw quantity a user is choosing to
+// favour, not a value judgement like "diversity" or "family-friendly". The
+// slider only expresses "favour more of this" (or 0 = don't care); there's
+// no way to prefer *less* of either — a known limitation, not an oversight.
 const FACTORS = [
   {
     key: "affordability",
@@ -25,17 +32,17 @@ const FACTORS = [
     getValue: (s) => s.median_weekly_rent,
   },
   {
-    key: "diversity",
-    label: "Cultural diversity",
-    description: "Higher share of overseas-born residents scores higher.",
+    key: "overseasBorn",
+    label: "Overseas-born residents",
+    description: "Favours suburbs with a higher share of residents born overseas.",
     factLabel: "Overseas-born",
     invert: false,
     getValue: (s) => s.overseas_born_pct,
   },
   {
-    key: "familyFriendly",
-    label: "Family-friendly",
-    description: "Higher share of family households scores higher.",
+    key: "familyHouseholds",
+    label: "Family households",
+    description: "Favours suburbs with a higher share of family households.",
     factLabel: "Family households",
     invert: false,
     getValue: (s) => s.family_households_pct,
