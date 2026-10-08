@@ -268,10 +268,13 @@ header .logo:hover {
   display: none !important;
 }
 
+/* left clears Leaflet's top-left zoom control (10px margin + 30px buttons
+   + border on desktop) — at the old left:0.75rem this button sat directly
+   on top of the "+" zoom button and hid it whenever a council was open. */
 .back-to-councils-btn {
   position: absolute;
   top: 0.75rem;
-  left: 0.75rem;
+  left: 3.5rem;
   z-index: 1000;
   background: white;
   border: 1px solid #d1d5db;
@@ -1191,8 +1194,92 @@ input[type="range"]::-moz-range-thumb {
     padding: 1.5rem 1.25rem;
   }
 
-  .compare-table {
-    min-width: 480px;
+  /* Phone layout: stack instead of scrolling sideways. A sticky row-label
+     column (up to ~270px for "Population growth (since 2016)") left barely
+     one suburb column visible at 390px, the header row didn't scroll in
+     step with it, and section headings scrolled out of view. Each metric
+     now becomes its own block, one line per suburb — the suburb name comes
+     from each cell's data-label (compare.js), so no column has to line up
+     with a header. The header row stays as a wrapped list for population. */
+  .compare-table-scroll {
+    overflow-x: visible;
+  }
+
+  .compare-table,
+  .compare-table thead,
+  .compare-table tbody,
+  .compare-table tr,
+  .compare-table th,
+  .compare-table td {
+    display: block;
+  }
+
+  .compare-table thead tr {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .compare-table thead th {
+    padding: 0;
+    border: none;
+    font-size: 0.9rem;
+  }
+
+  .compare-table thead th:first-child {
+    display: none;
+  }
+
+  .compare-table tbody tr {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .compare-table th,
+  .compare-table td {
+    border-bottom: none;
+  }
+
+  .compare-table .section-row {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .compare-table .section-row th {
+    margin-top: 1rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .compare-table tbody th[scope="row"] {
+    position: static;
+    white-space: normal;
+    background: none;
+    color: var(--navy);
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .compare-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+  }
+
+  .compare-table td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .compare-table td.culture-cell {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
   }
 
   .recommend-page {
@@ -1471,5 +1558,67 @@ input[type="range"]::-moz-range-thumb {
     bottom: 6.5rem;
     max-width: calc(100% - 1.5rem);
     text-align: center;
+  }
+
+  /* Touch targets: 44px is the WCAG 2.5.5 / Apple HIG comfortable minimum
+     (same reasoning as .panel-close-btn above). At 390px wide these were
+     measured at 28px (header pills), 33px (search), 30px (Leaflet zoom)
+     and 36px (drawer close) — fine for a mouse, cramped for a thumb. */
+  .compare-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .nav-drawer-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .leaflet-touch .leaflet-bar a {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+  }
+
+  /* 16px, not the desktop 0.85-0.9rem: iOS Safari auto-zooms the whole
+     page when a focused text input/select has a font-size under 16px, and
+     doesn't zoom back out afterwards — the map ends up cropped. */
+  .suburb-search-input,
+  .add-suburb-input,
+  .filter-bar select {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* 44px zoom buttons below push the control's right edge out to ~56px. */
+  .back-to-councils-btn {
+    min-height: 44px;
+    left: 4.25rem;
+  }
+
+  .nav-drawer-link {
+    min-height: 44px;
+  }
+
+  /* At 44px tall the three selects no longer fit two-per-row with
+     flex-wrap, so each took its own line (filter bar measured 204px tall,
+     squeezing the map). A 2-column grid — rent and income side by side,
+     cultural background full width — keeps it to two rows. */
+  .filter-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .filter-bar select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-bar #filter-country,
+  .filter-bar #filter-count {
+    grid-column: 1 / -1;
   }
 }

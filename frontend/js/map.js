@@ -124,6 +124,10 @@ async function loadCouncilView() {
       },
     }).addTo(leafletMap);
 
+    // The filter bar was hidden above, so the map just got taller — Leaflet
+    // only re-measures on window resize, and would otherwise fit to its
+    // stale, shorter size (see the matching note in loadSuburbView()).
+    leafletMap.invalidateSize();
     leafletMap.fitBounds(currentLayer.getBounds());
     renderRentLegend(document.getElementById("map-legend"), min, max, "Average weekly rent by council");
     clearMapStatus();
@@ -172,10 +176,19 @@ async function loadSuburbView(councilId, councilName) {
       },
     }).addTo(leafletMap);
 
-    leafletMap.fitBounds(currentLayer.getBounds());
-    renderRentLegend(document.getElementById("map-legend"), min, max, `Weekly rent — ${councilName}`);
+    // Reveal and populate the filter bar *before* fitting: it sits above the
+    // map, so it shrinks the map's height — by ~140px on a phone, where its
+    // selects wrap onto two rows. Fitting first (the old order) centred the
+    // council for the pre-shrink size, leaving it pushed off toward the
+    // bottom-right corner. invalidateSize() makes Leaflet re-measure, since
+    // it only does so on its own for window resizes. This is a one-off
+    // layout change, unlike the side panel's animation (see panel.js),
+    // which deliberately avoids invalidateSize().
     document.getElementById("filter-bar").classList.remove("hidden");
     AppState.setSuburbs(suburbs);
+    leafletMap.invalidateSize();
+    leafletMap.fitBounds(currentLayer.getBounds());
+    renderRentLegend(document.getElementById("map-legend"), min, max, `Weekly rent — ${councilName}`);
     clearMapStatus();
   } catch (err) {
     console.error(err);
