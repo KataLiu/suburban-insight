@@ -200,11 +200,11 @@ function buildTable(suburbs) {
     const cells = suburbs
       .map((s) => {
         const isWinner = winnerIds && winnerIds.has(s.id);
-        return `<td${isWinner ? ' class="winner"' : ""}>${valueFn(s)}${
+        return `<td data-label="${s.name}"${isWinner ? ' class="winner"' : ""}><span class="cell-value">${valueFn(s)}${
           isWinner
             ? ' <span class="winner-badge" aria-hidden="true">✓</span><span class="visually-hidden"> Best</span>'
             : ""
-        }</td>`;
+        }</span></td>`;
       })
       .join("");
 
@@ -236,7 +236,7 @@ function buildTable(suburbs) {
           ${suburbs
             .map(
               (s) =>
-                `<td>${s.cultural_background.length ? s.cultural_background.map(cultureBar).join("") : '<span class="muted">No data</span>'}</td>`
+                `<td data-label="${s.name}" class="culture-cell"><span class="cell-value">${s.cultural_background.length ? s.cultural_background.map(cultureBar).join("") : '<span class="muted">No data</span>'}</span></td>`
             )
             .join("")}
         </tr>
