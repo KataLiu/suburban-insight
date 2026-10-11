@@ -76,7 +76,7 @@ function campusById(id) {
 const CAMPUS_FACTOR = {
   key: "campus",
   label: "Close to my campus",
-  description: "Shorter straight-line distance to your campus scores higher — not travel time.",
+  description: "Suburbs closer to your campus score higher.",
   invert: true,
   getValue: (s) => (selectedCampus ? suburbCampusKm(s, selectedCampus) : null),
 };
@@ -338,7 +338,7 @@ function campusPickerHtml() {
         <option value="">None</option>
         ${CAMPUS_LIST.map((c) => `<option value="${c.id}"${c === selectedCampus ? " selected" : ""}>${c.name}</option>`).join("")}
       </select>
-      <p id="campus-select-desc">Adds a "Close to my campus" factor. Uses straight-line distance, not travel time.</p>
+      <p id="campus-select-desc">Choose your campus to see how far each suburb is and rank suburbs by distance. Distances are measured in a straight line, not by travel time.</p>
     </div>
   `;
 }
@@ -468,7 +468,7 @@ function matchCardHtml(result, rank) {
   const campusLine =
     campusKm == null
       ? ""
-      : `<p class="recommend-campus-distance">${campusKm.toFixed(1)} km to ${selectedCampus.name} <span class="muted">(straight-line)</span></p>`;
+      : `<p class="recommend-campus-distance">${campusKm.toFixed(1)} km to ${selectedCampus.name} <span class="muted">· straight-line distance</span></p>`;
 
   return `
     <li class="recommend-result" aria-label="Rank ${rank}: ${suburb.name}, ${scoreOutOf100} percent match">
