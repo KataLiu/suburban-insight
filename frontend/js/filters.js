@@ -28,36 +28,87 @@ AppState.onSuburbsLoaded((suburbs) => {
 
 function renderFilterBar(suburbs) {
   const countries = Array.from(
-    new Set(suburbs.flatMap((s) => s.cultural_background.map((c) => c.country)))
+    new Set(
+      suburbs.flatMap((s) =>
+        s.cultural_background.map((c) => c.country)
+      )
+    )
   ).sort();
 
   const bar = document.getElementById("filter-bar");
+
   bar.innerHTML = `
-    <label for="filter-rent" class="visually-hidden">Filter by weekly rent</label>
+    <label for="filter-rent" class="visually-hidden">
+      Filter by weekly rent
+    </label>
+
     <select id="filter-rent">
-      ${RENT_BUCKETS.map((b, i) => `<option value="${i}">${b.label}</option>`).join("")}
+      ${RENT_BUCKETS.map(
+        (b, i) => `<option value="${i}">${b.label}</option>`
+      ).join("")}
     </select>
-    <label for="filter-income" class="visually-hidden">Filter by weekly household income</label>
+
+    <label for="filter-income" class="visually-hidden">
+      Filter by weekly household income
+    </label>
+
     <select id="filter-income">
-      ${INCOME_BUCKETS.map((b, i) => `<option value="${i}">${b.label}</option>`).join("")}
+      ${INCOME_BUCKETS.map(
+        (b, i) => `<option value="${i}">${b.label}</option>`
+      ).join("")}
     </select>
-    <label for="filter-country" class="visually-hidden">Filter by cultural background</label>
+
+    <label for="filter-country" class="visually-hidden">
+      Filter by cultural background
+    </label>
+
     <select id="filter-country">
       <option value="">Any cultural background</option>
-      ${countries.map((c) => `<option value="${c}">From ${c}</option>`).join("")}
+      ${countries.map(
+        (c) => `<option value="${c}">From ${c}</option>`
+      ).join("")}
     </select>
-    <span id="filter-count" class="muted" role="status" aria-live="polite"></span>
+
+    <span
+      id="filter-count"
+      class="muted"
+      role="status"
+      aria-live="polite"
+    ></span>
   `;
 
-  document.getElementById("filter-rent").addEventListener("change", (e) => {
+  const rentSelect = document.getElementById("filter-rent");
+  const incomeSelect = document.getElementById("filter-income");
+  const countrySelect = document.getElementById("filter-country");
+
+  // Keep the displayed dropdown values in sync with the filters that are
+  // currently active when moving from one council to another.
+  rentSelect.value = String(currentFilters.rentIndex);
+  incomeSelect.value = String(currentFilters.incomeIndex);
+
+  // Cultural background options can differ between councils. Keep the
+  // previous selection only if that country exists in the new council.
+  if (
+    currentFilters.country &&
+    countries.includes(currentFilters.country)
+  ) {
+    countrySelect.value = currentFilters.country;
+  } else {
+    currentFilters.country = "";
+    countrySelect.value = "";
+  }
+
+  rentSelect.addEventListener("change", (e) => {
     currentFilters.rentIndex = Number(e.target.value);
     applyFilters(AppState.allSuburbs);
   });
-  document.getElementById("filter-income").addEventListener("change", (e) => {
+
+  incomeSelect.addEventListener("change", (e) => {
     currentFilters.incomeIndex = Number(e.target.value);
     applyFilters(AppState.allSuburbs);
   });
-  document.getElementById("filter-country").addEventListener("change", (e) => {
+
+  countrySelect.addEventListener("change", (e) => {
     currentFilters.country = e.target.value;
     applyFilters(AppState.allSuburbs);
   });
@@ -66,22 +117,61 @@ function renderFilterBar(suburbs) {
 function applyFilters(suburbs) {
   const rentBucket = RENT_BUCKETS[currentFilters.rentIndex];
   const incomeBucket = INCOME_BUCKETS[currentFilters.incomeIndex];
+
   const isDefault =
-    currentFilters.rentIndex === 0 && currentFilters.incomeIndex === 0 && !currentFilters.country;
+    currentFilters.rentIndex === 0 &&
+    currentFilters.incomeIndex === 0 &&
+    !currentFilters.country;
 
   const matching = suburbs.filter((s) => {
-    if (rentBucket.min != null && s.median_weekly_rent < rentBucket.min) return false;
-    if (rentBucket.max != null && s.median_weekly_rent >= rentBucket.max) return false;
-    if (incomeBucket.min != null && s.median_weekly_household_income < incomeBucket.min) return false;
-    if (incomeBucket.max != null && s.median_weekly_household_income >= incomeBucket.max) return false;
-    if (currentFilters.country && !s.cultural_background.some((c) => c.country === currentFilters.country)) {
+    if (
+      rentBucket.min != null &&
+      s.median_weekly_rent < rentBucket.min
+    ) {
       return false;
     }
+
+    if (
+      rentBucket.max != null &&
+      s.median_weekly_rent >= rentBucket.max
+    ) {
+      return false;
+    }
+
+    if (
+      incomeBucket.min != null &&
+      s.median_weekly_household_income < incomeBucket.min
+    ) {
+      return false;
+    }
+
+    if (
+      incomeBucket.max != null &&
+      s.median_weekly_household_income >= incomeBucket.max
+    ) {
+      return false;
+    }
+
+    if (
+      currentFilters.country &&
+      !s.cultural_background.some(
+        (c) => c.country === currentFilters.country
+      )
+    ) {
+      return false;
+    }
+
     return true;
   });
 
-  setSuburbHighlight(isDefault ? null : new Set(matching.map((s) => s.id)));
-  document.getElementById("filter-count").textContent = isDefault
-    ? `${suburbs.length} suburbs`
-    : `${matching.length} of ${suburbs.length} suburbs match`;
+  setSuburbHighlight(
+    isDefault
+      ? null
+      : new Set(matching.map((s) => s.id))
+  );
+
+  document.getElementById("filter-count").textContent =
+    isDefault
+      ? `${suburbs.length} suburbs`
+      : `${matching.length} of ${suburbs.length} suburbs match`;
 }
