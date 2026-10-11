@@ -308,6 +308,77 @@ header .logo:hover {
   min-width: 240px;
 }
 
+/* University campus pins + their on/off toggle (campus-pins.js). Navy
+   disc with a white ring so it reads against both the pale and the deep-red
+   end of the rent choropleth and against OSM tiles. */
+.campus-marker {
+  background: none;
+  border: none;
+}
+
+.campus-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: white;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+.campus-marker:focus-visible {
+  outline: none;
+}
+
+.campus-marker:focus-visible .campus-pin {
+  outline: 3px solid var(--teal);
+  outline-offset: 1px;
+}
+
+/* Toggle row at the bottom of the legend card (campus-pins.js). */
+.campus-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid #eef1f4;
+  color: var(--navy);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.campus-toggle-key {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.campus-toggle input {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--teal-text);
+  cursor: pointer;
+}
+
+.campus-pin-legend {
+  width: 20px;
+  height: 20px;
+  border-width: 1.5px;
+  box-shadow: none;
+}
+
+.campus-pin-legend svg {
+  width: 11px;
+  height: 11px;
+}
+
 .map-hint {
   position: absolute;
   bottom: 1.5rem;
@@ -892,6 +963,53 @@ header .logo:hover {
 
 .recommend-controls {
   margin-top: 1.5rem;
+}
+
+/* "My campus" picker — same pill look as the map's .filter-bar select,
+   including the hand-drawn chevron (appearance:none, for Safari). */
+.recommend-campus {
+  margin-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #eef1f4;
+}
+
+.recommend-campus label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--navy);
+}
+
+.recommend-campus select {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  padding: 0.45rem 1.9rem 0.45rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0.7rem center;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.recommend-campus p {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.recommend-campus-distance {
+  margin: 0.6rem 0 0;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.recommend-campus-distance .muted {
+  font-weight: 400;
 }
 
 .recommend-control {
@@ -1571,8 +1689,11 @@ input[type="range"]::-moz-range-thumb {
      holds regardless of exactly how wide either one renders, unlike trying
      to re-balance their horizontal positions. max-width stops the hint's
      shrink-to-fit text from running past the screen edges. */
+  /* 9.75rem clears the legend card including its campus-toggle row
+     (campus-pins.js) — measured at 390px wide: card top sits 142px above
+     the map's bottom edge. Was 6.5rem before that row existed. */
   .map-hint {
-    bottom: 6.5rem;
+    bottom: 9.75rem;
     max-width: calc(100% - 1.5rem);
     text-align: center;
   }
@@ -1593,6 +1714,12 @@ input[type="range"]::-moz-range-thumb {
     height: 44px;
   }
 
+  .campus-toggle {
+    min-height: 44px;
+    padding-top: 0;
+    margin-top: 0.35rem;
+  }
+
   .leaflet-touch .leaflet-bar a {
     width: 44px;
     height: 44px;
@@ -1604,7 +1731,8 @@ input[type="range"]::-moz-range-thumb {
      doesn't zoom back out afterwards — the map ends up cropped. */
   .suburb-search-input,
   .add-suburb-input,
-  .filter-bar select {
+  .filter-bar select,
+  .recommend-campus select {
     font-size: 16px;
     min-height: 44px;
   }
