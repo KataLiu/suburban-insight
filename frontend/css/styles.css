@@ -1065,6 +1065,23 @@ input[type="range"]::-moz-range-thumb {
   font-size: 1.05rem;
 }
 
+/* "View on map" — links to index.html?suburb=<id> (see map.js
+   openSuburbFromUrl()). --teal-text, not --teal: it's text, and --teal
+   fails WCAG AA contrast as a text colour. */
+.recommend-map-link {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--teal-text);
+  text-decoration: none;
+}
+
+.recommend-map-link:hover,
+.recommend-map-link:focus-visible {
+  text-decoration: underline;
+}
+
 .recommend-result-top p {
   margin: 0.2rem 0 0;
   font-size: 0.83rem;

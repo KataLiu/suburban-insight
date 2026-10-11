@@ -35,8 +35,36 @@ function initMap() {
     loadCouncilView();
   });
 
-  loadCouncilView();
-  fetchSuburbs().then((suburbs) => AppState.setAllSuburbNames(suburbs)).catch(console.error);
+  const councilViewReady = loadCouncilView();
+  fetchSuburbs()
+    .then((suburbs) => {
+      AppState.setAllSuburbNames(suburbs);
+      return openSuburbFromUrl(suburbs, councilViewReady);
+    })
+    .catch(console.error);
+}
+
+// index.html?suburb=<id> — how recommend.html's "Find my suburb" results
+// link to a suburb on the map. One-shot navigation, not persisted state
+// (compare selections live in localStorage instead — see compare-state.js).
+// Takes the same path as choosing a header search result (search.js):
+// drill into its council and highlight it, *then* select it. Waits for the
+// initial council view first, or that still-in-flight load could finish
+// after the drill-down and replace it with the council map again.
+async function openSuburbFromUrl(suburbs, councilViewReady) {
+  const params = new URLSearchParams(location.search);
+  const suburb = suburbs.find((s) => s.id === params.get("suburb"));
+  if (!suburb) return;
+
+  // Drop the param so a refresh, or the title's "reset to initial view"
+  // button followed by a refresh, doesn't jump back to this suburb.
+  params.delete("suburb");
+  const query = params.toString();
+  history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}${location.hash}`);
+
+  await councilViewReady;
+  await focusSuburbAnywhere(suburb);
+  AppState.select(suburb.id);
 }
 
 function setMapStatus(text, isError = false) {
@@ -102,6 +130,10 @@ async function loadCouncilView() {
 
   try {
     const councils = await fetchCouncils();
+    // Seed findCouncilByName()'s cache with this same list, so the header
+    // search / "View on map" drill-down doesn't re-request all 31 councils'
+    // boundaries (~65KB) before it can even start loading the suburbs.
+    cachedCouncils = councils;
     const rents = councils.map((c) => c.avg_median_weekly_rent).filter((r) => r != null);
     const min = Math.min(...rents);
     const max = Math.max(...rents);
@@ -187,6 +219,7 @@ async function loadSuburbView(councilId, councilName) {
     document.getElementById("filter-bar").classList.remove("hidden");
     AppState.setSuburbs(suburbs);
     leafletMap.invalidateSize();
+    await afterZoomAnimation();
     leafletMap.fitBounds(currentLayer.getBounds());
     renderRentLegend(document.getElementById("map-legend"), min, max, `Weekly rent — ${councilName}`);
     clearMapStatus();
@@ -218,6 +251,22 @@ async function findCouncilByName(name) {
 // the suburb has no boundary of its own (e.g. an excluded near-zero
 // -population locality that never gets an entry in suburbLayerById even
 // once its council is loaded).
+// Leaflet silently drops a zoom request made while an earlier zoom
+// animation (~250ms) is still running — its _tryAnimatedZoom() returns
+// early as if it had worked, even with animate:false. Jumping to a suburb
+// chains several zooms back to back (initial fit to all councils, fit to
+// the council, fit to the suburb), so depending on timing the later ones
+// were lost and the map stayed zoomed out at council or whole-Melbourne
+// level. Call this before each zoom in that chain. The timeout is only a
+// safety net in case zoomend never arrives; resolving twice is harmless.
+function afterZoomAnimation() {
+  if (!leafletMap._animatingZoom) return Promise.resolve();
+  return new Promise((resolve) => {
+    leafletMap.once("zoomend", resolve);
+    setTimeout(resolve, 600);
+  });
+}
+
 async function focusSuburbAnywhere(suburb) {
   if (!suburbLayerById[suburb.id]) {
     try {
@@ -230,6 +279,7 @@ async function focusSuburbAnywhere(suburb) {
     }
   }
 
+  await afterZoomAnimation();
   if (suburbLayerById[suburb.id]) {
     focusSuburb(suburb.id);
   } else {

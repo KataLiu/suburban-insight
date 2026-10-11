@@ -87,8 +87,44 @@ let factorStats = {}; // key -> { min, max }
 const currentWeights = Object.fromEntries(FACTORS.map((f) => [f.key, 50])); // equal, non-zero default
 let visibleCount = RESULTS_PAGE_SIZE;
 
+// Sliders, "Show more" depth and scroll position survive a round trip to
+// the map ("View on map", then the header's "Find my suburb" or Back) —
+// otherwise coming back reset everything to equal weights. sessionStorage,
+// not localStorage: a fresh tab (e.g. the start of a demo) still opens on
+// the defaults. A per-viewer convenience only, so every access is wrapped —
+// storage can be unavailable (private mode, blocked site data) and the page
+// must still work on its defaults.
+const SAVED_STATE_KEY = "suburbanInsight.findMySuburb";
+
+function loadSavedState() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(SAVED_STATE_KEY));
+    if (!saved) return null;
+    FACTORS.forEach((f) => {
+      const w = saved.weights?.[f.key];
+      if (Number.isFinite(w) && w >= 0 && w <= 100) currentWeights[f.key] = w;
+    });
+    if (Number.isFinite(saved.visibleCount) && saved.visibleCount > 0) visibleCount = saved.visibleCount;
+    return saved;
+  } catch {
+    return null;
+  }
+}
+
+function saveState() {
+  try {
+    sessionStorage.setItem(
+      SAVED_STATE_KEY,
+      JSON.stringify({ weights: currentWeights, visibleCount, scrollY: window.scrollY })
+    );
+  } catch {
+    // Storage unavailable — the page just won't remember, nothing else breaks.
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const layout = document.getElementById("recommend-layout");
+  const saved = loadSavedState();
   try {
     const fetched = await fetchSuburbs();
     allSuburbs = fetched.filter((s) => !hasInsufficientData(s));
@@ -101,6 +137,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     layout.innerHTML = matchLayoutHtml();
     wireControls();
     renderResults();
+    if (saved?.scrollY) window.scrollTo(0, saved.scrollY);
+    // pagehide (not beforeunload) also fires when the page goes into the
+    // back/forward cache, which is exactly the "View on map" round trip.
+    window.addEventListener("pagehide", saveState);
   } catch (err) {
     console.error(err);
     layout.innerHTML = '<p class="status error" role="alert">Could not load suburb data — is the backend running?</p>';
@@ -254,7 +294,7 @@ function sliderHtml(factor) {
         id="weight-${factor.key}"
         min="0"
         max="100"
-        value="50"
+        value="${currentWeights[factor.key]}"
         aria-describedby="weight-${factor.key}-desc"
       />
       <span id="weight-${factor.key}-desc" class="visually-hidden">${factor.description}</span>
@@ -284,6 +324,7 @@ function wireControls() {
       currentWeights[f.key] = Number(input.value);
       updateAllWeightLabels();
       scheduleRender();
+      saveState();
     });
   });
   updateAllWeightLabels();
@@ -294,12 +335,15 @@ function wireControls() {
       document.getElementById(`weight-${f.key}`).value = 50;
     });
     updateAllWeightLabels();
+    visibleCount = RESULTS_PAGE_SIZE;
     renderResults();
+    saveState();
   });
 
   document.getElementById("show-more-btn").addEventListener("click", () => {
     visibleCount += RESULTS_PAGE_SIZE;
     renderResults();
+    saveState();
   });
 }
 
@@ -355,6 +399,7 @@ function matchCardHtml(result, rank) {
           <div>
             <h3>${suburb.name}</h3>
             <p>${suburb.council ?? ""} council</p>
+            <a class="recommend-map-link" href="index.html?suburb=${encodeURIComponent(suburb.id)}">View <span class="visually-hidden">${suburb.name} </span>on map &rarr;</a>
           </div>
           <strong class="recommend-score">${scoreOutOf100}<span>%</span></strong>
         </div>
