@@ -56,7 +56,7 @@ CSA only publishes a *rate* at council/LGA level — their suburb-level table ha
 Won't sum to 100% — deliberately excludes less common modes (ferry, taxi/rideshare, truck, motorbike, car-as-passenger), multi-method commutes, and "did not go to work"/not-stated, since the goal is a readable "how do people get around here" signal, not an exhaustive reproduction of the table.
 
 ### University campuses (added 2026-10-11 — not ABS data, not a suburb field)
-Not part of `suburbs.json` and never served by the backend: a fixed list of 12 Melbourne campus locations in `frontend/js/universities.js`, used by Find my suburb's optional "My campus" picker to add a 5th "Close to my campus" factor and show each result's distance. Added because the proposal's own Use Case 1 (an international student wanting a suburb "near their university") had nothing to answer it.
+Not part of `suburbs.json` and never served by the backend: a fixed list of 12 Melbourne campus locations in `frontend/js/universities.js`, used by Find my suburb's optional "My campus" picker to add a 5th "Close to my campus" factor and show each result's distance, and by the map page's campus pins (`frontend/js/campus-pins.js`, with a "Campuses" on/off toggle) to show roughly where each campus is. Added because the proposal's own Use Case 1 (an international student wanting a suburb "near their university") had nothing to answer it.
 
 | Item | What it is | Source |
 |---|---|---|

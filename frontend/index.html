@@ -39,7 +39,12 @@
     <div class="map-pane">
       <div id="map"></div>
       <button id="back-to-councils" class="back-to-councils-btn hidden">&larr; Back to all councils</button>
-      <div id="map-legend" class="map-legend"></div>
+      <!-- #map-legend is re-rendered by map.js on every view change; the
+           campus toggle row (campus-pins.js) is appended to this outer card
+           instead, so it survives those re-renders. -->
+      <div id="map-legend-card" class="map-legend">
+        <div id="map-legend"></div>
+      </div>
       <span id="map-status" class="status pending map-status-badge hidden" role="status" aria-live="polite"></span>
       <p id="map-hint" class="map-hint">Click a council to explore its suburbs.</p>
       <div id="sidebar-panel" class="sidebar-panel">
@@ -58,6 +63,8 @@
   <script src="js/format.js"></script>
   <script src="js/color-scale.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/universities.js"></script>
+  <script src="js/campus-pins.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/sidebar.js"></script>
   <script src="js/panel.js"></script>
