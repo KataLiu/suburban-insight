@@ -1608,6 +1608,51 @@ input[type="range"]::-moz-range-thumb {
     gap: 0.5rem;
   }
 
+  /* Title gets the first row to itself, centred and enlarged so it reads
+     as the page's brand rather than a stray label. margin-right mirrors
+     the hamburger on the left (.nav-menu-btn's 44px + its 0.5rem
+     margin-right + the header's 0.5rem gap), so the text is centred on
+     the screen, not just on the space right of the hamburger. The
+     flex-basis is whatever's left of the row after both of those, which
+     forces every later header item (index.html's .header-actions,
+     compare/recommend's "Back to map" link) onto the next line instead of
+     squeezing in beside the title and pulling it off-centre. */
+  header .logo {
+    flex: 1 0 calc(100% - 2 * (44px + 1rem));
+    margin-right: calc(44px + 1rem);
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  /* index.html's two pills as equal halves of their row, so their outer
+     edges line up with the full-width search box on the row below — three
+     rows sharing one left and right edge, instead of two different-width
+     pills bunched at one end. flex-basis:0 is what makes them equal
+     regardless of label length ("Compare suburbs (0)" is longer than
+     "Find my suburb"); justify-content centres each label in its half. */
+  .header-actions {
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /* font-size min(): the usual 0.9rem down to ~360px wide, then scales
+     with the viewport so "Compare suburbs (10)" still fits its half at
+     320px (measured: it overflowed the pill at a flat 0.9rem). */
+  .header-actions .compare-link {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: min(0.9rem, 4vw);
+  }
+
+  /* compare.html/recommend.html's lone back link — centred under the
+     title on its own row, matching index.html's centred pills. */
+  header > .compare-link {
+    margin: 0 auto;
+  }
+
   /* Its own full-width row under the logo/compare-link row, rather than
      squeezed to near-zero width between them. order:3 (both siblings stay
      at the default order:0) is what pushes it onto that second flex line;
