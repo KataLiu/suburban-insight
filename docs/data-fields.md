@@ -55,6 +55,18 @@ CSA only publishes a *rate* at council/LGA level — their suburb-level table ha
 
 Won't sum to 100% — deliberately excludes less common modes (ferry, taxi/rideshare, truck, motorbike, car-as-passenger), multi-method commutes, and "did not go to work"/not-stated, since the goal is a readable "how do people get around here" signal, not an exhaustive reproduction of the table.
 
+### University campuses (added 2026-10-11 — not ABS data, not a suburb field)
+Not part of `suburbs.json` and never served by the backend: a fixed list of 12 Melbourne campus locations in `frontend/js/universities.js`, used by Find my suburb's optional "My campus" picker to add a 5th "Close to my campus" factor and show each result's distance. Added because the proposal's own Use Case 1 (an international student wanting a suburb "near their university") had nothing to answer it.
+
+| Item | What it is | Source |
+|---|---|---|
+| Campus `lat` / `lng` | Centre of the bounding box of the campus's OpenStreetMap feature | OpenStreetMap, retrieved 2026-10-11 via the Overpass API. Each campus's exact OSM feature URL is stored next to its coordinates in `universities.js` — none were typed in from memory |
+| Distance to campus | Straight-line ("as the crow flies") haversine distance, km, computed in the browser | Suburb end: the suburb's existing `location` (ABS SAL 2021 representative point, see `data_pipeline/extract_centroids.py`); campus end: the coordinates above |
+
+Campuses: University of Melbourne (Parkville); Monash (Clayton, Caulfield); RMIT (City, Bundoora West, Brunswick); Deakin (Burwood); La Trobe (Bundoora); Swinburne (Hawthorn); Victoria University (Footscray Park, City Queen); Australian Catholic University (Melbourne). Two OSM caveats: Footscray Park has no campus-wide OSM area, so its point is the one campus-tagged feature (Building M) — still inside the campus; VU's City Flinders campus isn't mapped in OSM, so City Queen stands in as VU's city campus.
+
+Limitations, shown as such in the UI: straight-line distance is **not** travel time (no roads or public transport), and it's measured from one representative point per suburb, so the edges of a large suburb can be several km closer or further. The list is the main metropolitan campuses, not every campus.
+
 ### Recommendation / clustering (not raw ABS data — computed)
 | Field | What it is | Feature(s) | Source | Essential for v1? |
 |---|---|---|---|---|

@@ -57,6 +57,34 @@ const FACTORS = [
   },
 ];
 
+// Optional 5th factor, only in play once a campus is picked from "My
+// campus" (campus list + distance maths in universities.js). With no campus
+// selected, activeFactors() is exactly FACTORS — same objects, same order —
+// so every score and the ranking are identical to the 4-factor page.
+let selectedCampus = null;
+
+// universities.js is its own <script>. If it ever doesn't load (a failed
+// request, or a stale cached recommend.html from before it existed), the
+// page drops the campus picker instead of breaking outright — campus
+// support is optional, the 4-factor scorer is not.
+const CAMPUS_LIST = typeof CAMPUSES === "undefined" ? [] : CAMPUSES;
+
+function campusById(id) {
+  return CAMPUS_LIST.find((c) => c.id === id) || null;
+}
+
+const CAMPUS_FACTOR = {
+  key: "campus",
+  label: "Close to my campus",
+  description: "Shorter straight-line distance to your campus scores higher — not travel time.",
+  invert: true,
+  getValue: (s) => (selectedCampus ? suburbCampusKm(s, selectedCampus) : null),
+};
+
+function activeFactors() {
+  return selectedCampus ? [...FACTORS, CAMPUS_FACTOR] : FACTORS;
+}
+
 const RESULTS_PAGE_SIZE = 20;
 
 // Same 4 fields and same "any one missing disqualifies the suburb" rule as
@@ -84,7 +112,7 @@ function hasInsufficientData(suburb) {
 let allSuburbs = [];
 let excludedCount = 0;
 let factorStats = {}; // key -> { min, max }
-const currentWeights = Object.fromEntries(FACTORS.map((f) => [f.key, 50])); // equal, non-zero default
+const currentWeights = Object.fromEntries([...FACTORS, CAMPUS_FACTOR].map((f) => [f.key, 50])); // equal, non-zero default
 let visibleCount = RESULTS_PAGE_SIZE;
 
 // Sliders, "Show more" depth and scroll position survive a round trip to
@@ -100,11 +128,12 @@ function loadSavedState() {
   try {
     const saved = JSON.parse(sessionStorage.getItem(SAVED_STATE_KEY));
     if (!saved) return null;
-    FACTORS.forEach((f) => {
+    [...FACTORS, CAMPUS_FACTOR].forEach((f) => {
       const w = saved.weights?.[f.key];
       if (Number.isFinite(w) && w >= 0 && w <= 100) currentWeights[f.key] = w;
     });
     if (Number.isFinite(saved.visibleCount) && saved.visibleCount > 0) visibleCount = saved.visibleCount;
+    selectedCampus = campusById(saved.campusId); // unknown/missing id -> null, i.e. "None"
     return saved;
   } catch {
     return null;
@@ -115,7 +144,12 @@ function saveState() {
   try {
     sessionStorage.setItem(
       SAVED_STATE_KEY,
-      JSON.stringify({ weights: currentWeights, visibleCount, scrollY: window.scrollY })
+      JSON.stringify({
+        weights: currentWeights,
+        visibleCount,
+        scrollY: window.scrollY,
+        campusId: selectedCampus?.id ?? null,
+      })
     );
   } catch {
     // Storage unavailable — the page just won't remember, nothing else breaks.
@@ -175,6 +209,17 @@ function computeFactorStats() {
       ? { min: Math.min(...values), max: Math.max(...values) }
       : { min: 0, max: 0 };
   });
+  computeCampusStats();
+}
+
+// Separate from the one-off pass above because the campus factor's values
+// change whenever a different campus is picked.
+function computeCampusStats() {
+  if (!selectedCampus) return;
+  const values = allSuburbs.map((s) => CAMPUS_FACTOR.getValue(s)).filter((v) => v != null);
+  factorStats[CAMPUS_FACTOR.key] = values.length
+    ? { min: Math.min(...values), max: Math.max(...values) }
+    : { min: 0, max: 0 };
 }
 
 // Returns a 0-1 score where 1 is always "best", or null if this suburb has
@@ -191,9 +236,10 @@ function normalizedFactorScore(factor, suburb) {
 }
 
 function getNormalizedWeights() {
-  const total = FACTORS.reduce((sum, f) => sum + currentWeights[f.key], 0);
+  const factors = activeFactors();
+  const total = factors.reduce((sum, f) => sum + currentWeights[f.key], 0);
   if (total <= 0) return null;
-  return Object.fromEntries(FACTORS.map((f) => [f.key, currentWeights[f.key] / total]));
+  return Object.fromEntries(factors.map((f) => [f.key, currentWeights[f.key] / total]));
 }
 
 // contributions[key] sums exactly to `total` — this is the same number the
@@ -204,18 +250,19 @@ function getNormalizedWeights() {
 // scored at all under the user's current weights and is left out of the
 // ranking entirely, rather than assigned a fabricated 0.
 function scoreSuburb(suburb, normalizedWeights) {
+  const factors = activeFactors();
   const factorScores = {};
-  FACTORS.forEach((f) => {
+  factors.forEach((f) => {
     factorScores[f.key] = normalizedFactorScore(f, suburb);
   });
 
-  const available = FACTORS.filter((f) => factorScores[f.key] != null);
+  const available = factors.filter((f) => factorScores[f.key] != null);
   const availableWeightSum = available.reduce((sum, f) => sum + normalizedWeights[f.key], 0);
   if (availableWeightSum <= 0) return null;
 
   const contributions = {};
   let total = 0;
-  FACTORS.forEach((f) => {
+  factors.forEach((f) => {
     if (factorScores[f.key] == null) {
       contributions[f.key] = null;
       return;
@@ -226,7 +273,7 @@ function scoreSuburb(suburb, normalizedWeights) {
     total += contribution;
   });
 
-  return { suburb, total, contributions, reweighted: available.length < FACTORS.length };
+  return { suburb, total, contributions, reweighted: available.length < factors.length };
 }
 
 function computeRanking() {
@@ -260,9 +307,11 @@ function matchLayoutHtml() {
     <section class="recommend-preferences" aria-labelledby="preferences-heading">
       <div class="recommend-panel-heading">
         <h2 id="preferences-heading">Your priorities</h2>
-        <p>Adjust the four sliders — they don't need to add up to anything, weights are normalized automatically.</p>
+        <p>Adjust the <span id="slider-count">${selectedCampus ? "five" : "four"}</span> sliders — they don't need to add up to anything, weights are normalized automatically.</p>
       </div>
+      ${CAMPUS_LIST.length ? campusPickerHtml() : ""}
       <div class="recommend-controls">
+        ${sliderHtml(CAMPUS_FACTOR)}
         ${FACTORS.map(sliderHtml).join("")}
       </div>
       <button type="button" id="reset-weights-btn" class="recommend-reset">Reset to equal weights</button>
@@ -281,9 +330,23 @@ function matchLayoutHtml() {
   `;
 }
 
-function sliderHtml(factor) {
+function campusPickerHtml() {
   return `
-    <div class="recommend-control">
+    <div class="recommend-campus">
+      <label for="campus-select">My campus</label>
+      <select id="campus-select" aria-describedby="campus-select-desc">
+        <option value="">None</option>
+        ${CAMPUS_LIST.map((c) => `<option value="${c.id}"${c === selectedCampus ? " selected" : ""}>${c.name}</option>`).join("")}
+      </select>
+      <p id="campus-select-desc">Adds a "Close to my campus" factor. Uses straight-line distance, not travel time.</p>
+    </div>
+  `;
+}
+
+function sliderHtml(factor) {
+  const hidden = factor === CAMPUS_FACTOR && !selectedCampus;
+  return `
+    <div class="recommend-control${hidden ? " hidden" : ""}" id="control-${factor.key}">
       <div class="recommend-control-top">
         <label for="weight-${factor.key}">${factor.label}</label>
         <span class="recommend-control-pct" id="weight-${factor.key}-pct" aria-hidden="true">25%</span>
@@ -314,11 +377,11 @@ function scheduleRender() {
 // too (they all share the same total) — so any single drag has to refresh
 // all four labels, not just the one being dragged.
 function updateAllWeightLabels() {
-  FACTORS.forEach((f) => updateWeightLabel(f.key));
+  activeFactors().forEach((f) => updateWeightLabel(f.key));
 }
 
 function wireControls() {
-  FACTORS.forEach((f) => {
+  [...FACTORS, CAMPUS_FACTOR].forEach((f) => {
     const input = document.getElementById(`weight-${f.key}`);
     input.addEventListener("input", () => {
       currentWeights[f.key] = Number(input.value);
@@ -330,7 +393,7 @@ function wireControls() {
   updateAllWeightLabels();
 
   document.getElementById("reset-weights-btn").addEventListener("click", () => {
-    FACTORS.forEach((f) => {
+    [...FACTORS, CAMPUS_FACTOR].forEach((f) => {
       currentWeights[f.key] = 50;
       document.getElementById(`weight-${f.key}`).value = 50;
     });
@@ -342,6 +405,16 @@ function wireControls() {
 
   document.getElementById("show-more-btn").addEventListener("click", () => {
     visibleCount += RESULTS_PAGE_SIZE;
+    renderResults();
+    saveState();
+  });
+
+  document.getElementById("campus-select")?.addEventListener("change", (e) => {
+    selectedCampus = campusById(e.target.value);
+    computeCampusStats();
+    document.getElementById("control-campus").classList.toggle("hidden", !selectedCampus);
+    document.getElementById("slider-count").textContent = selectedCampus ? "five" : "four";
+    updateAllWeightLabels();
     renderResults();
     saveState();
   });
@@ -391,6 +464,12 @@ function matchCardHtml(result, rank) {
     return `<div><dt>${f.factLabel}</dt><dd>${value ?? "—"}</dd></div>`;
   }).join("");
 
+  const campusKm = selectedCampus ? suburbCampusKm(suburb, selectedCampus) : null;
+  const campusLine =
+    campusKm == null
+      ? ""
+      : `<p class="recommend-campus-distance">${campusKm.toFixed(1)} km to ${selectedCampus.name} <span class="muted">(straight-line)</span></p>`;
+
   return `
     <li class="recommend-result" aria-label="Rank ${rank}: ${suburb.name}, ${scoreOutOf100} percent match">
       <div class="recommend-rank" aria-hidden="true">${String(rank).padStart(2, "0")}</div>
@@ -403,6 +482,7 @@ function matchCardHtml(result, rank) {
           </div>
           <strong class="recommend-score">${scoreOutOf100}<span>%</span></strong>
         </div>
+        ${campusLine}
         <dl class="recommend-facts">${facts}</dl>
         ${reweighted ? '<p class="muted note recommend-reweighted-note">Some factors are unavailable for this suburb — remaining weight was redistributed across the rest.</p>' : ""}
       </div>
